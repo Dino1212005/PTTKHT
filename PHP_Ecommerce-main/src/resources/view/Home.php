@@ -2,7 +2,7 @@
     <div class="col-3 d-none d-md-block ">
         <div class="list-group">
             <a href="index.php?act=home" class="list-group-item text-capitalize active bg-black">
-                categories
+                Danh mục
             </a>
             <?php
             $categories = query_allcate();
@@ -17,21 +17,21 @@
         </div>
 
         <div class="form-group mt-4 mb-4">
-            <label for="select-filter">Filter by</label>
+            <label for="select-filter">Lọc theo</label>
             <select class="form-control select-filter" id="select-filter">
-                <option value="0">-- Filter by --</option>
-                <option value="?kytu=asc">Characters A-Z</option>
-                <option value="?kytu=desc">Characters Z-A</option>
-                <option value="?gia=asc">Prices gradually increase</option>
-                <option value="?gia=desc">Prices gradually decrease</option>
+                <option value="0">-- Lọc theo --</option>
+                <option value="?kytu=asc">Chữ cái từ A-Z</option>
+                <option value="?kytu=desc">Chữ cái từ Z-A</option>
+                <option value="?gia=asc">Giá tăng dần</option>
+                <option value="?gia=desc">Giá giảm dần</option>
             </select>
         </div>
-
+        
         <div class="form-group mt-4 mb-4">
             <form action="index.php?act=filterByPrices" method="GET">
                 <div class="row">
                     <div class="col-md-4">
-                        <label for="">Start Price</label>
+                        <label for="">Giá từ:</label>
                         <input type="text" name="start_price" value="<?php if (isset($_GET['start_price'])) {
                                                                             echo $_GET['start_price'];
                                                                         } else {
@@ -39,7 +39,7 @@
                                                                         } ?>" class="form-control">
                     </div>
                     <div class="col-md-4">
-                        <label for="">End Price</label>
+                        <label for="">Cho đến:</label>
                         <input type="text" name="end_price" value="<?php if (isset($_GET['end_price'])) {
                                                                         echo $_GET['end_price'];
                                                                     } else {
@@ -47,8 +47,8 @@
                                                                     } ?>" class="form-control">
                     </div>
                     <div class="col-md-4">
-                        <label for="">Click Me</label> <br />
-                        <button type="submit" name="filter" class="btn btn-primary px-4">Filter</button>
+                        <label for="">Click me</label>
+                        <button type="submit" name="filter" class="btn btn-primary px-4">Lọc</button>
                     </div>
                 </div>
             </form>
@@ -152,7 +152,7 @@
                                 </div>
                             <?php
                             } else { ?>
-                                <p class="card-text fw-bold fs-2 mb-0">Product does not exist</p>
+                                <p class="card-text fw-bold fs-2 mb-0">Sản phẩm không tồn tại</p>
                             <?php
                             }
                             ?>
