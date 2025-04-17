@@ -37,8 +37,10 @@ if(is_array($tk)){
                         <div class="mb-3 mt-3">
                             <label for="vaitro" class="form-label text-danger">Vai trò:</label>
                             <select class="form-select" id="vaitro" name="vaitro_id">
-                                <option <?php if($vaitro_id == 0) echo "selected" ?> value="0">Khách hàng</option>
+                                <option <?php if($vaitro_id == 0) echo "selected" ?> value="0">Khách Hàng</option>
                                 <option <?php if($vaitro_id == 1) echo "selected" ?> value="1">Quản trị</option>
+                                <option <?php if($vaitro_id == 3) echo "selected" ?> value="0">Nhân Viên</option>
+                                <option <?php if($vaitro_id == 4) echo "selected" ?> value="0">Nhân Viên Kho</option>
                             </select>
                         </div>
                         <div class="mb-3 mt-3">
