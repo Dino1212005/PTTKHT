@@ -149,6 +149,10 @@ if (isset($_POST['placeordered'])) {
     
             $sql = "update pro_chitiet set soluong = $sl - $sl_order where pro_id = $pro_order and size_id = $size_order and color_id = $color_order";
             pdo_execute($sql);
+
+            echo "<script>alert('Đặt hàng thành công! Cảm ơn bạn đã mua sắm.');</script>";
+            echo "<script>window.location.href='index.php?act=home';</script>"; // Chuyển hướng sau khi hiển thị thông báo
+            exit();
             // header("Location:index.php?act=home");
         }
     }
