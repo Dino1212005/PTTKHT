@@ -36,9 +36,9 @@
             </thead>
             <tbody>
                 <?php foreach ($listdh as $donhang) {
-          extract($donhang);
-          $countsp = load_cart_count($sl);
-        ?>
+                    extract($donhang);
+                    $countsp = load_cart_count($sl);
+                ?>
                 <tr>
                     <td><input type="checkbox" name="checkbox" id=""></td>
                     <td><?= $order_id ?></td>

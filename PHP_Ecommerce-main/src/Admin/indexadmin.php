@@ -8,6 +8,7 @@ include '../app/model/size.php';
 include '../app/model/color.php';
 include '../app/model/thongke.php';
 include '../app/model/donhang.php';
+include '../app/model/nhacungcap.php';
 session_start();
 
 if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
@@ -94,42 +95,49 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
                 </li>
                 <?php if ($vaitro_id == 1) { // Chỉ admin 
                 ?>
-                <li class="sidebar-list-item">
-                    <a href="indexadmin.php?act=cate">
-                        <span class="material-icons-outlined"><i class="bi bi-card-list"></i></span> Danh mục
-                    </a>
-                </li>
-                <li class="sidebar-list-item">
-                    <a href="indexadmin.php?act=pro">
-                        <span class="material-icons-outlined">fact_check</span> Sản phẩm
-                    </a>
-                </li>
-                <li class="sidebar-list-item">
-                    <a href="indexadmin.php?act=listtk">
-                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Người dùng
-                    </a>
-                </li>
-                <li class="sidebar-list-item">
-                    <a href="indexadmin.php?act=listbl">
-                        <span class="material-icons-outlined"><i class="bi bi-chat-text-fill"></i></span> Bình luận
-                    </a>
-                </li>
-                <li class="sidebar-list-item">
-                    <a href="indexadmin.php?act=thongke">
-                        <span class="material-icons-outlined">poll</span> Thống kê
-                    </a>
+                    <li class="sidebar-list-item">
+                        <a href="indexadmin.php?act=cate">
+                            <span class="material-icons-outlined"><i class="bi bi-card-list"></i></span> Danh mục
+                        </a>
+                    </li>
+                    <li class="sidebar-list-item">
+                        <a href="indexadmin.php?act=pro">
+                            <span class="material-icons-outlined">fact_check</span> Sản phẩm
+                        </a>
+                    </li>
+                    <li class="sidebar-list-item">
+                        <a href="indexadmin.php?act=listtk">
+                            <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Người dùng
+                        </a>
+                    </li>
+                    <li class="sidebar-list-item">
+                        <a href="indexadmin.php?act=listbl">
+                            <span class="material-icons-outlined"><i class="bi bi-chat-text-fill"></i></span> Bình luận
+                        </a>
+                    </li>
+                    <li class="sidebar-list-item">
+                        <a href="indexadmin.php?act=thongke">
+                            <span class="material-icons-outlined">poll</span> Thống kê
+                        </a>
                     <?php } elseif ($vaitro_id == 4) { ?>
-                <li class="sidebar-list-item">
-                    <a href="indexadmin.php?act=pro">
-                        <span class="material-icons-outlined">fact_check</span> Sản phẩm
-                    </a>
-                </li>
+                    <li class="sidebar-list-item">
+                        <a href="indexadmin.php?act=pro">
+                            <span class="material-icons-outlined">fact_check</span> Sản phẩm
+                        </a>
+                    </li>
                 <?php } ?>
                 </li>
                 <li class="sidebar-list-item">
                     <a href="indexadmin.php?act=donhang">
                         <span class="material-icons-outlined"><i class="bi bi-cart-check-fill"></i></span> Danh sách đơn
                         hàng
+                    </a>
+                </li>
+                <!-- Nhà cung câps -->
+                <li class="sidebar-list-item">
+                    <a href="indexadmin.php?act=ncc">
+                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Nhà cung
+                        cấp
                     </a>
                 </li>
             </ul>
@@ -139,6 +147,18 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
         if (isset($_GET['act'])) {
             $act = $_GET['act'];
             switch ($act) {
+                case 'ncc':
+                    $listNCC = loadAllNcc();
+                    include './nhacungcap/listNCC.php';
+                    break;
+
+                case 'suaNCC':
+                    if (isset($_GET['ncc_id']) && $_GET['ncc_id'] > 0) {
+                        $ncc_id = $_GET['ncc_id'];
+                        $ncc = loadThongTinNCC($ncc_id);
+                    }
+                    include './nhacungcap/updateNCC.php';
+                    break;
                 case 'home':
                     $dh = thongke_donhang();
                     $top5 = loadall_sanpham_top5();
@@ -152,7 +172,7 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
                     $resultcate = query_allcate();
                     include './cate/listcate.php';
                     break;
-                // 
+
                 case "thungrac_cate":
                     $resultcate = query_allcates();
                     include './cate/thungrac.php';
@@ -179,7 +199,6 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
 
                         include './cate/updatecate.php';
                     }
-
                     break;
 
                 case 'updatecate':

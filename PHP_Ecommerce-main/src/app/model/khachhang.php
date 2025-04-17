@@ -1,22 +1,26 @@
 <?php
 
-     function addkh($pass,$name,$mail,$phone,$diachi){
-        $sql = "insert into khachhang(kh_name,kh_pass,kh_mail,kh_tel,kh_address,vaitro_id) values('$name','$pass','$mail','$phone','$diachi',2)";
-        pdo_execute($sql);
-    }
-    function check_user($mail,$pass){
-        $sql= "select * from khachhang where kh_mail = '$mail' and kh_pass = '$pass'";
-        $result_user = pdo_query_one($sql);
-        return $result_user;
-    }
-
-function check_email($mail){
-    $sql= "select * from khachhang where kh_mail = '$mail'";
+function addkh($pass, $name, $mail, $phone, $diachi)
+{
+    $sql = "insert into khachhang(kh_name,kh_pass,kh_mail,kh_tel,kh_address,vaitro_id) values('$name','$pass','$mail','$phone','$diachi',2)";
+    pdo_execute($sql);
+}
+function check_user($mail, $pass)
+{
+    $sql = "select * from khachhang where kh_mail = '$mail' and kh_pass = '$pass'";
     $result_user = pdo_query_one($sql);
     return $result_user;
 }
 
-function vaitro(){
+function check_email($mail)
+{
+    $sql = "select * from khachhang where kh_mail = '$mail'";
+    $result_user = pdo_query_one($sql);
+    return $result_user;
+}
+
+function vaitro()
+{
     $sql = "select * from vaitro";
     $result = pdo_queryall($sql);
     return $result;
@@ -24,31 +28,37 @@ function vaitro(){
 // câu truy vấn xoá mềm
 
 
-function delete_taikhoan($kh_id){
+function delete_taikhoan($kh_id)
+{
     $sql = "delete from khachhang where kh_id = '$kh_id'";
     pdo_execute($sql);
 }
 
 // câu truy vấn xoá mềm
-function soft_deletekh($kh_id){
+function soft_deletekh($kh_id)
+{
     $sql = "UPDATE `khachhang` set trangthai = 1 WHERE `khachhang`.`kh_id` = $kh_id";
     pdo_execute($sql);
 }
-function loadall_taikhoans(){
+function loadall_taikhoans()
+{
     $sql = "select * from khachhang where trangthai = 1";
     $result = pdo_queryall($sql);
     return $result;
 }
-function khoiphuc_kh($kh_id){
+function khoiphuc_kh($kh_id)
+{
     $sql = "UPDATE `khachhang` set trangthai = 0 WHERE `khachhang`.`kh_id` = $kh_id";
     pdo_execute($sql);
 }
-function countkh() {
+function countkh()
+{
     $sql = "SELECT COUNT(*) as countkh FROM khachhang";
     $result = pdo_query_one($sql);
-     return $result;
+    return $result;
 }
-function loadall_taikhoan(){
+function loadall_taikhoan()
+{
     $sql = "select * from khachhang where trangthai = 0";
     $result = pdo_queryall($sql);
     return $result;
@@ -93,5 +103,3 @@ function check_email_exists($email)
         return false;
     }
 }
-
-?>
