@@ -95,11 +95,8 @@
                 $sql = " select * from khachhang where kh_id = (select max(kh_id) from khachhang)";
                 $khachhang = pdo_query_one($sql);
                 addcart_kh($khachhang['kh_id'],0);
-                header("Location:index.php?act=login");
-
-                    
-                
-                
+                $successMessage = "Đăng ký thành công! Vui lòng <a href='index.php?act=login'>đăng nhập</a>.";
+                // header("Location:index.php?act=login");
                 
         }
     }
@@ -108,6 +105,9 @@
 
 <div class="form-wrapper d-flex align-items-center justify-content-center flex-column">
     <h2 class="fw-bold">Sign Up</h2>
+    <?php if (!empty($successMessage)) : ?>
+    <div class="alert alert-success text-center w-100"><?php echo $successMessage; ?></div>
+<?php endif; ?>
     <form class="form" action="" method="post">
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
