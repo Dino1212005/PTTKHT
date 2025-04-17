@@ -237,6 +237,32 @@ INSERT INTO `order_chitiet` (`order_chitiet_id`, `order_id`, `pro_id`, `color_id
 (110, 136, 66, 2, 1, 300, 1, 300),
 (111, 136, 66, 2, 1, 300, 1, 300);
 
+-- 1. Tạo bảng nhacungcap
+CREATE TABLE `nhacungcap` (
+  `ncc_id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'ID nhà cung cấp',
+  `ncc_name` varchar(255) NOT NULL COMMENT 'Tên nhà cung cấp',
+  `ncc_diachi` varchar(255) NOT NULL COMMENT 'Địa chỉ nhà cung cấp',
+  `ncc_sdt` varchar(20) NOT NULL COMMENT 'Số điện thoại nhà cung cấp',
+  `ncc_email` varchar(255) NOT NULL COMMENT 'Email nhà cung cấp',
+  `ncc_trangthai` int(1) NOT NULL DEFAULT 0 COMMENT 'Trạng thái (0: hoạt động, 1: ngừng hoạt động)',
+  PRIMARY KEY (`ncc_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- 2. Thêm dữ liệu mẫu cho nhacungcap
+-- Thêm dữ liệu cho bảng nhacungcap
+INSERT INTO `nhacungcap` (`ncc_name`, `ncc_diachi`, `ncc_sdt`, `ncc_email`, `ncc_trangthai`) VALUES
+('Công ty Thời trang Việt Nam', 'Số 1, Đường Lê Duẩn, Hà Nội', '0241234567', 'contact@thoitrangvn.com', 0),
+('Công ty May mặc Hải Phòng', 'Số 45, Đường Trần Phú, Hải Phòng', '0225123456', 'info@maymachp.com', 0),
+('Công ty Dệt may Đà Nẵng', 'Số 78, Đường Nguyễn Văn Linh, Đà Nẵng', '0236123456', 'contact@detmaydn.com', 0),
+('Công ty Thời trang Sài Gòn', 'Số 123, Đường Nguyễn Huệ, TP.HCM', '0281234567', 'info@thoitrangsg.com', 0),
+('Công ty Vải sợi Bắc Ninh', 'Số 56, Đường Nguyễn Trãi, Bắc Ninh', '0222123456', 'contact@vaisoi.com', 0),
+('Công ty Phụ liệu may mặc', 'Số 89, Đường Lê Lợi, Hải Dương', '0220123456', 'info@phulieu.com', 0),
+('Công ty Thời trang cao cấp', 'Số 34, Đường Tràng Tiền, Hà Nội', '0241234568', 'contact@caocap.com', 0),
+('Công ty Vải vóc nhập khẩu', 'Số 67, Đường Hai Bà Trưng, TP.HCM', '0281234568', 'info@vainhapkhau.com', 0),
+('Công ty Phụ kiện thời trang', 'Số 12, Đường Lý Thường Kiệt, Đà Nẵng', '0236123457', 'contact@phukien.com', 0),
+('Công ty Thời trang trẻ em', 'Số 45, Đường Lê Văn Sỹ, TP.HCM', '0281234569', 'info@treem.com', 0);
+
+
 -- --------------------------------------------------------
 
 --
@@ -252,6 +278,7 @@ CREATE TABLE `products` (
   `pro_brand` varchar(55) NOT NULL,
   `pro_stock` int(11) NOT NULL,
   `cate_id` int(10) NOT NULL,
+  `ncc_id` int(10) NOT NULL DEFAULT 1 COMMENT 'ID nhà cung cấp',
   `trangthai` int(1) NOT NULL,
   `pro_viewer` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -465,7 +492,8 @@ ALTER TABLE `order_chitiet`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`pro_id`),
-  ADD KEY `cate_id` (`cate_id`);
+  ADD KEY `cate_id` (`cate_id`),
+  ADD KEY `ncc_id` (`ncc_id`);
 
 --
 -- Chỉ mục cho bảng `products_favourite`
@@ -622,8 +650,11 @@ ALTER TABLE `order_chitiet`
 --
 -- Các ràng buộc cho bảng `products`
 --
+
+
 ALTER TABLE `products`
-  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`cate_id`) REFERENCES `category` (`cate_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`cate_id`) REFERENCES `category` (`cate_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_products_nhacungcap` FOREIGN KEY (`ncc_id`) REFERENCES `nhacungcap` (`ncc_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `pro_chitiet`
