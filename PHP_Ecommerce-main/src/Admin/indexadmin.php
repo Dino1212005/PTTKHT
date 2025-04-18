@@ -9,6 +9,7 @@ include '../app/model/color.php';
 include '../app/model/thongke.php';
 include '../app/model/donhang.php';
 include '../app/model/nhacungcap.php';
+include '../app/model/brand.php';
 session_start();
 
 if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
@@ -140,6 +141,18 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
                         cấp
                     </a>
                 </li>
+                <!-- quản lý màu -->
+                <li class="sidebar-list-item">
+                    <a href="indexadmin.php?act=color">
+                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý màu
+                    </a>
+                </li>
+                <!-- quản lý thương hiệu -->
+                <li class="sidebar-list-item">
+                    <a href="indexadmin.php?act=thuonghieu">
+                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý thương hiệu
+                    </a>
+                </li>
             </ul>
         </aside>
         <!-- End Sidebar -->
@@ -147,6 +160,14 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
         if (isset($_GET['act'])) {
             $act = $_GET['act'];
             switch ($act) {
+                case 'thuonghieu':
+                    $listbrand=query_allbrand();
+                    include './qlthuonghieu/thuonghieu.php';
+                    break;
+                case 'color':
+                    $listcolor=query_allcolor1();
+                    include './qlmau/color.php';
+                    break;
                 case 'ncc':
                     $listNCC = loadAllNcc();
                     include './nhacungcap/listNCC.php';
@@ -269,6 +290,69 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
 
                     include './sanpham/addpro.php';
                     break;
+                case 'addcolor1':
+
+                    include './qlmau/addcolor.php';
+                    break;
+                case 'addbrand1':
+
+                    include './qlthuonghieu/addbrand.php';
+                    break;
+                case 'addbrand':
+                    if (isset($_POST['addbrand'])) {
+                        $brand_name = $_POST['brand_name'];
+                        $mo_ta = $_POST['mo_ta'];
+                        insert_brand($brand_name,$mo_ta);
+                        }
+                    $listbrand=query_allbrand();
+                    include './qlthuonghieu/thuonghieu.php';
+                    break; 
+                case 'xoabrand':
+                    if (isset($_GET['id'])) {
+                        $id = $_GET['id'];
+                        deletebrand($id);
+                    }
+                    $listbrand=query_allbrand();
+                    include './qlthuonghieu/thuonghieu.php';
+                    break; 
+                case 'suabrand':
+                    if (isset($_GET['brand_idsua'])) {
+                            $brand_id = $_GET['brand_idsua'];
+                            $brand_one =   queryonebrand($brand_id);
+                    }
+                    include './qlthuonghieu/updatebrand.php';
+                    break; 
+                case 'updatebrand':
+                    if (isset($_POST['updatebrd'])) {
+                            $id = $_POST['id'];
+                            $brand_one =   queryonebrand($id);
+                            $brand_name = $_POST['ten_thuong_hieu'];
+                            $mo_ta = $_POST['mo_ta'];
+                            updatebrd($brand_name,$mo_ta, $id);
+                    }
+    
+                    $listbrand=query_allbrand();
+                    include './qlthuonghieu/thuonghieu.php';
+                    break; 
+                case 'addcolor':
+                    if (isset($_POST['addcolor'])) {
+                            $color_name = $_POST['color_name'];
+                            $color_ma = $_POST['color_ma'];
+                            insert_color($color_name,$color_ma);
+                        }
+                    $listcolor=query_allcolor1();
+                    include './qlmau/color.php';
+                    break;  
+                    case 'xoacolor':
+                        if (isset($_GET['color_id'])) {
+                            $color_id = $_GET['color_id'];
+    
+    
+                            deletecolor($color_id);
+                        }
+                        $listcolor=query_allcolor1();
+                        include './qlmau/color.php';
+                        break;  
                 case 'addpro':
                     if (isset($_POST['addsp'])) {
                         $pro_name = $_POST['pro_name'];
