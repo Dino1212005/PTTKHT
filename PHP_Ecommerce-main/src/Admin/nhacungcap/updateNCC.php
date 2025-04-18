@@ -6,54 +6,42 @@ if (is_array($listNCC)) {
 
 <!-- main -->
 <div class="container">
-    <h2 class="border border-4 mb-4 text-bg-secondary p-3 text-center rounded">Cập nhật tài khoản</h2>
+    <h2 class="border border-4 mb-4 text-bg-secondary p-3 text-center rounded">Cập nhật nhà cung cấp</h2>
     <div class="container text-bg-light rounded">
 
-        <form action="indexadmin.php?act=updatetk" method="post">
+        <form action="indexadmin.php?act=updateNCC" method="post">
             <div class="mb-3 mt-3">
-                <label for="kh_id " class="form-label text-danger">Id khách hàng:</label>
-                <input type="text" class="form-control" id="kh_id " placeholder="Tên đăng nhập" value="<?= $kh_id ?>"
-                    name="kh_id" required>
+                <!-- <label for="kh_id " class="form-label text-danger">Id NCC:</label> -->
+                <input type="hidden" class="form-control" id="ncc_id " placeholder="ID nhà cung cấp"
+                    value="<?= $ncc_id ?>" name="ncc_id" readonly>
             </div>
             <div class="mb-3 mt-3">
-                <label for="kh_name" class="form-label text-danger">Tên đăng nhập:</label>
-                <input type="text" class="form-control" id="kh_name" placeholder="Tên đăng nhập" value="<?= $kh_name ?>"
-                    name="kh_name">
-            </div>
-            <div class="mb-3 mt-3">
-                <label for="kh_pass" class="form-label text-danger">Mật khẩu:</label>
-                <input type="text" class="form-control" id="kh_pass" placeholder="Mật khẩu" value="<?= $kh_pass ?>"
-                    name="kh_pass">
+                <label for="kh_name" class="form-label text-danger">Tên nhà cung cấp:</label>
+                <input type="text" class="form-control" id="ncc_name" placeholder="Tên nhà cung cấp"
+                    value="<?= $ncc_name ?>" name="ncc_name">
             </div>
             <div class="mb-3 mt-3">
                 <label for="kh_mail" class="form-label text-danger">Email:</label>
-                <input type="email" class="form-control" id="kh_mail" placeholder="Email" value="<?= $kh_mail ?>"
-                    name="kh_mail">
-            </div>
-            <div class="mb-3 mt-3">
-                <label for="kh_address" class="form-label text-danger">Địa chỉ:</label>
-                <input type="text" class="form-control" id="kh_address" placeholder="Địa chỉ" value="<?= $kh_address ?>"
-                    name="kh_address">
+                <input type="email" class="form-control" id="ncc_mail" placeholder="Email" value="<?= $ncc_email ?>"
+                    name="ncc_email">
             </div>
             <div class="mb-3 mt-3">
                 <label for="kh_tel" class="form-label text-danger">Số điện thoại:</label>
-                <input type="tel" class="form-control" id="kh_tel" placeholder="Số điện thoại" value="<?= $kh_tel ?>"
-                    name="kh_tel">
+                <input type="tel" class="form-control" id="ncc_tel" placeholder="Số điện thoại" value="<?= $ncc_sdt ?>"
+                    name="ncc_tel">
             </div>
             <div class="mb-3 mt-3">
-                <label for="vaitro" class="form-label text-danger">Vai trò:</label>
-                <select class="form-select" id="vaitro" name="vaitro_id">
-                    <option <?php if ($vaitro_id == 0) echo "selected" ?> value="0">Khách Hàng</option>
-                    <option <?php if ($vaitro_id == 1) echo "selected" ?> value="1">Quản trị</option>
-                    <option <?php if ($vaitro_id == 3) echo "selected" ?> value="0">Nhân Viên</option>
-                    <option <?php if ($vaitro_id == 4) echo "selected" ?> value="0">Nhân Viên Kho</option>
-                </select>
+                <label for="kh_address" class="form-label text-danger">Địa chỉ:</label>
+                <input type="text" class="form-control" id="ncc_address" placeholder="Địa chỉ"
+                    value="<?= $ncc_diachi ?>" name="ncc_address">
             </div>
+
+
             <div class="mb-3 mt-3">
                 <button type="submit" class="btn btn-secondary btn-sm" name="update">Cập nhật</button>
                 <button type="reset" class="btn btn-secondary btn-sm">Nhập lại</button>
-                <a href="indexadmin.php?act=listtk">
-                    <button type="button" class="btn btn-secondary btn-sm">Danh sách khách hàng</button>
+                <a href="indexadmin.php?act=ncc">
+                    <button type="button" class="btn btn-secondary btn-sm">Danh sách nhà cung cấp</button>
                 </a>
             </div>
         </form>
