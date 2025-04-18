@@ -83,9 +83,18 @@
     }
     function updatedh($order_trangthai, $order_id)
     {
-        $sql = "UPDATE `order` set order_trangthai = '$order_trangthai' WHERE `order`.`order_id` = $order_id";
+        if ($order_trangthai === 'Đã nhận hàng') {
+            // Nếu đơn đã nhận hàng, cập nhật trạng thái và ngày nhận hàng (date_rev)
+            $ngay_nhan = date('Y-m-d'); // hoặc date('Y-m-d H:i:s') nếu dùng DATETIME
+            $sql = "UPDATE `order` SET order_trangthai = '$order_trangthai', date_rev = '$ngay_nhan' WHERE order_id = $order_id";
+        } else {
+            // Cập nhật chỉ trạng thái
+            $sql = "UPDATE `order` SET order_trangthai = '$order_trangthai' WHERE order_id = $order_id";
+        }
+
         pdo_execute($sql);
     }
+
     function loadall_chitietdh($order_id)
     {
         $sql = " select order_chitiet.order_chitiet_id ,order_chitiet.order_id  ,order_chitiet.color_id  ,order_chitiet.size_id  ,order_chitiet.pro_price ,order_chitiet.soluong ,order_chitiet.total_price ,products.pro_img,color.color_name,size.size_name from order_chitiet

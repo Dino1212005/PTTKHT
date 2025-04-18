@@ -11,6 +11,7 @@ if (isset($dh) && is_array($dh)) {
                     <select name="order_trangthai" id="">
                             <option value="Đang chờ xác nhận">Đang chờ xác nhận</option>
                             <option value="Đang giao hàng">Đang giao hàng</option>
+                            <option value="Đã nhận hàng">Đã giao hàng</option>
                             <option value="Đã hủy">Đã hủy</option>
                     </select>
                 </div>
