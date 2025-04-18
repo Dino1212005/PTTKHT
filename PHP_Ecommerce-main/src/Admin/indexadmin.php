@@ -140,6 +140,11 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
                         cấp
                     </a>
                 </li>
+                <li class="sidebar-list-item">
+                    <a href="indexadmin.php?act=color">
+                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý màu
+                    </a>
+                </li>
             </ul>
         </aside>
         <!-- End Sidebar -->
@@ -147,6 +152,10 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
         if (isset($_GET['act'])) {
             $act = $_GET['act'];
             switch ($act) {
+                case 'color':
+                    $listcolor=query_allcolor1();
+                    include './qlmau/color.php';
+                    break;
                 case 'ncc':
                     $listNCC = loadAllNcc();
                     include './nhacungcap/listNCC.php';
@@ -256,6 +265,29 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
 
                     include './sanpham/addpro.php';
                     break;
+                case 'addcolor1':
+
+                    include './qlmau/addcolor.php';
+                    break;
+                case 'addcolor':
+                    if (isset($_POST['addcolor'])) {
+                            $color_name = $_POST['color_name'];
+                            $color_ma = $_POST['color_ma'];
+                            insert_color($color_name,$color_ma);
+                        }
+                    $listcolor=query_allcolor1();
+                    include './qlmau/color.php';
+                    break;  
+                    case 'xoacolor':
+                        if (isset($_GET['color_id'])) {
+                            $color_id = $_GET['color_id'];
+    
+    
+                            deletecolor($color_id);
+                        }
+                        $listcolor=query_allcolor1();
+                        include './qlmau/color.php';
+                        break;  
                 case 'addpro':
                     if (isset($_POST['addsp'])) {
                         $pro_name = $_POST['pro_name'];
