@@ -2,109 +2,129 @@
 
 
 
-function queryallpro($key,$idcate){
+function queryallpro($key, $idcate)
+{
     $sql = "select * from products where trangthai = 0";
-    if($key != ''){
-        $sql.= " and pro_name like '%$key%'";
+    if ($key != '') {
+        $sql .= " and pro_name like '%$key%'";
     }
-    if($idcate >0){
-        $sql.= " and cate_id = $idcate";
+    if ($idcate > 0) {
+        $sql .= " and cate_id = $idcate";
     }
-    
-    $sql.= " order by pro_id desc";
-     $result = pdo_queryall($sql);
-     return $result;
+
+    $sql .= " order by pro_id desc";
+    $result = pdo_queryall($sql);
+    return $result;
 }
 
 
-function addpro($ten,$img,$price,$ct,$cate,$stock,$brand){
+function addpro($ten, $img, $price, $ct, $cate, $stock, $brand)
+{
     $sql = "insert into products(pro_name,pro_img,pro_price,pro_desc,pro_brand,pro_stock,cate_id) values('$ten','$img',$price,'$ct','$brand','$stock',$cate)";
     pdo_execute($sql);
 }
-function queryonepro($id){
-    $sql= "select * from products where pro_id = $id";
+function queryonepro($id)
+{
+    $sql = "select * from products where pro_id = $id";
     $result = pdo_query_one($sql);
     return $result;
 }
-function updatepro($ten,$gia,$brand,$img,$ct,$cate,$id){
+function updatepro($ten, $gia, $brand, $img, $ct, $cate, $id)
+{
     $sql = "update products set pro_name='$ten',pro_price=$gia,pro_img='$img',pro_desc='$ct',pro_brand='$brand',cate_id=$cate where pro_id = $id";
     pdo_execute($sql);
 }
-function deletepro($id){
+function deletepro($id)
+{
     $sql = "delete from products where pro_id = $id";
     pdo_execute($sql);
 }
-function showpro_home(){
+function showpro_home()
+{
     $sql = "select * from products order by pro_id desc limit 9";
     $result = pdo_queryall($sql);
-     return $result;
-}
-function query_procate($cate_id,$pro_id){
-    $sql = "select * from products where cate_id = $cate_id and pro_id != $pro_id";
-    $result=pdo_queryall($sql);
     return $result;
 }
-function deleteprocate($id){
+function query_procate($cate_id, $pro_id)
+{
+    $sql = "select * from products where cate_id = $cate_id and pro_id != $pro_id";
+    $result = pdo_queryall($sql);
+    return $result;
+}
+function deleteprocate($id)
+{
     $sql = "delete from products where cate_id = $id";
     pdo_execute($sql);
 }
-function chitietadmin($id){
+function chitietadmin($id)
+{
     $sql = "select * from pro_chitiet where pro_id = $id";
-    $result=pdo_queryall($sql);
+    $result = pdo_queryall($sql);
     return $result;
 }
-function addpro_chitiet($pro_id,$size,$color,$soluong){
+function addpro_chitiet($pro_id, $size, $color, $soluong)
+{
     $sql = "insert into pro_chitiet values (null,$pro_id, $color, $size, $soluong)";
     pdo_execute($sql);
 }
-function del_prochitiet($id){
+function del_prochitiet($id)
+{
     $sql = "delete from pro_chitiet where ctiet_pro_id = $id";
     pdo_execute($sql);
 }
 
-function query_prochitiet($id){
+function query_prochitiet($id)
+{
     $sql = "select * from pro_chitiet where pro_id = $id";
     $result = pdo_queryall($sql);
     return $result;
 }
-function queryone_prochitiet($id){
+function queryone_prochitiet($id)
+{
     $sql = "select * from pro_chitiet where ctiet_pro_id = $id";
     $result = pdo_query_one($sql);
     return $result;
 }
-function updateprochitiet($id,$soluong){
+function updateprochitiet($id, $soluong)
+{
     $sql = "update pro_chitiet set soluong = $soluong where ctiet_pro_id = $id";
     pdo_execute($sql);
 }
-function query_pro_soluong($id,$color,$size){
+function query_pro_soluong($id, $color, $size)
+{
     $sql = "select * from pro_chitiet where pro_id = $id and size_id = $size and color_id = $color";
     $result = pdo_query_one($sql);
     return $result;
 }
 // câu truy vấn xoá mềm
-function soft_deletepro($id){
+function soft_deletepro($id)
+{
     $sql = "UPDATE `products` set trangthai = 1 WHERE `products`.`pro_id` = $id";
     pdo_execute($sql);
 }
-function queryallpros(){
+function queryallpros()
+{
     $sql = "select * from `products` where `products`.`trangthai` = 1";
-    $sql.= " order by pro_id desc";
-     $result = pdo_queryall($sql);
-     return $result;
+    $sql .= " order by pro_id desc";
+    $result = pdo_queryall($sql);
+    return $result;
 }
-function khoiphuc_product($id){
+function khoiphuc_product($id)
+{
     $sql = "UPDATE `products` set trangthai = 0 WHERE `products`.`pro_id` = $id";
     pdo_execute($sql);
 }
 
-function countProId() {
+function countProId()
+{
     $sql = "SELECT COUNT(*) as countpro FROM products";
     $result = pdo_query_one($sql);
-     return $result;
+    return $result;
 }
-function loadall_sanpham_top5(){
-    $sql="select pro_name,pro_stock from products where 1 order by pro_stock desc limit 0,5";
-    $listsanpham=pdo_queryall($sql);
+function loadall_sanpham_top5()
+{
+    $sql = "select pro_name,pro_stock from products where 1 order by pro_stock desc limit 0,5";
+    $listsanpham = pdo_queryall($sql);
     return $listsanpham;
 }
 function loadAll_products($searchProduct = "", $id = 0)
@@ -213,13 +233,9 @@ function proFrAdded($kh_id, $pro_id)
 
 // xỬ lí chi itest sp
 
-function  getAllChitietSp($id)  {
+function  getAllChitietSp($id)
+{
     $sql  = "SELECT * FROM `pro_chitiet` WHERE pro_id = $id";
     $result = pdo_queryall($sql);
     return $result;
 }
-?>
-
-    
-    
-

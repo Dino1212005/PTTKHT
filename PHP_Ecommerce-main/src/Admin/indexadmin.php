@@ -97,36 +97,36 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
                 </li>
                 <?php if ($vaitro_id == 1) { // Chỉ admin 
                 ?>
-                    <li class="sidebar-list-item">
-                        <a href="indexadmin.php?act=cate">
-                            <span class="material-icons-outlined"><i class="bi bi-card-list"></i></span> Danh mục
-                        </a>
-                    </li>
-                    <li class="sidebar-list-item">
-                        <a href="indexadmin.php?act=pro">
-                            <span class="material-icons-outlined">fact_check</span> Sản phẩm
-                        </a>
-                    </li>
-                    <li class="sidebar-list-item">
-                        <a href="indexadmin.php?act=listtk">
-                            <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Người dùng
-                        </a>
-                    </li>
-                    <li class="sidebar-list-item">
-                        <a href="indexadmin.php?act=listbl">
-                            <span class="material-icons-outlined"><i class="bi bi-chat-text-fill"></i></span> Bình luận
-                        </a>
-                    </li>
-                    <li class="sidebar-list-item">
-                        <a href="indexadmin.php?act=thongke">
-                            <span class="material-icons-outlined">poll</span> Thống kê
-                        </a>
+                <li class="sidebar-list-item">
+                    <a href="indexadmin.php?act=cate">
+                        <span class="material-icons-outlined"><i class="bi bi-card-list"></i></span> Danh mục
+                    </a>
+                </li>
+                <li class="sidebar-list-item">
+                    <a href="indexadmin.php?act=pro">
+                        <span class="material-icons-outlined">fact_check</span> Sản phẩm
+                    </a>
+                </li>
+                <li class="sidebar-list-item">
+                    <a href="indexadmin.php?act=listtk">
+                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Người dùng
+                    </a>
+                </li>
+                <li class="sidebar-list-item">
+                    <a href="indexadmin.php?act=listbl">
+                        <span class="material-icons-outlined"><i class="bi bi-chat-text-fill"></i></span> Bình luận
+                    </a>
+                </li>
+                <li class="sidebar-list-item">
+                    <a href="indexadmin.php?act=thongke">
+                        <span class="material-icons-outlined">poll</span> Thống kê
+                    </a>
                     <?php } elseif ($vaitro_id == 4) { ?>
-                    <li class="sidebar-list-item">
-                        <a href="indexadmin.php?act=pro">
-                            <span class="material-icons-outlined">fact_check</span> Sản phẩm
-                        </a>
-                    </li>
+                <li class="sidebar-list-item">
+                    <a href="indexadmin.php?act=pro">
+                        <span class="material-icons-outlined">fact_check</span> Sản phẩm
+                    </a>
+                </li>
                 <?php } ?>
                 </li>
                 <li class="sidebar-list-item">
@@ -151,7 +151,8 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
                 <!-- quản lý thương hiệu -->
                 <li class="sidebar-list-item">
                     <a href="indexadmin.php?act=thuonghieu">
-                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý thương hiệu
+                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý
+                        thương hiệu
                     </a>
                 </li>
             </ul>
@@ -162,11 +163,11 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
             $act = $_GET['act'];
             switch ($act) {
                 case 'thuonghieu':
-                    $listbrand=query_allbrand();
+                    $listbrand = query_allbrand();
                     include './qlthuonghieu/thuonghieu.php';
                     break;
                 case 'color':
-                    $listcolor=query_allcolor1();
+                    $listcolor = query_allcolor1();
                     include './qlmau/color.php';
                     break;
                 case 'ncc':
@@ -193,6 +194,16 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
                     }
                     $listNCC = loadAllNcc();
                     include './nhacungcap/listNCC.php';
+                    break;
+
+                case 'xoaNCC':
+                    if (isset($_GET['ncc_id'])) {
+                        $ncc_id = $_GET['ncc_id'];
+                        delete_ncc($ncc_id);
+                    }
+                    $listNCC = loadAllNcc();
+                    include "./nhacungcap/listNCC.php";
+                    break;
                     break;
                 case 'home':
                     $dh = thongke_donhang();
@@ -303,57 +314,57 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
                     if (isset($_POST['addbrand'])) {
                         $brand_name = $_POST['brand_name'];
                         $mo_ta = $_POST['mo_ta'];
-                        insert_brand($brand_name,$mo_ta);
-                        }
-                    $listbrand=query_allbrand();
+                        insert_brand($brand_name, $mo_ta);
+                    }
+                    $listbrand = query_allbrand();
                     include './qlthuonghieu/thuonghieu.php';
-                    break; 
+                    break;
                 case 'xoabrand':
                     if (isset($_GET['id'])) {
                         $id = $_GET['id'];
                         deletebrand($id);
                     }
-                    $listbrand=query_allbrand();
+                    $listbrand = query_allbrand();
                     include './qlthuonghieu/thuonghieu.php';
-                    break; 
+                    break;
                 case 'suabrand':
                     if (isset($_GET['brand_idsua'])) {
-                            $brand_id = $_GET['brand_idsua'];
-                            $brand_one =   queryonebrand($brand_id);
+                        $brand_id = $_GET['brand_idsua'];
+                        $brand_one =   queryonebrand($brand_id);
                     }
                     include './qlthuonghieu/updatebrand.php';
-                    break; 
+                    break;
                 case 'updatebrand':
                     if (isset($_POST['updatebrd'])) {
-                            $id = $_POST['id'];
-                            $brand_one =   queryonebrand($id);
-                            $brand_name = $_POST['ten_thuong_hieu'];
-                            $mo_ta = $_POST['mo_ta'];
-                            updatebrd($brand_name,$mo_ta, $id);
+                        $id = $_POST['id'];
+                        $brand_one =   queryonebrand($id);
+                        $brand_name = $_POST['ten_thuong_hieu'];
+                        $mo_ta = $_POST['mo_ta'];
+                        updatebrd($brand_name, $mo_ta, $id);
                     }
-    
-                    $listbrand=query_allbrand();
+
+                    $listbrand = query_allbrand();
                     include './qlthuonghieu/thuonghieu.php';
-                    break; 
+                    break;
                 case 'addcolor':
                     if (isset($_POST['addcolor'])) {
-                            $color_name = $_POST['color_name'];
-                            $color_ma = $_POST['color_ma'];
-                            insert_color($color_name,$color_ma);
-                        }
-                    $listcolor=query_allcolor1();
+                        $color_name = $_POST['color_name'];
+                        $color_ma = $_POST['color_ma'];
+                        insert_color($color_name, $color_ma);
+                    }
+                    $listcolor = query_allcolor1();
                     include './qlmau/color.php';
-                    break;  
-                    case 'xoacolor':
-                        if (isset($_GET['color_id'])) {
-                            $color_id = $_GET['color_id'];
-    
-    
-                            deletecolor($color_id);
-                        }
-                        $listcolor=query_allcolor1();
-                        include './qlmau/color.php';
-                        break;  
+                    break;
+                case 'xoacolor':
+                    if (isset($_GET['color_id'])) {
+                        $color_id = $_GET['color_id'];
+
+
+                        deletecolor($color_id);
+                    }
+                    $listcolor = query_allcolor1();
+                    include './qlmau/color.php';
+                    break;
                 case 'addpro':
                     if (isset($_POST['addsp'])) {
                         $pro_name = $_POST['pro_name'];
