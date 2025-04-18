@@ -1,8 +1,9 @@
 <?php
 
-function get_connect(){
+function get_connect()
+{
     try {
-        $conn = new PDO("mysql:host=localhost;dbname=da1;charset=utf8","root","");
+        $conn = new PDO("mysql:host=localhost;dbname=da1;charset=utf8", "root", "");
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $conn;
     } catch (\Throwable $th) {
@@ -10,22 +11,22 @@ function get_connect(){
     }
 }
 
-function pdo_execute($sql){
-    $thamso = array_slice(func_get_args(),1);
+function pdo_execute($sql)
+{
+    $thamso = array_slice(func_get_args(), 1);
     try {
         $conn = get_connect();
         $exe = $conn->prepare($sql);
         $exe->execute($thamso);
-        
     } catch (\Throwable $th) {
         echo 'Thao Tác Thất bại';
-    }
-    finally{
+    } finally {
         unset($conn);
     }
 }
-function pdo_queryall($sql){
-    $thamso = array_slice(func_get_args(),1);
+function pdo_queryall($sql)
+{
+    $thamso = array_slice(func_get_args(), 1);
     try {
         $conn = get_connect();
         $exe = $conn->prepare($sql);
@@ -34,13 +35,13 @@ function pdo_queryall($sql){
         return $result;
     } catch (\Throwable $th) {
         echo 'Thao Tác Thất Bại.';
-    }
-    finally{
+    } finally {
         unset($conn);
     }
 }
-function pdo_query_one($sql){
-    $thamso = array_slice(func_get_args(),1);
+function pdo_query_one($sql)
+{
+    $thamso = array_slice(func_get_args(), 1);
     try {
         $conn = get_connect();
         $exe = $conn->prepare($sql);
@@ -49,9 +50,7 @@ function pdo_query_one($sql){
         return $result;
     } catch (\Throwable $th) {
         echo 'Thao Tác Thất Bại';
-    }
-    finally{
+    } finally {
         unset($conn);
     }
 }
-?>

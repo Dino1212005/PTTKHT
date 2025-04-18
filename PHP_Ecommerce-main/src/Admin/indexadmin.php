@@ -177,9 +177,22 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
                 case 'suaNCC':
                     if (isset($_GET['ncc_id']) && $_GET['ncc_id'] > 0) {
                         $ncc_id = $_GET['ncc_id'];
-                        $ncc = loadThongTinNCC($ncc_id);
+                        $listNCC = load_ncc($ncc_id);
                     }
                     include './nhacungcap/updateNCC.php';
+                    break;
+                case 'updateNCC':
+                    if (isset($_POST['update'])) {
+                        $ncc_id = $_POST['ncc_id'];
+                        $ncc_name = $_POST['ncc_name'];
+                        $ncc_email = $_POST['ncc_email'];
+                        $ncc_sdt = $_POST['ncc_tel'];
+                        $ncc_diachi = $_POST['ncc_address'];
+
+                        update_NCC($ncc_id, $ncc_name, $ncc_email, $ncc_sdt, $ncc_diachi);
+                    }
+                    $listNCC = loadAllNcc();
+                    include './nhacungcap/listNCC.php';
                     break;
                 case 'home':
                     $dh = thongke_donhang();

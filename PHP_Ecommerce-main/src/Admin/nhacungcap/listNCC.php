@@ -28,7 +28,7 @@
             <thead>
                 <tr>
                     <Th class="text-bg-secondary"></Th>
-                    <th class="text-bg-secondary">Mã NCC</th>
+                    <th class="text-bg-secondary">ID</th>
                     <th class="text-bg-secondary">Tên NCC</th>
                     <Th class="text-bg-secondary">Email</Th>
                     <Th class="text-bg-secondary">SĐT</Th>
@@ -47,9 +47,9 @@
                     <td>
                         <?= $ncc_name ?>
                     </td>
-                    <td><?= $ncc_diachi ?></td>
-                    <td><?= $ncc_sdt ?></td>
                     <td><?= $ncc_email ?></td>
+                    <td><?= $ncc_sdt ?></td>
+                    <td><?= $ncc_diachi ?></td>
 
                     <td>
                         <a href="indexadmin.php?act=suaNCC&ncc_id=<?php echo $ncc_id ?>" class="mb-2"><input
