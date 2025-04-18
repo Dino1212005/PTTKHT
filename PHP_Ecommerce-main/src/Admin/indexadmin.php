@@ -11,6 +11,7 @@ include '../app/model/donhang.php';
 include '../app/model/nhacungcap.php';
 include '../app/model/brand.php';
 session_start();
+ob_start();
 
 if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
     $vaitro_id = $_SESSION['acount']['vaitro_id'] ?? null;
@@ -514,7 +515,7 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
 
 
                     header("Location:indexadmin.php?act=chitietadmin&pro_id=" . $pro_id);
-
+                    exit();
                     break;
                 case 'delprochitiet':
                     if (isset($_GET['prochitiet_idxoa']) && isset($_GET['pro_id'])) {
