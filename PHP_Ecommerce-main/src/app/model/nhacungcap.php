@@ -31,3 +31,29 @@ function delete_ncc($ncc_id)
     $sql = "delete from nhacungcap where ncc_id = $ncc_id";
     pdo_execute($sql);
 }
+
+function loadall_ncc($keyword = '', $sapXep = 'id', $thuTu = 'asc')
+{
+    $sql = "SELECT * FROM nhacungcap WHERE 1";
+
+    if ($keyword != '') {
+        $sql .= " AND ncc_name LIKE '%$keyword%'";
+    }
+
+    // Xác định cột để sắp xếp
+    switch ($sapXep) {
+        case 'name':
+            $sql .= " ORDER BY ncc_name";
+            break;
+        case 'id':
+        default:
+            $sql .= " ORDER BY ncc_id";
+            break;
+    }
+
+    // Xác định thứ tự sắp xếp
+    $sql .= " " . ($thuTu == 'desc' ? 'DESC' : 'ASC');
+
+    $listNCC = pdo_queryall($sql);
+    return $listNCC;
+}

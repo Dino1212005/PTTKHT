@@ -170,9 +170,17 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
                     $listcolor = query_allcolor1();
                     include './qlmau/color.php';
                     break;
-                case 'ncc':
-                    $listNCC = loadAllNcc();
-                    include './nhacungcap/listNCC.php';
+                case "ncc":
+                    // Lấy các tham số sắp xếp từ form
+                    $sapXep = isset($_POST['sapXepNCC']) ? $_POST['sapXepNCC'] : 'id';
+                    $thuTu = isset($_POST['thuTu']) ? $_POST['thuTu'] : 'asc';
+                    $keyword = isset($_POST['searchNCC']) ? $_POST['searchNCC'] : '';
+
+                    // Gọi hàm loadall_ncc với tham số sắp xếp
+                    $listNCC = loadall_ncc($keyword, $sapXep, $thuTu);
+
+                    // Include file listNCC.php để hiển thị danh sách
+                    include "nhacungcap/listNCC.php";
                     break;
 
                 case 'suaNCC':

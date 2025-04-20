@@ -1,24 +1,37 @@
 <!-- main -->
 <div class="container">
     <h2 class="border border-4 mb-4 text-bg-secondary p-3 text-center rounded">Danh sách nhà cung cấp</h2>
-    <form action="" class="mb-4" method="post" enctype="multipart/form-data">
-        <div class="row">
-            <div class="col-sm-4">
-                <input class="w-100 p-1" type="text" placeholder="Search" name="searchNCC" />
+    <form action="indexadmin.php?act=ncc" class="mb-4" method="post" enctype="multipart/form-data">
+        <div class="row align-items-center">
+            <div class="col-md-3">
+                <input class="form-control" type="text" placeholder="Tìm kiếm" name="searchNCC"
+                    value="<?= isset($_POST['searchNCC']) ? $_POST['searchNCC'] : '' ?>" />
             </div>
-            <div class="col-sm-4">
-                <select name="sapXepNCC" id="">
-                    <option value="">Sắp xếp theo tên sản phẩm</option>
-                    <option value="">Sắp xếp theo tên NCC</option>
-                </select>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <span class="input-group-text bg-secondary text-white">Sắp xếp</span>
+                    <select name="sapXepNCC" class="form-select" onchange="this.form.submit()">
+                        <option value="id"
+                            <?= isset($_POST['sapXepNCC']) && $_POST['sapXepNCC'] == 'id' ? 'selected' : '' ?>>Theo ID
+                        </option>
+                        <option value="name"
+                            <?= isset($_POST['sapXepNCC']) && $_POST['sapXepNCC'] == 'name' ? 'selected' : '' ?>>Theo
+                            tên</option>
+                    </select>
+                </div>
             </div>
-            <div class="col-sm-2">
-                <select name="sapXepTheoThuTu" id="">
-                    <option value="">A-Z</option>
-                    <option value="">Z-A</option>
-                </select>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <span class="input-group-text bg-secondary text-white">Thứ tự</span>
+                    <select name="thuTu" class="form-select" onchange="this.form.submit()">
+                        <option value="asc" <?= isset($_POST['thuTu']) && $_POST['thuTu'] == 'asc' ? 'selected' : '' ?>>
+                            A-Z</option>
+                        <option value="desc"
+                            <?= isset($_POST['thuTu']) && $_POST['thuTu'] == 'desc' ? 'selected' : '' ?>>Z-A</option>
+                    </select>
+                </div>
             </div>
-            <div class="col-sm-2">
+            <div class="col-md-3">
                 <button type="submit" class="btn btn-secondary w-100" name="timkiem">Tìm kiếm</button>
             </div>
         </div>
