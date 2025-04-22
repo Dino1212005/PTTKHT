@@ -10,6 +10,8 @@ include '../app/model/thongke.php';
 include '../app/model/donhang.php';
 include '../app/model/nhacungcap.php';
 include '../app/model/brand.php';
+include '../app/model/phieunhap.php';
+
 session_start();
 ob_start();
 
@@ -155,6 +157,13 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
                         thương hiệu
                     </a>
                 </li>
+                <!-- quản lý phiếu nhập -->
+                <li class="sidebar-list-item">
+                    <a href="indexadmin.php?act=phieunhap">
+                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý
+                        phiếu nhập
+                    </a>
+                </li>
             </ul>
         </aside>
         <!-- End Sidebar -->
@@ -162,6 +171,10 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
         if (isset($_GET['act'])) {
             $act = $_GET['act'];
             switch ($act) {
+                case 'phieunhap':
+                    $listreceipts= query_allreceipts();
+                    include './phieunhap/phieunhap.php';
+                    break;
                 case 'thuonghieu':
                     $listbrand = query_allbrand();
                     include './qlthuonghieu/thuonghieu.php';
@@ -310,6 +323,51 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
 
                     include './sanpham/addpro.php';
                     break;
+                 case 'addpn1':
+
+                    include './phieunhap/addpn.php';
+                    break;
+                    case 'addpn':
+                        if (isset($_POST['addpn'])) {
+                            $ncc_id = $_POST['ncc_id'];
+                            $pro_id = $_POST['pro_id'];
+                            $color_id = $_POST['color_id'];
+                            $size_id = $_POST['size_id'];
+                            $quantity = (int)$_POST['soluong'];
+                            $unit_price = (float)$_POST['dongia'];
+                            $created_by = $_SESSION['acount']['kh_id'] ?? 0;
+                            $receipt_date = date('Y-m-d H:i:s');
+                            $status = 0;
+                            $note = '';
+                    
+                            // Tính tổng tiền nếu chưa có
+                            if (!isset($_POST['tongtien']) || $_POST['tongtien'] == '') {
+                                $total_price = $quantity * $unit_price;
+                            } else {
+                                $total_price = (float)$_POST['tongtien'];
+                            }
+                    
+                            $last_receipt_id = insert_receipt_return_id($ncc_id, $receipt_date, $total_price, $created_by, $status, $note);
+
+                            if ($last_receipt_id > 0) {
+                                insert_receipt_detail($last_receipt_id, $pro_id, $color_id, $size_id, $quantity, $unit_price, $total_price);
+                            } else {
+                                echo "❌ Không thể lấy ID phiếu nhập để thêm chi tiết.";
+                            }
+                            
+                        }
+                    
+                        $listreceipts = query_allreceipts();
+                        include './phieunhap/phieunhap.php';
+                        break;
+                case 'xoapn':
+                    if (isset($_GET['id'])) {
+                        $pn_id = $_GET['id'];
+                        delete_receipt_completely($pn_id);
+                            }
+                        $listreceipts = query_allreceipts();
+                        include './phieunhap/phieunhap.php';
+                        break;
                 case 'addcolor1':
 
                     include './qlmau/addcolor.php';

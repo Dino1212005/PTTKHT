@@ -10,6 +10,11 @@ function get_connect()
         echo 'kết nối thất bại';
     }
 }
+function pdo_lastInsertId() {
+    $conn = get_connect();
+    return $conn->lastInsertId();
+}
+
 
 function pdo_execute($sql)
 {
