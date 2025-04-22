@@ -60,12 +60,9 @@
                   <td><input type="checkbox" name="checkbox" id=""></td>
                   <td><img src="./sanpham/img/<?php echo $products['pro_img']?>" class="w-50 mg-thumbnail h-50" alt=""></td>
                   <td><?php echo $pro_id?></td>
-                  <td>                                        <input type="button" style="background-color: <?= $color['color_ma']?>;"  class="">
-                                  </td>
-                                  <td>
-                                    <div class="">
-                                        <input type="button" class=""   value="<?php echo $size['size_name']?>"></td>
-                  
+                  <td> <input type="button" style="background-color: <?= $color['color_ma']?>;"  class=""> </td>
+                  <td><div class=""><input type="button" class=""   value="<?php echo $size['size_name']?>"></td>
+         
                   <td><?php echo $soluong?></td>
                   
                   
