@@ -11,6 +11,7 @@ include '../app/model/donhang.php';
 include '../app/model/nhacungcap.php';
 include '../app/model/brand.php';
 include '../app/model/phieunhap.php';
+include '../app/model/bh.php';
 
 session_start();
 ob_start();
@@ -164,6 +165,12 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
                         phiếu nhập
                     </a>
                 </li>
+                <li class="sidebar-list-item">
+                    <a href="indexadmin.php?act=bh">
+                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý
+                        phiếu bảo hành
+                    </a>
+                </li>
             </ul>
         </aside>
         <!-- End Sidebar -->
@@ -171,6 +178,10 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
         if (isset($_GET['act'])) {
             $act = $_GET['act'];
             switch ($act) {
+                case 'bh':
+                    $listbh= getall();
+                    include './phieubh/bh.php';
+                    break;
                 case 'phieunhap':
                     $listreceipts= query_allreceipts();
                     include './phieunhap/phieunhap.php';
@@ -323,6 +334,36 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
 
                     include './sanpham/addpro.php';
                     break;
+                case 'addbh1':
+
+                        include './phieubh/addbh.php';
+                        break;
+                case 'addbh':
+                    if (isset($_POST['addbh'])) {
+                        $pro_id = $_POST['pro_id'];
+                        $kh_id = $_POST['kh_id'];
+                        $nhan_vien_id = $_SESSION['acount']['kh_id'] ?? 0;
+                        $ngay_bao_hanh = date('Y-m-d');
+                        $noi_dung = $_POST['noidung'];
+                        $thoi_gian_bao_hanh = (int) $_POST['thoigian'];
+                        echo "<pre>";
+                        print_r($_POST);
+                        echo "</pre>";
+                        
+                        insert_baohanh($pro_id, $kh_id, $nhan_vien_id, $ngay_bao_hanh, $noi_dung, $thoi_gian_bao_hanh);
+                    }
+                
+                    $listbh= getall();
+                    include './phieubh/bh.php';
+                    break;
+                    case 'xoabh':
+                        if (isset($_GET['id'])) {
+                            $bh_id = $_GET['id'];
+                            delete_baohanh($bh_id);
+                                }
+                            $listbh= getall();
+                            include './phieubh/bh.php';
+                             break;
                  case 'addpn1':
 
                     include './phieunhap/addpn.php';
