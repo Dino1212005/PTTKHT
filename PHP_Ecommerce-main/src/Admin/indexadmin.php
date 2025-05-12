@@ -1062,6 +1062,32 @@ function hasPermission($action, $permissions)
                     include "./Thongke/bieudobl.php";
                     break;
 
+                case "in_hoadon":
+                    if (isset($_GET['order_id']) && $_GET['order_id'] != "") {
+                        $order_id = $_GET['order_id'];
+
+                        // Lấy thông tin đơn hàng kèm thông tin khách hàng
+                        $sql = "SELECT o.*, k.kh_name, k.kh_mail, k.kh_tel, k.kh_address 
+                                FROM `order` o 
+                                JOIN khachhang k ON o.kh_id = k.kh_id 
+                                WHERE order_id = $order_id";
+                        $thongtindh = pdo_query_one($sql);
+
+                        // Lấy chi tiết đơn hàng
+                        $sql = "SELECT oc.*, p.pro_name, p.pro_img, c.color_name, s.size_name 
+                                FROM order_chitiet oc
+                                JOIN products p ON oc.pro_id = p.pro_id
+                                JOIN color c ON oc.color_id = c.color_id
+                                JOIN size s ON oc.size_id = s.size_id
+                                WHERE oc.order_id = $order_id";
+                        $chitietdh = pdo_queryall($sql);
+
+                        // Gọi đến file xử lý tạo PDF
+                        include "./donhang/in_hoadon.php";
+                    } else {
+                        echo "Không tìm thấy đơn hàng!";
+                    }
+                    break;
 
                 default:
                     include './viewadmin/home.php';
