@@ -1,4 +1,5 @@
 <?php
+ob_start();
 session_start();
 include './app/model/connectdb.php';
 include './app/model/product.php';
