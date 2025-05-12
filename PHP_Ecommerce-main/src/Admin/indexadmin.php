@@ -168,7 +168,7 @@ function hasPermission($action, $permissions)
 
                 <?php if (hasPermission('Quản lí thống kê', $permissions)) { ?>
                 <li class="sidebar-list-item">
-                    <a href="indexadmin.php?act=thongke">
+                    <a href="indexadmin.php?act=thongke_sanpham">
                         <span class="material-icons-outlined">poll</span> Thống kê
                     </a>
                 </li>
@@ -927,21 +927,140 @@ function hasPermission($action, $permissions)
                     $chitietdh = loadall_chitietdh($order_id);
                     include "./donhang/chitetdh.php";
                     break;
-                // thống kê
+                // thống kê (điểm vào mặc định chuyển đến thống kê sản phẩm)
                 case 'thongke':
-                    $listtkbl = load_thongkebl();
-                    $listthongke = loadall_thongke();
-                    include "./Thongke/list.php";
+                    header("Location: indexadmin.php?act=thongke_sanpham");
+                    exit;
                     break;
+
+                // thống kê sản phẩm bán chạy
+                case 'thongke_sanpham':
+                    // Xác định số lượng sản phẩm muốn hiển thị (mặc định là 10)
+                    $top_limit = isset($_POST['top_limit']) ? (int)$_POST['top_limit'] : 10;
+
+                    // Giới hạn giá trị hợp lệ
+                    if ($top_limit < 1) $top_limit = 1;
+                    if ($top_limit > 100) $top_limit = 100;
+
+                    // Lấy dữ liệu thống kê sản phẩm bán chạy
+                    $sp_banchay = thongke_sanpham_banchay($top_limit);
+                    include "./Thongke/thongke_sanpham.php";
+                    break;
+
+                // thống kê doanh thu
+                case 'thongke_doanhthu':
+                    // Xác định kiểu thống kê (mặc định là tháng)
+                    $kieu_thongke = isset($_POST['kieu_thongke']) ? $_POST['kieu_thongke'] : 'thang';
+
+                    // Thiết lập các biến hiển thị tương ứng với kiểu thống kê
+                    switch ($kieu_thongke) {
+                        case 'thang':
+                            $kieu_thongke_text = 'tháng';
+                            $label_thoi_gian = 'Tháng';
+                            $label_prefix = 'Tháng ';
+                            break;
+                        case 'quy':
+                            $kieu_thongke_text = 'quý';
+                            $label_thoi_gian = 'Quý';
+                            $label_prefix = 'Quý ';
+                            break;
+                        case 'nam':
+                            $kieu_thongke_text = 'năm';
+                            $label_thoi_gian = 'Năm';
+                            $label_prefix = '';
+                            break;
+                    }
+
+                    // Lấy dữ liệu thống kê doanh thu
+                    $doanh_thu = thongke_doanhthu($kieu_thongke);
+                    include "./Thongke/thongke_doanhthu.php";
+                    break;
+
+                // thống kê đơn hàng
+                case 'thongke_donhang':
+                    // Xác định kiểu thống kê (mặc định là tháng)
+                    $kieu_thongke = isset($_POST['kieu_thongke']) ? $_POST['kieu_thongke'] : 'thang';
+
+                    // Thiết lập các biến hiển thị tương ứng với kiểu thống kê
+                    switch ($kieu_thongke) {
+                        case 'thang':
+                            $kieu_thongke_text = 'tháng';
+                            $label_thoi_gian = 'Tháng';
+                            $label_prefix = 'Tháng ';
+                            break;
+                        case 'quy':
+                            $kieu_thongke_text = 'quý';
+                            $label_thoi_gian = 'Quý';
+                            $label_prefix = 'Quý ';
+                            break;
+                        case 'nam':
+                            $kieu_thongke_text = 'năm';
+                            $label_thoi_gian = 'Năm';
+                            $label_prefix = '';
+                            break;
+                    }
+
+                    // Lấy dữ liệu thống kê đơn hàng
+                    $don_hang = thongke_donhang_theothoigian($kieu_thongke);
+                    include "./Thongke/thongke_donhang.php";
+                    break;
+
                 case 'bieudo':
-                    $listthongke = loadall_thongke();
+                    $kieu_thongke = isset($_GET['kieu']) ? $_GET['kieu'] : 'thang';
+
+                    // Thiết lập các biến hiển thị tương ứng với kiểu thống kê
+                    switch ($kieu_thongke) {
+                        case 'thang':
+                            $kieu_thongke_text = 'tháng';
+                            $label_thoi_gian = 'Tháng';
+                            $label_prefix = 'Tháng ';
+                            $chart_title = 'Biểu đồ doanh thu theo tháng';
+                            break;
+                        case 'quy':
+                            $kieu_thongke_text = 'quý';
+                            $label_thoi_gian = 'Quý';
+                            $label_prefix = 'Quý ';
+                            $chart_title = 'Biểu đồ doanh thu theo quý';
+                            break;
+                        case 'nam':
+                            $kieu_thongke_text = 'năm';
+                            $label_thoi_gian = 'Năm';
+                            $label_prefix = '';
+                            $chart_title = 'Biểu đồ doanh thu theo năm';
+                            break;
+                    }
+
+                    $doanh_thu = thongke_doanhthu($kieu_thongke);
                     include "./Thongke/bieudo.php";
                     break;
                 case 'bieudobl':
-                    $listtkbl = load_thongkebl();
+                    $kieu_thongke = isset($_GET['kieu']) ? $_GET['kieu'] : 'thang';
+
+                    // Thiết lập các biến hiển thị tương ứng với kiểu thống kê
+                    switch ($kieu_thongke) {
+                        case 'thang':
+                            $kieu_thongke_text = 'tháng';
+                            $label_thoi_gian = 'Tháng';
+                            $label_prefix = 'Tháng ';
+                            $chart_title = 'Biểu đồ đơn hàng theo tháng';
+                            break;
+                        case 'quy':
+                            $kieu_thongke_text = 'quý';
+                            $label_thoi_gian = 'Quý';
+                            $label_prefix = 'Quý ';
+                            $chart_title = 'Biểu đồ đơn hàng theo quý';
+                            break;
+                        case 'nam':
+                            $kieu_thongke_text = 'năm';
+                            $label_thoi_gian = 'Năm';
+                            $label_prefix = '';
+                            $chart_title = 'Biểu đồ đơn hàng theo năm';
+                            break;
+                    }
+
+                    $don_hang = thongke_donhang_theothoigian($kieu_thongke);
                     include "./Thongke/bieudobl.php";
                     break;
-
 
 
                 default:

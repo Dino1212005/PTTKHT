@@ -130,12 +130,13 @@
         $result = pdo_query_one($sql);
         return $result;
     }
-    function thongke_donhang()
+    function thongke_donhang_trangthai()
     {
         $sql = "
                 SELECT 
-                    `order`.`order_trangthai`,`order`.`order_totalprice`,
-                    COUNT(`order`.`order_id`) as `so_luong_donhang`
+                    `order`.`order_trangthai`,
+                    COUNT(`order`.`order_id`) as `soluong`,
+                    SUM(`order`.`order_totalprice`) as `tongtien`
                 FROM 
                     `order`
                 WHERE 
