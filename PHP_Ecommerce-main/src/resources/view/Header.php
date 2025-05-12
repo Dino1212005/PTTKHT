@@ -66,8 +66,20 @@
                         </button>
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                             <?php
-                                if (isset($_SESSION['mycart'])) {
-                                    echo count($_SESSION['mycart']);
+                                if (isset($_SESSION['acount']) && $_SESSION['acount']) {
+                                    $kh_id = $_SESSION['acount']['kh_id'];
+                                    // Lấy ID giỏ hàng của khách hàng
+                                    $cart = querycart_kh($kh_id);
+                                    if ($cart && isset($cart['cart_id'])) {
+                                        $cart_id = $cart['cart_id'];
+                                        // Truy vấn tổng số lượng sản phẩm từ bảng cart_chitiet
+                                        $sql = "SELECT SUM(soluong) as total_quantity FROM cart_chitiet WHERE cart_id = $cart_id";
+                                        $result = pdo_query_one($sql);
+                                        $total_quantity = isset($result['total_quantity']) ? $result['total_quantity'] : 0;
+                                        echo $total_quantity;
+                                    } else {
+                                        echo 0;
+                                    }
                                 } else {
                                     echo 0;
                                 }
