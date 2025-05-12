@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 16, 2025 lúc 05:14 PM
+-- Thời gian đã tạo: Th4 22, 2025 lúc 04:56 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.1.25
 
@@ -98,6 +98,43 @@ INSERT INTO `category` (`cate_id`, `cate_name`, `trangthai`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `chi_tiet_kiem_ke`
+--
+
+CREATE TABLE `chi_tiet_kiem_ke` (
+  `id` int(11) NOT NULL,
+  `phieu_kiem_ke_id` int(11) DEFAULT NULL,
+  `pro_id` int(11) DEFAULT NULL,
+  `so_luong_thuc_te` int(11) DEFAULT NULL,
+  `so_luong_he_thong` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `chi_tiet_nhom_quyen`
+--
+
+CREATE TABLE `chi_tiet_nhom_quyen` (
+  `role_id` int(10) NOT NULL,
+  `permission_id` varchar(10) NOT NULL,
+  `hanh_dong` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `chi_tiet_nhom_quyen`
+--
+
+INSERT INTO `chi_tiet_nhom_quyen` (`role_id`, `permission_id`, `hanh_dong`) VALUES
+(1, 'Q14', NULL),
+(1, 'Q15', NULL),
+(1, 'Q3', NULL),
+(1, 'Q6', NULL),
+(3, 'Q3', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `color`
 --
 
@@ -143,6 +180,52 @@ INSERT INTO `coment` (`cmt_id`, `cmt_content`, `cmt_date`, `pro_id`, `kh_id`) VA
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `import_receipts`
+--
+
+CREATE TABLE `import_receipts` (
+  `id` int(11) NOT NULL,
+  `ncc_id` int(11) NOT NULL COMMENT 'ID nhà cung cấp',
+  `receipt_date` datetime NOT NULL COMMENT 'Ngày nhập hàng',
+  `total_amount` decimal(15,2) NOT NULL COMMENT 'Tổng giá trị đơn nhập',
+  `created_by` int(11) DEFAULT NULL COMMENT 'Người tạo phiếu',
+  `status` tinyint(4) DEFAULT 0 COMMENT '0: Nháp, 1: Đã nhập kho, 2: Đã hủy',
+  `note` text DEFAULT NULL COMMENT 'Ghi chú'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `import_receipts`
+--
+
+INSERT INTO `import_receipts` (`id`, `ncc_id`, `receipt_date`, `total_amount`, `created_by`, `status`, `note`) VALUES
+(1, 3, '2025-04-22 08:40:05', 600.00, 41, 1, NULL),
+(3, 1, '2025-04-22 09:46:13', 20000.00, 41, 0, ''),
+(4, 1, '2025-04-22 09:49:23', 20000.00, 41, 0, ''),
+(5, 1, '2025-04-22 09:50:01', 400.00, 41, 0, ''),
+(6, 1, '2025-04-22 09:52:49', 400.00, 41, 0, ''),
+(7, 1, '2025-04-22 09:54:06', 400.00, 41, 0, ''),
+(8, 1, '2025-04-22 09:55:29', 400.00, 41, 0, '');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `import_receipt_details`
+--
+
+CREATE TABLE `import_receipt_details` (
+  `id` int(11) NOT NULL,
+  `receipt_id` int(11) NOT NULL COMMENT 'ID phiếu nhập',
+  `pro_id` int(11) NOT NULL COMMENT 'ID sản phẩm',
+  `color_id` int(11) NOT NULL COMMENT 'ID màu sắc',
+  `size_id` int(11) NOT NULL COMMENT 'ID kích cỡ',
+  `quantity` int(11) NOT NULL COMMENT 'Số lượng nhập',
+  `unit_price` decimal(10,2) NOT NULL COMMENT 'Đơn giá nhập',
+  `total_price` decimal(12,2) NOT NULL COMMENT 'Thành tiền'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `khachhang`
 --
 
@@ -169,6 +252,37 @@ INSERT INTO `khachhang` (`kh_id`, `kh_name`, `kh_pass`, `kh_mail`, `kh_tel`, `kh
 (41, 'nguyendanhquan', 'Quan123@', 'quan23566888@gmail.com', '0967016683', 'Hà Nội', 1, 0),
 (42, 'Danhquan', 'Quan123@', 'trung@gmail.com', '0967016683', 'Hà Nội', 2, 0),
 (43, 'Abcc', 'Abc@123', 'onepiecekkzz@gmail.com', '0906840111', 'quan23566888@gmail.com', 2, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `nhacungcap`
+--
+
+CREATE TABLE `nhacungcap` (
+  `ncc_id` int(10) NOT NULL COMMENT 'ID nhà cung cấp',
+  `ncc_name` varchar(255) NOT NULL COMMENT 'Tên nhà cung cấp',
+  `ncc_diachi` varchar(255) NOT NULL COMMENT 'Địa chỉ nhà cung cấp',
+  `ncc_sdt` varchar(20) NOT NULL COMMENT 'Số điện thoại nhà cung cấp',
+  `ncc_email` varchar(255) NOT NULL COMMENT 'Email nhà cung cấp',
+  `ncc_trangthai` int(1) NOT NULL DEFAULT 0 COMMENT 'Trạng thái (0: hoạt động, 1: ngừng hoạt động)'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `nhacungcap`
+--
+
+INSERT INTO `nhacungcap` (`ncc_id`, `ncc_name`, `ncc_diachi`, `ncc_sdt`, `ncc_email`, `ncc_trangthai`) VALUES
+(1, 'Công ty Thời trang Việt Nam', 'Số 1, Đường Lê Duẩn, Hà Nội', '0241234567', 'contact@thoitrangvn.com', 0),
+(2, 'Công ty May mặc Hải Phòng', 'Số 45, Đường Trần Phú, Hải Phòng', '0225123456', 'info@maymachp.com', 0),
+(3, 'Công ty Dệt may Đà Nẵng', 'Số 78, Đường Nguyễn Văn Linh, Đà Nẵng', '0236123456', 'contact@detmaydn.com', 0),
+(4, 'Công ty Thời trang Sài Gòn', 'Số 123, Đường Nguyễn Huệ, TP.HCM', '0281234567', 'info@thoitrangsg.com', 0),
+(5, 'Công ty Vải sợi Bắc Ninh', 'Số 56, Đường Nguyễn Trãi, Bắc Ninh', '0222123456', 'contact@vaisoi.com', 0),
+(6, 'Công ty Phụ liệu may mặc', 'Số 89, Đường Lê Lợi, Hải Dương', '0220123456', 'info@phulieu.com', 0),
+(7, 'Công ty Thời trang cao cấp', 'Số 34, Đường Tràng Tiền, Hà Nội', '0241234568', 'contact@caocap.com', 0),
+(8, 'Công ty Vải vóc nhập khẩu', 'Số 67, Đường Hai Bà Trưng, TP.HCM', '0281234568', 'info@vainhapkhau.com', 0),
+(9, 'Công ty Phụ kiện thời trang', 'Số 12, Đường Lý Thường Kiệt, Đà Nẵng', '0236123457', 'contact@phukien.com', 0),
+(10, 'Công ty Thời trang trẻ em', 'Số 45, Đường Lê Văn Sỹ, TP.HCM', '0281234569', 'info@treem.com', 0);
 
 -- --------------------------------------------------------
 
@@ -237,31 +351,69 @@ INSERT INTO `order_chitiet` (`order_chitiet_id`, `order_id`, `pro_id`, `color_id
 (110, 136, 66, 2, 1, 300, 1, 300),
 (111, 136, 66, 2, 1, 300, 1, 300);
 
--- 1. Tạo bảng nhacungcap
-CREATE TABLE `nhacungcap` (
-  `ncc_id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'ID nhà cung cấp',
-  `ncc_name` varchar(255) NOT NULL COMMENT 'Tên nhà cung cấp',
-  `ncc_diachi` varchar(255) NOT NULL COMMENT 'Địa chỉ nhà cung cấp',
-  `ncc_sdt` varchar(20) NOT NULL COMMENT 'Số điện thoại nhà cung cấp',
-  `ncc_email` varchar(255) NOT NULL COMMENT 'Email nhà cung cấp',
-  `ncc_trangthai` int(1) NOT NULL DEFAULT 0 COMMENT 'Trạng thái (0: hoạt động, 1: ngừng hoạt động)',
-  PRIMARY KEY (`ncc_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- --------------------------------------------------------
 
--- 2. Thêm dữ liệu mẫu cho nhacungcap
--- Thêm dữ liệu cho bảng nhacungcap
-INSERT INTO `nhacungcap` (`ncc_name`, `ncc_diachi`, `ncc_sdt`, `ncc_email`, `ncc_trangthai`) VALUES
-('Công ty Thời trang Việt Nam', 'Số 1, Đường Lê Duẩn, Hà Nội', '0241234567', 'contact@thoitrangvn.com', 0),
-('Công ty May mặc Hải Phòng', 'Số 45, Đường Trần Phú, Hải Phòng', '0225123456', 'info@maymachp.com', 0),
-('Công ty Dệt may Đà Nẵng', 'Số 78, Đường Nguyễn Văn Linh, Đà Nẵng', '0236123456', 'contact@detmaydn.com', 0),
-('Công ty Thời trang Sài Gòn', 'Số 123, Đường Nguyễn Huệ, TP.HCM', '0281234567', 'info@thoitrangsg.com', 0),
-('Công ty Vải sợi Bắc Ninh', 'Số 56, Đường Nguyễn Trãi, Bắc Ninh', '0222123456', 'contact@vaisoi.com', 0),
-('Công ty Phụ liệu may mặc', 'Số 89, Đường Lê Lợi, Hải Dương', '0220123456', 'info@phulieu.com', 0),
-('Công ty Thời trang cao cấp', 'Số 34, Đường Tràng Tiền, Hà Nội', '0241234568', 'contact@caocap.com', 0),
-('Công ty Vải vóc nhập khẩu', 'Số 67, Đường Hai Bà Trưng, TP.HCM', '0281234568', 'info@vainhapkhau.com', 0),
-('Công ty Phụ kiện thời trang', 'Số 12, Đường Lý Thường Kiệt, Đà Nẵng', '0236123457', 'contact@phukien.com', 0),
-('Công ty Thời trang trẻ em', 'Số 45, Đường Lê Văn Sỹ, TP.HCM', '0281234569', 'info@treem.com', 0);
+--
+-- Cấu trúc bảng cho bảng `phieu_bao_hanh`
+--
 
+CREATE TABLE `phieu_bao_hanh` (
+  `id` int(11) NOT NULL,
+  `pro_id` int(11) DEFAULT NULL,
+  `kh_id` int(11) DEFAULT NULL,
+  `nhan_vien_id` int(11) DEFAULT NULL,
+  `ngay_bao_hanh` date DEFAULT NULL,
+  `noi_dung` text DEFAULT NULL,
+  `thoi_gian_bao_hanh` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `phieu_bao_hanh`
+--
+
+INSERT INTO `phieu_bao_hanh` (`id`, `pro_id`, `kh_id`, `nhan_vien_id`, `ngay_bao_hanh`, `noi_dung`, `thoi_gian_bao_hanh`) VALUES
+(1, 44, 11, 41, '2025-04-09', 'khâu', 11);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `phieu_doi`
+--
+
+CREATE TABLE `phieu_doi` (
+  `id` int(10) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `pro_id` int(10) NOT NULL,
+  `pro_moi_id` int(10) DEFAULT NULL,
+  `color_id` int(10) DEFAULT NULL,
+  `size_id` int(10) DEFAULT NULL,
+  `kh_id` int(11) NOT NULL,
+  `ngay_doi` date DEFAULT NULL,
+  `ly_do` text DEFAULT NULL,
+  `trang_thai` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `phieu_doi`
+--
+
+INSERT INTO `phieu_doi` (`id`, `order_id`, `pro_id`, `pro_moi_id`, `color_id`, `size_id`, `kh_id`, `ngay_doi`, `ly_do`, `trang_thai`) VALUES
+(1, 100, 57, 52, 2, 2, 11, '2025-04-03', NULL, 'đổi'),
+(2, 131, 57, NULL, NULL, NULL, 11, '2025-04-02', NULL, 'trả/ hoàn tiền');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `phieu_kiem_ke`
+--
+
+CREATE TABLE `phieu_kiem_ke` (
+  `id` int(11) NOT NULL,
+  `nhan_vien_id` int(11) DEFAULT NULL,
+  `ngay_kiem_ke` date DEFAULT NULL,
+  `so_luong_thuc_te` int(11) DEFAULT 0,
+  `chenh_lech` int(11) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -287,31 +439,31 @@ CREATE TABLE `products` (
 -- Đang đổ dữ liệu cho bảng `products`
 --
 
-INSERT INTO `products` (`pro_id`, `pro_name`, `pro_img`, `pro_price`, `pro_desc`, `pro_brand`, `pro_stock`, `cate_id`, `trangthai`, `pro_viewer`) VALUES
-(41, 'Fleece Hoodies For Men and Women Patchwork Stripe Hooded', 'clothes_1.jpg', 130, 'Usually We Will Send Out the Goods Within 3 - 7 Days by Fast and Reliable Shipping Methods. As different computers display colors differently, the color of the actual item may very slightly from the above images. Your Happy Shopping Experience and Five Star Feedback is Very Important to Us. Please Feel Free to Contact Us if You Have Any Questions. We Will Try Our Best to Serve You.', 'Lining', 230, 10, 0, 1),
-(43, 'School Leavers Hoodie - School Leavers 2023 Hoodie - Class Of 2023 Hoodie', 'clothes_2.jpg', 300, 'Usually We Will Send Out the Goods Within 3 - 7 Days by Fast and Reliable Shipping Methods. As different computers display colors differently, the color of the actual item may very slightly from the above images. Your Happy Shopping Experience and Five Star Feedback is Very Important to Us. Please Feel Free to Contact Us if You Have Any Questions. We Will Try Our Best to Serve You.', 'Nice', 230, 10, 0, 0),
-(44, 'Branded Premium Basic Mesh Shorts', 'clothes_3.jpg', 200, 'Branded Premium Basic Mesh Shorts Mesh 2 Pockets Eric Emanuel New York City Skyline Basketball shorts', 'Lining', 130, 14, 0, 0),
-(45, 'High Waist Trousers Pants Palazzo Bottoms Casual Loose Wide Leg Long Harem', 'clothes_4.jpg', 50, 'Usually We Will Send Out the Goods Within 3 - 7 Days by Fast and Reliable Shipping Methods. As different computers display colors differently, the color of the actual item may very slightly from the above images. Your Happy Shopping Experience and Five Star Feedback is Very Important to Us. Please Feel Free to Contact Us if You Have Any Questions. We Will Try Our Best to Serve You.', 'Lining', 230, 12, 0, 0),
-(46, 'Wizard Frog Corduroy Hat, Handmade Embroidered Corduroy Dad Cap', 'clothes_5.jpg', 50, 'All clothes are tailored and handmade with love and attention to details. Pure natural linen materials, comfortable, breathable, refreshing and soft fabric', 'Nice', 300, 11, 0, 1),
-(47, 'Women Linen Blazer, Linen Jacket Linen Blazer 3/4 Sleeves Coat', 'clothes_6.jpg', 300, 'All clothes are tailored and handmade with love and attention to details. Pure natural linen materials, comfortable, breathable, refreshing and soft fabric', 'Nice', 130, 9, 0, 2),
-(48, 'Masculine-cut Blazer with Contrasting Details', 'clothes_7.jpg', 150, 'An oversize blazer with masculine cut and contrasting seam details. An avant-garde piece with linen and tulle elements. Bold addition to any elegant outfit.', 'Need', 400, 9, 0, 0),
-(49, 'Sorrows, Sorrows, Prayers Tshirt, Queen Charlotte Fan Shirt, Bridgerton T-Shirt', 'clothes_8.jpg', 100, 'Unisex Heavy Cotton Tee Gildan 5000: Medium fabric - Classic fit - Runs true to size - 100% cotton (fiber content may vary for different colors) - Tear-away label. Unisex Heavy Blend™ Crewneck Sweatshirt Gildan 18000: Medium-heavy fabric - Loose fit - Runs true to size - 50% cotton, 50% polyester - Sewn-in label', 'Lining', 450, 13, 0, 2),
-(51, 'Hat Embroidered Hat Dad Hat Womens Baseball Cap Man Hat', 'clothes_10.jpg', 50, 'Usually We Will Send Out the Goods Within 3 - 7 Days by Fast and Reliable Shipping Methods. As different computers display colors differently, the color of the actual item may very slightly from the above images. Your Happy Shopping Experience and Five Star Feedback is Very Important to Us. Please Feel Free to Contact Us if You Have Any Questions. We Will Try Our Best to Serve You.', 'Lining', 230, 11, 0, 0),
-(52, 'Chicken Sweatshirt, Farm Life Sweater, Chicken Lover Sweater, Easter Retro Sweater', 'clothes_11.jpg', 130, 'Welcome to Prime Tee Lab. Your all-inclusive stop for all custom sweatshirt, hoodie, and gift needs. We print on the highest quality garments! Our state of the art printers help us bring you the most vibrant and long lasting colorful designs.', 'Nice', 300, 15, 0, 0),
-(53, 'Have A Good Day Hoodie- Trendy sweatshirt, hoodie', 'clothes_12.jpg', 300, 'Have A Good Day Hoodie- Trendy sweatshirt, hoodie, Sweatshirt and hoodies with words on back. Hey there, welcome to my store! I hope you will love my store.', 'Thosc', 300, 10, 0, 5),
-(54, 'Floral Embroidered Cap, Baseball Cap, Custom Embroidery Hat, Hand Embroidery Hat', 'clothes_13.jpg', 50, 'A pretty hand embroidered cap that is perfect for everyday wear! Available in different colors and designs. Feel free to send me a message for any custom work!', 'Lining', 300, 11, 0, 2),
-(55, 'Drawstring Pants - Spring Summer Trousers - Pockets', 'clothes_14.jpg', 300, 'Stay comfortable and stylish with these cotton and linen drawstring pants for women. Designed with a basic style and loose fit, these mid-waist trousers have a nine-point length and trendy button details. Plus, they come with pockets to keep your essentials handy. Available in light gray, white, dark gray,', 'Nice', 130, 12, 0, 1),
-(56, 'Loose linen blazer PLACID Long sleeve light linen jacket  Linen womens clothing', 'clothes_15.jpg', 300, 'Womens linen blazer PLACID in lightweight linen with front button closure is an autumn wardrobes essential', 'Need', 230, 9, 0, 2),
-(57, 'Baseball Hat with Embroidery - Embroidered & Cap Color of your choice! Dad Hat', 'clothes_16.jpg', 130, 'Due to the current covid situation, there may be delays in international shipment. We hope for your kind understanding. Please let us know if you have a specific date that you would like to receive by. Orders that have been shipped out are non-refundable.', 'Thosc', 300, 11, 0, 1),
-(58, 'Embroidered Silly Goose Sweatshirt, Embroidered Goose Crewneck Sweats', 'clothes_17.jpg', 120, 'This embroidered Silly Goose sweatshirt is super soft and cozy. Perfect to lounge around, run errands, or walk your dog. Our crewnecks use the highest quality material for ultra-soft and comfortable wear, with advanced embroidery to ensure vibrant colors and detailed graphics.', 'Densnis', 320, 15, 0, 2),
-(59, 'Embroidered Hat Initial cap Personalized Ball cap Custom Hat Mens Hat 90s Vintagea', 'clothes_18.jpg', 100, 'Personalize these comfortable and stylish dad hats to say whatever you like. A traditional baseball cap is a great way to show off your style. one-of-a-kind gift for any occasion such as Mothers Day, Fathers Day, birthday gifts, Bachelor party, Christmas etc. We can not only customize the text', 'Need', 230, 11, 0, 4),
-(60, 'Thin Cotton Blazer Loose Linen Jackets Pockets Soft Linen Coats Three Quarter Single Button', 'clothes_19.jpg', 300, 'Cotton Blazer Loose Linen Jackets Pockets Soft Linen Coats Three Quarter Single Button. Please refer to the final image for size chart before ordering (and choose the correct size).', 'Densnis', 230, 9, 0, 3),
-(61, 'Fashion Sweaters Men Autumn Solid Color Wool Sweaters Slim Fit', 'clothes_20.jpg', 145, 'Fashion Sweaters Men Autumn Solid Color Wool Sweaters Slim Fit Men Street Wear Mens Clothes Knitted Sweater Men Pullovers', 'Lining', 130, 15, 0, 2),
-(62, 'portrait from photo to shirt, outline photo sweatshirt, Custom Photo, custom portrait, Couple Hoodie', 'clothes_21.jpg', 130, 'Set-in sleeve 1x1 rib at neck collar Inside back neck tape in self fabric Tubular construction Sleeve hem and bottom hem with wide double topstitch Comfortable crew neckline', 'Need', 300, 10, 0, 5),
-(63, 'Cotton Corduroy Pant Elastic Waist Pants Womens Soft Warm trousers baggy pants Casual', 'clothes_22.jpg', 130, 'All our items are Tailored and Handmade and Made to Order ,I can make Any Size . I design new styles every week, please collect my store. I believe that you will meet your favorite styles.', 'Densnis', 125, 12, 0, 5),
-(64, 'Knitted Sweater Little Dinosaur, Unisex, Winter Harajuku', 'clothes_23.jpg', 160, 'Super soft comfortable knitted sweater. A perfect gift for streetwear style lovers and a perfect harajuku outfit.', 'Thosc', 300, 15, 0, 4),
-(65, 'Japanese Harajuku Style Hoodies, Streetwear Oversized Hoodie, Thick Winter Autumn Pullover', 'clothes_24.jpg', 300, 'Recommend ordering two sizes up. MATERIAL: Cotton, PolyesterIt is printed with eco-friendly ink. Soft and comfy hoodie with a print of Japanese graphic art. This kawaii clothing pullover is an excellent addition to your wardrobe.', 'Densnis', 230, 10, 0, 11),
-(66, 'Unleash Your Summer Swag with High-Quality Fear Of God Shorts for Men and Women', 'clothes_25.jpg', 300, 'Upgrade your summer wardrobe with our exclusive collection of Essentials Shorts for both men and women! Discover the perfect blend of comfort and style with our high-quality Fear Of God shorts, designed to elevate your streetwear game to new heights. Whether youre hitting the beach or strolling through the city, these trendy FOG shorts are a must-have for any fashion-conscious individual. Embrace the essence of urban fashion and make a bold statement this summer with our eye-catching streetwear essentials. Get ready to turn heads and exude confidence wherever you go!', 'Lining', 300, 14, 0, 40);
+INSERT INTO `products` (`pro_id`, `pro_name`, `pro_img`, `pro_price`, `pro_desc`, `pro_brand`, `pro_stock`, `cate_id`, `ncc_id`, `trangthai`, `pro_viewer`) VALUES
+(41, 'Fleece Hoodies For Men and Women Patchwork Stripe Hooded', 'clothes_1.jpg', 130, 'Usually We Will Send Out the Goods Within 3 - 7 Days by Fast and Reliable Shipping Methods. As different computers display colors differently, the color of the actual item may very slightly from the above images. Your Happy Shopping Experience and Five Star Feedback is Very Important to Us. Please Feel Free to Contact Us if You Have Any Questions. We Will Try Our Best to Serve You.', 'Lining', 230, 10, 1, 0, 1),
+(43, 'School Leavers Hoodie - School Leavers 2023 Hoodie - Class Of 2023 Hoodie', 'clothes_2.jpg', 300, 'Usually We Will Send Out the Goods Within 3 - 7 Days by Fast and Reliable Shipping Methods. As different computers display colors differently, the color of the actual item may very slightly from the above images. Your Happy Shopping Experience and Five Star Feedback is Very Important to Us. Please Feel Free to Contact Us if You Have Any Questions. We Will Try Our Best to Serve You.', 'Nice', 230, 10, 1, 0, 0),
+(44, 'Branded Premium Basic Mesh Shorts', 'clothes_3.jpg', 200, 'Branded Premium Basic Mesh Shorts Mesh 2 Pockets Eric Emanuel New York City Skyline Basketball shorts', 'Lining', 130, 14, 1, 0, 0),
+(45, 'High Waist Trousers Pants Palazzo Bottoms Casual Loose Wide Leg Long Harem', 'clothes_4.jpg', 50, 'Usually We Will Send Out the Goods Within 3 - 7 Days by Fast and Reliable Shipping Methods. As different computers display colors differently, the color of the actual item may very slightly from the above images. Your Happy Shopping Experience and Five Star Feedback is Very Important to Us. Please Feel Free to Contact Us if You Have Any Questions. We Will Try Our Best to Serve You.', 'Lining', 230, 12, 1, 0, 0),
+(46, 'Wizard Frog Corduroy Hat, Handmade Embroidered Corduroy Dad Cap', 'clothes_5.jpg', 50, 'All clothes are tailored and handmade with love and attention to details. Pure natural linen materials, comfortable, breathable, refreshing and soft fabric', 'Nice', 300, 11, 1, 0, 1),
+(47, 'Women Linen Blazer, Linen Jacket Linen Blazer 3/4 Sleeves Coat', 'clothes_6.jpg', 300, 'All clothes are tailored and handmade with love and attention to details. Pure natural linen materials, comfortable, breathable, refreshing and soft fabric', 'Nice', 130, 9, 1, 0, 2),
+(48, 'Masculine-cut Blazer with Contrasting Details', 'clothes_7.jpg', 150, 'An oversize blazer with masculine cut and contrasting seam details. An avant-garde piece with linen and tulle elements. Bold addition to any elegant outfit.', 'Need', 400, 9, 1, 0, 0),
+(49, 'Sorrows, Sorrows, Prayers Tshirt, Queen Charlotte Fan Shirt, Bridgerton T-Shirt', 'clothes_8.jpg', 100, 'Unisex Heavy Cotton Tee Gildan 5000: Medium fabric - Classic fit - Runs true to size - 100% cotton (fiber content may vary for different colors) - Tear-away label. Unisex Heavy Blend™ Crewneck Sweatshirt Gildan 18000: Medium-heavy fabric - Loose fit - Runs true to size - 50% cotton, 50% polyester - Sewn-in label', 'Lining', 450, 13, 1, 0, 2),
+(51, 'Hat Embroidered Hat Dad Hat Womens Baseball Cap Man Hat', 'clothes_10.jpg', 50, 'Usually We Will Send Out the Goods Within 3 - 7 Days by Fast and Reliable Shipping Methods. As different computers display colors differently, the color of the actual item may very slightly from the above images. Your Happy Shopping Experience and Five Star Feedback is Very Important to Us. Please Feel Free to Contact Us if You Have Any Questions. We Will Try Our Best to Serve You.', 'Lining', 230, 11, 1, 0, 0),
+(52, 'Chicken Sweatshirt, Farm Life Sweater, Chicken Lover Sweater, Easter Retro Sweater', 'clothes_11.jpg', 130, 'Welcome to Prime Tee Lab. Your all-inclusive stop for all custom sweatshirt, hoodie, and gift needs. We print on the highest quality garments! Our state of the art printers help us bring you the most vibrant and long lasting colorful designs.', 'Nice', 300, 15, 1, 0, 0),
+(53, 'Have A Good Day Hoodie- Trendy sweatshirt, hoodie', 'clothes_12.jpg', 300, 'Have A Good Day Hoodie- Trendy sweatshirt, hoodie, Sweatshirt and hoodies with words on back. Hey there, welcome to my store! I hope you will love my store.', 'Thosc', 300, 10, 1, 0, 5),
+(54, 'Floral Embroidered Cap, Baseball Cap, Custom Embroidery Hat, Hand Embroidery Hat', 'clothes_13.jpg', 50, 'A pretty hand embroidered cap that is perfect for everyday wear! Available in different colors and designs. Feel free to send me a message for any custom work!', 'Lining', 300, 11, 1, 0, 2),
+(55, 'Drawstring Pants - Spring Summer Trousers - Pockets', 'clothes_14.jpg', 300, 'Stay comfortable and stylish with these cotton and linen drawstring pants for women. Designed with a basic style and loose fit, these mid-waist trousers have a nine-point length and trendy button details. Plus, they come with pockets to keep your essentials handy. Available in light gray, white, dark gray,', 'Nice', 130, 12, 1, 0, 1),
+(56, 'Loose linen blazer PLACID Long sleeve light linen jacket  Linen womens clothing', 'clothes_15.jpg', 300, 'Womens linen blazer PLACID in lightweight linen with front button closure is an autumn wardrobes essential', 'Need', 230, 9, 1, 0, 2),
+(57, 'Baseball Hat with Embroidery - Embroidered & Cap Color of your choice! Dad Hat', 'clothes_16.jpg', 130, 'Due to the current covid situation, there may be delays in international shipment. We hope for your kind understanding. Please let us know if you have a specific date that you would like to receive by. Orders that have been shipped out are non-refundable.', 'Thosc', 300, 11, 1, 0, 1),
+(58, 'Embroidered Silly Goose Sweatshirt, Embroidered Goose Crewneck Sweats', 'clothes_17.jpg', 120, 'This embroidered Silly Goose sweatshirt is super soft and cozy. Perfect to lounge around, run errands, or walk your dog. Our crewnecks use the highest quality material for ultra-soft and comfortable wear, with advanced embroidery to ensure vibrant colors and detailed graphics.', 'Densnis', 320, 15, 1, 0, 2),
+(59, 'Embroidered Hat Initial cap Personalized Ball cap Custom Hat Mens Hat 90s Vintagea', 'clothes_18.jpg', 100, 'Personalize these comfortable and stylish dad hats to say whatever you like. A traditional baseball cap is a great way to show off your style. one-of-a-kind gift for any occasion such as Mothers Day, Fathers Day, birthday gifts, Bachelor party, Christmas etc. We can not only customize the text', 'Need', 230, 11, 1, 0, 4),
+(60, 'Thin Cotton Blazer Loose Linen Jackets Pockets Soft Linen Coats Three Quarter Single Button', 'clothes_19.jpg', 300, 'Cotton Blazer Loose Linen Jackets Pockets Soft Linen Coats Three Quarter Single Button. Please refer to the final image for size chart before ordering (and choose the correct size).', 'Densnis', 230, 9, 1, 0, 3),
+(61, 'Fashion Sweaters Men Autumn Solid Color Wool Sweaters Slim Fit', 'clothes_20.jpg', 145, 'Fashion Sweaters Men Autumn Solid Color Wool Sweaters Slim Fit Men Street Wear Mens Clothes Knitted Sweater Men Pullovers', 'Lining', 130, 15, 1, 0, 2),
+(62, 'portrait from photo to shirt, outline photo sweatshirt, Custom Photo, custom portrait, Couple Hoodie', 'clothes_21.jpg', 130, 'Set-in sleeve 1x1 rib at neck collar Inside back neck tape in self fabric Tubular construction Sleeve hem and bottom hem with wide double topstitch Comfortable crew neckline', 'Need', 300, 10, 1, 0, 5),
+(63, 'Cotton Corduroy Pant Elastic Waist Pants Womens Soft Warm trousers baggy pants Casual', 'clothes_22.jpg', 130, 'All our items are Tailored and Handmade and Made to Order ,I can make Any Size . I design new styles every week, please collect my store. I believe that you will meet your favorite styles.', 'Densnis', 125, 12, 1, 0, 5),
+(64, 'Knitted Sweater Little Dinosaur, Unisex, Winter Harajuku', 'clothes_23.jpg', 160, 'Super soft comfortable knitted sweater. A perfect gift for streetwear style lovers and a perfect harajuku outfit.', 'Thosc', 300, 15, 1, 0, 4),
+(65, 'Japanese Harajuku Style Hoodies, Streetwear Oversized Hoodie, Thick Winter Autumn Pullover', 'clothes_24.jpg', 300, 'Recommend ordering two sizes up. MATERIAL: Cotton, PolyesterIt is printed with eco-friendly ink. Soft and comfy hoodie with a print of Japanese graphic art. This kawaii clothing pullover is an excellent addition to your wardrobe.', 'Densnis', 230, 10, 1, 0, 11),
+(66, 'Unleash Your Summer Swag with High-Quality Fear Of God Shorts for Men and Women', 'clothes_25.jpg', 300, 'Upgrade your summer wardrobe with our exclusive collection of Essentials Shorts for both men and women! Discover the perfect blend of comfort and style with our high-quality Fear Of God shorts, designed to elevate your streetwear game to new heights. Whether youre hitting the beach or strolling through the city, these trendy FOG shorts are a must-have for any fashion-conscious individual. Embrace the essence of urban fashion and make a bold statement this summer with our eye-catching streetwear essentials. Get ready to turn heads and exude confidence wherever you go!', 'Lining', 300, 14, 1, 0, 40);
 
 -- --------------------------------------------------------
 
@@ -505,6 +657,54 @@ INSERT INTO `pro_chitiet` (`ctiet_pro_id`, `pro_id`, `color_id`, `size_id`, `sol
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `ql_nhom_quyen`
+--
+
+CREATE TABLE `ql_nhom_quyen` (
+  `id` int(11) NOT NULL,
+  `ten_nhom_quyen` varchar(100) NOT NULL,
+  `mo_ta` text DEFAULT NULL,
+  `ngay_tao` datetime DEFAULT current_timestamp(),
+  `ngay_cap_nhat` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `trang_thai` tinyint(4) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `quyen`
+--
+
+CREATE TABLE `quyen` (
+  `permission_id` varchar(10) NOT NULL,
+  `permission_name` varchar(255) NOT NULL,
+  `trang_thai` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `quyen`
+--
+
+INSERT INTO `quyen` (`permission_id`, `permission_name`, `trang_thai`) VALUES
+('Q1', 'Truy cập quản lý', 1),
+('Q10', 'Quản lý thương hiệu', 1),
+('Q11', 'Quản lý phiếu nhập', 1),
+('Q12', 'Quản lý phiếu bảo hành', 1),
+('Q13', 'Quản lý phiếu đổi/trả', 1),
+('Q14', 'Quản lý phân quyền', 1),
+('Q15', 'Quản lý vai trò', 1),
+('Q2', 'Quản lý danh mục', 1),
+('Q3', 'Quản lí sản phẩm', 1),
+('Q4', 'Quản lí người dùng', 1),
+('Q5', 'Quản lí bình luận', 1),
+('Q6', 'Quản lí thống kê', 1),
+('Q7', 'Quản lí đơn hàng', 1),
+('Q8', 'Quản lí nhà cung cấp', 1),
+('Q9', 'Quản lí màu', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `size`
 --
 
@@ -525,6 +725,44 @@ INSERT INTO `size` (`size_id`, `size_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `thuong_hieu`
+--
+
+CREATE TABLE `thuong_hieu` (
+  `id` int(11) NOT NULL,
+  `ten_thuong_hieu` varchar(255) NOT NULL,
+  `mo_ta` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `thuong_hieu`
+--
+
+INSERT INTO `thuong_hieu` (`id`, `ten_thuong_hieu`, `mo_ta`) VALUES
+(1, 'Lining', 'Thương hiệu thời trang thể thao cao cấp'),
+(2, 'Nice', 'Phong cách trẻ trung, năng động'),
+(3, 'Need', 'Chuyên các sản phẩm thời trang linen'),
+(4, 'Thosc', 'Thương hiệu cá tính, độc đáo'),
+(5, 'Densnis', 'Đường nét thêu tay tinh xảo, thủ công');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `ton_kho`
+--
+
+CREATE TABLE `ton_kho` (
+  `id` int(11) NOT NULL,
+  `pro_id` int(11) NOT NULL,
+  `color_id` int(11) NOT NULL,
+  `size_id` int(11) NOT NULL,
+  `soluong` int(11) NOT NULL DEFAULT 0,
+  `ngay_cap_nhat` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `vaitro`
 --
 
@@ -541,7 +779,8 @@ INSERT INTO `vaitro` (`vaitro_id`, `vaitro_name`) VALUES
 (1, 'Admin'),
 (2, 'User'),
 (3, 'Nhân Viên'),
-(4, 'Nhân Viên Kho');
+(4, 'Nhân Viên Kho'),
+(9, 'a');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -571,6 +810,21 @@ ALTER TABLE `category`
   ADD PRIMARY KEY (`cate_id`);
 
 --
+-- Chỉ mục cho bảng `chi_tiet_kiem_ke`
+--
+ALTER TABLE `chi_tiet_kiem_ke`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `phieu_kiem_ke_id` (`phieu_kiem_ke_id`),
+  ADD KEY `pro_id` (`pro_id`);
+
+--
+-- Chỉ mục cho bảng `chi_tiet_nhom_quyen`
+--
+ALTER TABLE `chi_tiet_nhom_quyen`
+  ADD PRIMARY KEY (`role_id`,`permission_id`),
+  ADD KEY `permission_id` (`permission_id`);
+
+--
 -- Chỉ mục cho bảng `color`
 --
 ALTER TABLE `color`
@@ -585,10 +839,34 @@ ALTER TABLE `coment`
   ADD KEY `lk_cmt_pro` (`pro_id`);
 
 --
+-- Chỉ mục cho bảng `import_receipts`
+--
+ALTER TABLE `import_receipts`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ncc_id` (`ncc_id`),
+  ADD KEY `created_by` (`created_by`);
+
+--
+-- Chỉ mục cho bảng `import_receipt_details`
+--
+ALTER TABLE `import_receipt_details`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `receipt_id` (`receipt_id`),
+  ADD KEY `pro_id` (`pro_id`),
+  ADD KEY `color_id` (`color_id`),
+  ADD KEY `size_id` (`size_id`);
+
+--
 -- Chỉ mục cho bảng `khachhang`
 --
 ALTER TABLE `khachhang`
   ADD PRIMARY KEY (`kh_id`);
+
+--
+-- Chỉ mục cho bảng `nhacungcap`
+--
+ALTER TABLE `nhacungcap`
+  ADD PRIMARY KEY (`ncc_id`);
 
 --
 -- Chỉ mục cho bảng `order`
@@ -606,6 +884,34 @@ ALTER TABLE `order_chitiet`
   ADD KEY `lk_orderchitiet_color` (`color_id`),
   ADD KEY `lk_orderchitiet_size` (`size_id`),
   ADD KEY `lk_orderchitiet_pro` (`pro_id`);
+
+--
+-- Chỉ mục cho bảng `phieu_bao_hanh`
+--
+ALTER TABLE `phieu_bao_hanh`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `pro_id` (`pro_id`),
+  ADD KEY `fk_baohanh_khachhang` (`kh_id`),
+  ADD KEY `fk_baohanh_nhanvien` (`nhan_vien_id`);
+
+--
+-- Chỉ mục cho bảng `phieu_doi`
+--
+ALTER TABLE `phieu_doi`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_phieudoi_order` (`order_id`),
+  ADD KEY `fk_phieudoi_pro` (`pro_id`),
+  ADD KEY `fk_phieudoi_promoi` (`pro_moi_id`),
+  ADD KEY `fk_phieudoi_color` (`color_id`),
+  ADD KEY `fk_phieudoi_size` (`size_id`),
+  ADD KEY `fk_phieudoi_khachhang` (`kh_id`);
+
+--
+-- Chỉ mục cho bảng `phieu_kiem_ke`
+--
+ALTER TABLE `phieu_kiem_ke`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_kiemke_nhanvien` (`nhan_vien_id`);
 
 --
 -- Chỉ mục cho bảng `products`
@@ -633,10 +939,37 @@ ALTER TABLE `pro_chitiet`
   ADD KEY `lk_proctiet_pro` (`pro_id`);
 
 --
+-- Chỉ mục cho bảng `ql_nhom_quyen`
+--
+ALTER TABLE `ql_nhom_quyen`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `quyen`
+--
+ALTER TABLE `quyen`
+  ADD PRIMARY KEY (`permission_id`);
+
+--
 -- Chỉ mục cho bảng `size`
 --
 ALTER TABLE `size`
   ADD PRIMARY KEY (`size_id`);
+
+--
+-- Chỉ mục cho bảng `thuong_hieu`
+--
+ALTER TABLE `thuong_hieu`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `ton_kho`
+--
+ALTER TABLE `ton_kho`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_kho` (`pro_id`,`color_id`,`size_id`),
+  ADD KEY `color_id` (`color_id`),
+  ADD KEY `size_id` (`size_id`);
 
 --
 -- Chỉ mục cho bảng `vaitro`
@@ -667,6 +1000,12 @@ ALTER TABLE `category`
   MODIFY `cate_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
+-- AUTO_INCREMENT cho bảng `chi_tiet_kiem_ke`
+--
+ALTER TABLE `chi_tiet_kiem_ke`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT cho bảng `color`
 --
 ALTER TABLE `color`
@@ -679,10 +1018,28 @@ ALTER TABLE `coment`
   MODIFY `cmt_id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'ID bình luận', AUTO_INCREMENT=12;
 
 --
+-- AUTO_INCREMENT cho bảng `import_receipts`
+--
+ALTER TABLE `import_receipts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT cho bảng `import_receipt_details`
+--
+ALTER TABLE `import_receipt_details`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT cho bảng `khachhang`
 --
 ALTER TABLE `khachhang`
   MODIFY `kh_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+
+--
+-- AUTO_INCREMENT cho bảng `nhacungcap`
+--
+ALTER TABLE `nhacungcap`
+  MODIFY `ncc_id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'ID nhà cung cấp', AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT cho bảng `order`
@@ -695,6 +1052,24 @@ ALTER TABLE `order`
 --
 ALTER TABLE `order_chitiet`
   MODIFY `order_chitiet_id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'ID chi tiết hóa đơn', AUTO_INCREMENT=112;
+
+--
+-- AUTO_INCREMENT cho bảng `phieu_bao_hanh`
+--
+ALTER TABLE `phieu_bao_hanh`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT cho bảng `phieu_doi`
+--
+ALTER TABLE `phieu_doi`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT cho bảng `phieu_kiem_ke`
+--
+ALTER TABLE `phieu_kiem_ke`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
@@ -715,16 +1090,34 @@ ALTER TABLE `pro_chitiet`
   MODIFY `ctiet_pro_id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Id chi tiết sản phẩm', AUTO_INCREMENT=14;
 
 --
+-- AUTO_INCREMENT cho bảng `ql_nhom_quyen`
+--
+ALTER TABLE `ql_nhom_quyen`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT cho bảng `size`
 --
 ALTER TABLE `size`
   MODIFY `size_id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'ID size', AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT cho bảng `thuong_hieu`
+--
+ALTER TABLE `thuong_hieu`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT cho bảng `ton_kho`
+--
+ALTER TABLE `ton_kho`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT cho bảng `vaitro`
 --
 ALTER TABLE `vaitro`
-  MODIFY `vaitro_id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'ID vai trò', AUTO_INCREMENT=5;
+  MODIFY `vaitro_id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'ID vai trò', AUTO_INCREMENT=10;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -746,11 +1139,42 @@ ALTER TABLE `cart_chitiet`
   ADD CONSTRAINT `lk_chitetcart_size` FOREIGN KEY (`size_id`) REFERENCES `size` (`size_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Các ràng buộc cho bảng `chi_tiet_kiem_ke`
+--
+ALTER TABLE `chi_tiet_kiem_ke`
+  ADD CONSTRAINT `chi_tiet_kiem_ke_ibfk_1` FOREIGN KEY (`phieu_kiem_ke_id`) REFERENCES `phieu_kiem_ke` (`id`),
+  ADD CONSTRAINT `chi_tiet_kiem_ke_ibfk_2` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`);
+
+--
+-- Các ràng buộc cho bảng `chi_tiet_nhom_quyen`
+--
+ALTER TABLE `chi_tiet_nhom_quyen`
+  ADD CONSTRAINT `chi_tiet_nhom_quyen_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `vaitro` (`vaitro_id`),
+  ADD CONSTRAINT `chi_tiet_nhom_quyen_ibfk_2` FOREIGN KEY (`permission_id`) REFERENCES `quyen` (`permission_id`);
+
+--
 -- Các ràng buộc cho bảng `coment`
 --
 ALTER TABLE `coment`
   ADD CONSTRAINT `lk_cmt_kh` FOREIGN KEY (`kh_id`) REFERENCES `khachhang` (`kh_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `lk_cmt_pro` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `import_receipts`
+--
+ALTER TABLE `import_receipts`
+  ADD CONSTRAINT `import_receipts_ibfk_1` FOREIGN KEY (`ncc_id`) REFERENCES `nhacungcap` (`ncc_id`),
+  ADD CONSTRAINT `import_receipts_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `khachhang` (`kh_id`);
+
+--
+-- Các ràng buộc cho bảng `import_receipt_details`
+--
+ALTER TABLE `import_receipt_details`
+  ADD CONSTRAINT `fk_receipt` FOREIGN KEY (`receipt_id`) REFERENCES `import_receipts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `import_receipt_details_ibfk_1` FOREIGN KEY (`receipt_id`) REFERENCES `import_receipts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `import_receipt_details_ibfk_2` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`),
+  ADD CONSTRAINT `import_receipt_details_ibfk_3` FOREIGN KEY (`color_id`) REFERENCES `color` (`color_id`),
+  ADD CONSTRAINT `import_receipt_details_ibfk_4` FOREIGN KEY (`size_id`) REFERENCES `size` (`size_id`);
 
 --
 -- Các ràng buộc cho bảng `order`
@@ -768,13 +1192,38 @@ ALTER TABLE `order_chitiet`
   ADD CONSTRAINT `lk_orderchitiet_size` FOREIGN KEY (`size_id`) REFERENCES `size` (`size_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Các ràng buộc cho bảng `phieu_bao_hanh`
+--
+ALTER TABLE `phieu_bao_hanh`
+  ADD CONSTRAINT `fk_baohanh_khachhang` FOREIGN KEY (`kh_id`) REFERENCES `khachhang` (`kh_id`),
+  ADD CONSTRAINT `fk_baohanh_nhanvien` FOREIGN KEY (`nhan_vien_id`) REFERENCES `khachhang` (`kh_id`),
+  ADD CONSTRAINT `phieu_bao_hanh_ibfk_1` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`),
+  ADD CONSTRAINT `phieu_bao_hanh_ibfk_2` FOREIGN KEY (`kh_id`) REFERENCES `khachhang` (`kh_id`),
+  ADD CONSTRAINT `phieu_bao_hanh_ibfk_3` FOREIGN KEY (`nhan_vien_id`) REFERENCES `khachhang` (`kh_id`);
+
+--
+-- Các ràng buộc cho bảng `phieu_doi`
+--
+ALTER TABLE `phieu_doi`
+  ADD CONSTRAINT `fk_phieudoi_color` FOREIGN KEY (`color_id`) REFERENCES `color` (`color_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_phieudoi_khachhang` FOREIGN KEY (`kh_id`) REFERENCES `khachhang` (`kh_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_phieudoi_order` FOREIGN KEY (`order_id`) REFERENCES `order` (`order_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_phieudoi_pro` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_phieudoi_promoi` FOREIGN KEY (`pro_moi_id`) REFERENCES `products` (`pro_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_phieudoi_size` FOREIGN KEY (`size_id`) REFERENCES `size` (`size_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `phieu_kiem_ke`
+--
+ALTER TABLE `phieu_kiem_ke`
+  ADD CONSTRAINT `fk_kiemke_nhanvien` FOREIGN KEY (`nhan_vien_id`) REFERENCES `khachhang` (`kh_id`);
+
+--
 -- Các ràng buộc cho bảng `products`
 --
-
-
 ALTER TABLE `products`
-  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`cate_id`) REFERENCES `category` (`cate_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_products_nhacungcap` FOREIGN KEY (`ncc_id`) REFERENCES `nhacungcap` (`ncc_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_products_nhacungcap` FOREIGN KEY (`ncc_id`) REFERENCES `nhacungcap` (`ncc_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`cate_id`) REFERENCES `category` (`cate_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `pro_chitiet`
@@ -783,6 +1232,14 @@ ALTER TABLE `pro_chitiet`
   ADD CONSTRAINT `lk_pro_color` FOREIGN KEY (`color_id`) REFERENCES `color` (`color_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `lk_pro_size` FOREIGN KEY (`size_id`) REFERENCES `size` (`size_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `lk_proctiet_pro` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `ton_kho`
+--
+ALTER TABLE `ton_kho`
+  ADD CONSTRAINT `ton_kho_ibfk_1` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`),
+  ADD CONSTRAINT `ton_kho_ibfk_2` FOREIGN KEY (`color_id`) REFERENCES `color` (`color_id`),
+  ADD CONSTRAINT `ton_kho_ibfk_3` FOREIGN KEY (`size_id`) REFERENCES `size` (`size_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

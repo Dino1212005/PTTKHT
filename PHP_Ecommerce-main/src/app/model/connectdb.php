@@ -12,7 +12,8 @@ function get_connect()
     }
 }
 
-function pdo_lastInsertId() {
+function pdo_lastInsertId()
+{
     $conn = get_connect();
     if ($conn) {
         return $conn->lastInsertId();
@@ -69,4 +70,3 @@ function pdo_query_one($sql)
         unset($conn);
     }
 }
-?>

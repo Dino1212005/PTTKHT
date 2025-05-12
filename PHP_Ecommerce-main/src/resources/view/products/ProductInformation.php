@@ -92,7 +92,7 @@ if (isset($_GET['pro_id'])) {
                     </H6>
                     <?php foreach ($pro_chitiet as $proColor) {
                             $color = query_onecolor($proColor['color_id']);
-                            var_dump($color);
+                            // var_dump($color);
                         ?>
                     <div class="d-flex">
                         <div class="form-check abc-checkbox mt-1">

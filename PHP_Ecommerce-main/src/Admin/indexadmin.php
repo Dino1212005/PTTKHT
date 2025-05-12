@@ -29,14 +29,14 @@ if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
         echo "Kết nối cơ sở dữ liệu không thành công.";
         exit;
     }
-
 } else {
     echo "Chưa đăng nhập hoặc không có vaitro_id.";
     exit;
 }
 
 // Hàm lấy quyền của người dùng
-function getUserPermissions($role_id, $pdo) {
+function getUserPermissions($role_id, $pdo)
+{
     $query = "SELECT q.permission_name, q.trang_thai 
               FROM chi_tiet_nhom_quyen ct 
               JOIN quyen q ON ct.permission_id = q.permission_id 
@@ -47,7 +47,8 @@ function getUserPermissions($role_id, $pdo) {
 }
 
 // Kiểm tra quyền truy cập
-function hasPermission($action, $permissions) {
+function hasPermission($action, $permissions)
+{
     foreach ($permissions as $permission) {
         if ($permission['permission_name'] === $action && $permission['trang_thai'] === 1) {
             return true;
@@ -132,7 +133,7 @@ function hasPermission($action, $permissions) {
                         <span class="material-icons-outlined"><i class="bi bi-house-door-fill"></i></span> Trang chủ
                     </a>
                 </li>
-                
+
                 <?php if (hasPermission('Quản lý danh mục', $permissions)) { ?>
                 <li class="sidebar-list-item">
                     <a href="indexadmin.php?act=cate">
@@ -176,7 +177,8 @@ function hasPermission($action, $permissions) {
                 <?php if (hasPermission('Quản lí đơn hàng', $permissions)) { ?>
                 <li class="sidebar-list-item">
                     <a href="indexadmin.php?act=donhang">
-                        <span class="material-icons-outlined"><i class="bi bi-cart-check-fill"></i></span> Danh sách đơn hàng
+                        <span class="material-icons-outlined"><i class="bi bi-cart-check-fill"></i></span> Danh sách đơn
+                        hàng
                     </a>
                 </li>
                 <?php } ?>
@@ -184,7 +186,8 @@ function hasPermission($action, $permissions) {
                 <?php if (hasPermission('Quản lí nhà cung cấp', $permissions)) { ?>
                 <li class="sidebar-list-item">
                     <a href="indexadmin.php?act=ncc">
-                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Nhà cung cấp
+                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Nhà cung
+                        cấp
                     </a>
                 </li>
                 <?php } ?>
@@ -200,7 +203,8 @@ function hasPermission($action, $permissions) {
                 <?php if (hasPermission('Quản lý thương hiệu', $permissions)) { ?>
                 <li class="sidebar-list-item">
                     <a href="indexadmin.php?act=thuonghieu">
-                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý thương hiệu
+                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý
+                        thương hiệu
                     </a>
                 </li>
                 <?php } ?>
@@ -208,7 +212,8 @@ function hasPermission($action, $permissions) {
                 <?php if (hasPermission('Quản lý phiếu nhập', $permissions)) { ?>
                 <li class="sidebar-list-item">
                     <a href="indexadmin.php?act=phieunhap">
-                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý phiếu nhập
+                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý
+                        phiếu nhập
                     </a>
                 </li>
                 <?php } ?>
@@ -216,7 +221,8 @@ function hasPermission($action, $permissions) {
                 <?php if (hasPermission('Quản lý phiếu bảo hành', $permissions)) { ?>
                 <li class="sidebar-list-item">
                     <a href="indexadmin.php?act=bh">
-                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý phiếu bảo hành
+                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý
+                        phiếu bảo hành
                     </a>
                 </li>
                 <?php } ?>
@@ -224,7 +230,8 @@ function hasPermission($action, $permissions) {
                 <?php if (hasPermission('Quản lý phiếu đổi/trả', $permissions)) { ?>
                 <li class="sidebar-list-item">
                     <a href="indexadmin.php?act=doitra">
-                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý phiếu đổi/trả
+                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý
+                        phiếu đổi/trả
                     </a>
                 </li>
                 <?php } ?>
@@ -232,7 +239,8 @@ function hasPermission($action, $permissions) {
                 <?php if (hasPermission('Quản lý phân quyền', $permissions)) { ?>
                 <li class="sidebar-list-item">
                     <a href="indexadmin.php?act=pq">
-                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý phân quyền
+                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý
+                        phân quyền
                     </a>
                 </li>
                 <?php } ?>
@@ -240,7 +248,8 @@ function hasPermission($action, $permissions) {
                 <?php if (hasPermission('Quản lý vai trò', $permissions)) { ?>
                 <li class="sidebar-list-item">
                     <a href="indexadmin.php?act=vaitro">
-                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý vai trò
+                        <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý vai
+                        trò
                     </a>
                 </li>
                 <?php } ?>
@@ -252,76 +261,76 @@ function hasPermission($action, $permissions) {
         if (isset($_GET['act'])) {
             $act = $_GET['act'];
             switch ($act) {
-            case 'xoavt':
+                case 'xoavt':
                     if (isset($_GET['vaitro_id'])) {
                         $vaitro_id = $_GET['vaitro_id'];
 
 
                         deletevaitro($vaitro_id);
                     }
-                    $listvt= getallvt();
+                    $listvt = getallvt();
                     include './qlvaitro/vaitro.php';
                     break;
-            case 'addvt':
+                case 'addvt':
                     if (isset($_POST['addvt'])) {
                         $vaitro_name = $_POST['vaitro_name'];
-                        
+
                         insert_vaitro($vaitro_name);
                     }
-                    $listvt= getallvt();
+                    $listvt = getallvt();
                     include './qlvaitro/vaitro.php';
                     break;
-            case 'addvt1':
+                case 'addvt1':
                     include './qlvaitro/addvt.php';
                     break;
-            case 'vaitro':
-                    $listvt= getallvt();
-                    
+                case 'vaitro':
+                    $listvt = getallvt();
+
                     include './qlvaitro/vaitro.php';
                     break;
                 case 'pq':
-                        $listpq= query_allpq();
-                        include './qlphanquyen/qlpq.php';
-                        break;
+                    $listpq = query_allpq();
+                    include './qlphanquyen/qlpq.php';
+                    break;
                 case 'xoapq':
-                     if (isset($_GET['role_id']) && isset($_GET['permission_id'])) {
-                            $role_id = $_GET['role_id'];
-                            $per_id = $_GET['permission_id'];
-                            delete_permission_of_role($role_id, $per_id);
-                         }
-                        $listpq = query_allpq();
-                        include './qlphanquyen/qlpq.php';
-                        break;
+                    if (isset($_GET['role_id']) && isset($_GET['permission_id'])) {
+                        $role_id = $_GET['role_id'];
+                        $per_id = $_GET['permission_id'];
+                        delete_permission_of_role($role_id, $per_id);
+                    }
+                    $listpq = query_allpq();
+                    include './qlphanquyen/qlpq.php';
+                    break;
                 case 'addpq1':
                     include './qlphanquyen/addpq.php';
                     break;
-                    
+
                 case 'addpq':
                     if (isset($_POST['addpq'])) {
-                        
+
                         $role_id = $_POST['vaitro_id'];  // Sử dụng đúng tên input
                         $permission_id = $_POST['permission_id'];
                         $hanh_dong = $_POST['hanh_dong'] ?? null;
-                    
+
                         if ($hanh_dong === '') {
                             $hanh_dong = null;
                         }
                         insert_permission_to_role($role_id, $permission_id, $hanh_dong);
-                    } 
-                            $listpq = query_allpq();
-                            include './qlphanquyen/qlpq.php';
-                            break;
-                            
+                    }
+                    $listpq = query_allpq();
+                    include './qlphanquyen/qlpq.php';
+                    break;
+
                 case 'doitra':
-                    $listdoitra= getallpd();
+                    $listdoitra = getallpd();
                     include './phieudoitra/doitra.php';
                     break;
                 case 'bh':
-                    $listbh= getall();
+                    $listbh = getall();
                     include './phieubh/bh.php';
                     break;
                 case 'phieunhap':
-                    $listreceipts= query_allreceipts();
+                    $listreceipts = query_allreceipts();
                     include './phieunhap/phieunhap.php';
                     break;
                 case 'thuonghieu':
@@ -474,8 +483,8 @@ function hasPermission($action, $permissions) {
                     break;
                 case 'addbh1':
 
-                        include './phieubh/addbh.php';
-                        break;
+                    include './phieubh/addbh.php';
+                    break;
                 case 'addbh':
                     if (isset($_POST['addbh'])) {
                         $pro_id = $_POST['pro_id'];
@@ -484,29 +493,29 @@ function hasPermission($action, $permissions) {
                         $ngay_bao_hanh = date('Y-m-d');
                         $noi_dung = $_POST['noidung'];
                         $thoi_gian_bao_hanh = (int) $_POST['thoigian'];
-                        
+
                         insert_baohanh($pro_id, $kh_id, $nhan_vien_id, $ngay_bao_hanh, $noi_dung, $thoi_gian_bao_hanh);
                     }
-                
-                    $listbh= getall();
+
+                    $listbh = getall();
                     include './phieubh/bh.php';
                     break;
                 case 'xoabh':
-                        if (isset($_GET['id'])) {
-                            $bh_id = $_GET['id'];
-                            delete_baohanh($bh_id);
-                                }
-                            $listbh= getall();
-                            include './phieubh/bh.php';
-                             break;
+                    if (isset($_GET['id'])) {
+                        $bh_id = $_GET['id'];
+                        delete_baohanh($bh_id);
+                    }
+                    $listbh = getall();
+                    include './phieubh/bh.php';
+                    break;
                 case 'adddt1':
 
-                     include './phieudoitra/adddt.php';
+                    include './phieudoitra/adddt.php';
                     break;
                 case 'adddt':
 
                     if (isset($_POST['adddt'])) {
-                        
+
                         $order_id = $_POST['order_id'] ?? null;
                         $pro_id = $_POST['pro_id'] ?? null;
                         $pro_moi_id = $_POST['pro_moi_id'] ?? null;
@@ -515,7 +524,7 @@ function hasPermission($action, $permissions) {
                         $kh_id = $_POST['kh_id'] ?? null;
                         $ngay_doi = date('Y-m-d');
                         $ly_do = $_POST['lydo'] ?? '';
-                        $trang_thai = $_POST['trangthai'] ?? ''; 
+                        $trang_thai = $_POST['trangthai'] ?? '';
                         if ($pro_moi_id === '') {
                             $pro_moi_id = null;
                         }
@@ -525,67 +534,66 @@ function hasPermission($action, $permissions) {
                         if ($size_id === '') {
                             $size_id = null;
                         }
-                    
-                        
-                            insert_phieu_doi_tra($order_id, $pro_id, $pro_moi_id, $color_id, $size_id, $kh_id, $ngay_doi, $ly_do, $trang_thai);
-                      
-                    } $listdoitra= getallpd();
+
+
+                        insert_phieu_doi_tra($order_id, $pro_id, $pro_moi_id, $color_id, $size_id, $kh_id, $ngay_doi, $ly_do, $trang_thai);
+                    }
+                    $listdoitra = getallpd();
                     include './phieudoitra/doitra.php';
-                    break;              
+                    break;
                 case 'xoadt':
-                        if (isset($_GET['id'])) {
-                            $id = $_GET['id'];
-                            delete_phieu_doi_tra($id);
-                        }
-                        $listdoitra= getallpd();
+                    if (isset($_GET['id'])) {
+                        $id = $_GET['id'];
+                        delete_phieu_doi_tra($id);
+                    }
+                    $listdoitra = getallpd();
                     include './phieudoitra/doitra.php';
-                    break;  
-                       
-                 case 'addpn1':
+                    break;
+
+                case 'addpn1':
 
                     include './phieunhap/addpn.php';
                     break;
                 case 'addpn':
-                        if (isset($_POST['addpn'])) {
-                            $ncc_id = $_POST['ncc_id'];
-                            $pro_id = $_POST['pro_id'];
-                            $color_id = $_POST['color_id'];
-                            $size_id = $_POST['size_id'];
-                            $quantity = (int)$_POST['soluong'];
-                            $unit_price = (float)$_POST['dongia'];
-                            $created_by = $_SESSION['acount']['kh_id'] ?? 0;
-                            $receipt_date = date('Y-m-d H:i:s');
-                            $status = 0;
-                            $note = '';
-                    
-                            // Tính tổng tiền nếu chưa có
-                            if (!isset($_POST['tongtien']) || $_POST['tongtien'] == '') {
-                                $total_price = $quantity * $unit_price;
-                            } else {
-                                $total_price = (float)$_POST['tongtien'];
-                            }
-                    
-                            $last_receipt_id = insert_receipt_return_id($ncc_id, $receipt_date, $total_price, $created_by, $status, $note);
+                    if (isset($_POST['addpn'])) {
+                        $ncc_id = $_POST['ncc_id'];
+                        $pro_id = $_POST['pro_id'];
+                        $color_id = $_POST['color_id'];
+                        $size_id = $_POST['size_id'];
+                        $quantity = (int)$_POST['soluong'];
+                        $unit_price = (float)$_POST['dongia'];
+                        $created_by = $_SESSION['acount']['kh_id'] ?? 0;
+                        $receipt_date = date('Y-m-d H:i:s');
+                        $status = 0;
+                        $note = '';
 
-                            if ($last_receipt_id > 0) {
-                                insert_receipt_detail($last_receipt_id, $pro_id, $color_id, $size_id, $quantity, $unit_price, $total_price);
-                            } else {
-                                echo "❌ Không thể lấy ID phiếu nhập để thêm chi tiết.";
-                            }
-                            
+                        // Tính tổng tiền nếu chưa có
+                        if (!isset($_POST['tongtien']) || $_POST['tongtien'] == '') {
+                            $total_price = $quantity * $unit_price;
+                        } else {
+                            $total_price = (float)$_POST['tongtien'];
                         }
-                    
-                        $listreceipts = query_allreceipts();
-                        include './phieunhap/phieunhap.php';
-                        break;
+
+                        $last_receipt_id = insert_receipt_return_id($ncc_id, $receipt_date, $total_price, $created_by, $status, $note);
+
+                        if ($last_receipt_id > 0) {
+                            insert_receipt_detail($last_receipt_id, $pro_id, $color_id, $size_id, $quantity, $unit_price, $total_price);
+                        } else {
+                            echo "❌ Không thể lấy ID phiếu nhập để thêm chi tiết.";
+                        }
+                    }
+
+                    $listreceipts = query_allreceipts();
+                    include './phieunhap/phieunhap.php';
+                    break;
                 case 'xoapn':
                     if (isset($_GET['id'])) {
                         $pn_id = $_GET['id'];
                         delete_receipt_completely($pn_id);
-                            }
-                        $listreceipts = query_allreceipts();
-                        include './phieunhap/phieunhap.php';
-                        break;
+                    }
+                    $listreceipts = query_allreceipts();
+                    include './phieunhap/phieunhap.php';
+                    break;
                 case 'addcolor1':
 
                     include './qlmau/addcolor.php';
