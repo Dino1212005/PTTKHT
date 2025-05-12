@@ -382,6 +382,126 @@ INSERT INTO `pro_chitiet` (`ctiet_pro_id`, `pro_id`, `color_id`, `size_id`, `sol
 (7, 66, 2, 1, 13),
 (13, 66, 1, 3, 15);
 
+INSERT INTO `pro_chitiet` (`ctiet_pro_id`, `pro_id`, `color_id`, `size_id`, `soluong`) VALUES
+-- Product ID: 41 - Fleece Hoodies
+(14, 41, 1, 1, 70),  -- Xanh, M
+(15, 41, 1, 2, 80),  -- Xanh, L
+(16, 41, 2, 2, 80),  -- Vàng, L
+
+-- Product ID: 43 - School Leavers Hoodie
+(17, 43, 2, 1, 75),  -- Vàng, M
+(18, 43, 2, 3, 80),  -- Vàng, XL
+(19, 43, 3, 2, 75),  -- Trắng, L
+
+-- Product ID: 44 - Branded Premium Basic Mesh Shorts
+(20, 44, 1, 1, 40),  -- Xanh, M
+(21, 44, 1, 2, 50),  -- Xanh, L
+(22, 44, 3, 1, 40),  -- Trắng, M
+
+-- Product ID: 45 - High Waist Trousers
+(23, 45, 2, 2, 75),  -- Vàng, L
+(24, 45, 3, 1, 80),  -- Trắng, M
+(25, 45, 3, 3, 75),  -- Trắng, XL
+
+-- Product ID: 46 - Wizard Frog Corduroy Hat
+(26, 46, 1, 1, 100), -- Xanh, M
+(27, 46, 2, 1, 100), -- Vàng, M
+(28, 46, 3, 1, 100), -- Trắng, M
+
+-- Product ID: 47 - Women Linen Blazer
+(29, 47, 1, 1, 40),  -- Xanh, M
+(30, 47, 1, 2, 45),  -- Xanh, L
+(31, 47, 3, 2, 45),  -- Trắng, L
+
+-- Product ID: 48 - Masculine-cut Blazer
+(32, 48, 1, 2, 130), -- Xanh, L
+(33, 48, 1, 3, 135), -- Xanh, XL
+(34, 48, 3, 3, 135), -- Trắng, XL
+
+-- Product ID: 49 - Sorrows Tshirt
+(35, 49, 1, 1, 150), -- Xanh, M
+(36, 49, 2, 2, 150), -- Vàng, L
+(37, 49, 3, 3, 150), -- Trắng, XL
+
+-- Product ID: 51 - Hat Embroidered Hat
+(38, 51, 1, 1, 75),  -- Xanh, M
+(39, 51, 2, 1, 75),  -- Vàng, M
+(40, 51, 3, 1, 80),  -- Trắng, M
+
+-- Product ID: 52 - Chicken Sweatshirt
+(41, 52, 1, 1, 100), -- Xanh, M
+(42, 52, 1, 2, 100), -- Xanh, L
+(43, 52, 2, 2, 100), -- Vàng, L
+
+-- Product ID: 53 - Have A Good Day Hoodie
+(44, 53, 1, 2, 100), -- Xanh, L
+(45, 53, 2, 1, 100), -- Vàng, M
+(46, 53, 3, 3, 100), -- Trắng, XL
+
+-- Product ID: 54 - Floral Embroidered Cap
+(47, 54, 1, 1, 100), -- Xanh, M
+(48, 54, 2, 1, 100), -- Vàng, M
+(49, 54, 3, 1, 100), -- Trắng, M
+
+-- Product ID: 55 - Drawstring Pants
+(50, 55, 1, 1, 40),  -- Xanh, M
+(51, 55, 1, 2, 45),  -- Xanh, L
+(52, 55, 3, 3, 45),  -- Trắng, XL
+
+-- Product ID: 56 - Loose linen blazer
+(53, 56, 1, 1, 75),  -- Xanh, M
+(54, 56, 1, 2, 80),  -- Xanh, L
+(55, 56, 3, 2, 75),  -- Trắng, L
+
+-- Product ID: 57 - Baseball Hat with Embroidery
+(56, 57, 1, 1, 100), -- Xanh, M
+(57, 57, 2, 1, 100), -- Vàng, M
+(58, 57, 3, 1, 100), -- Trắng, M
+
+-- Product ID: 58 - Embroidered Silly Goose Sweatshirt
+(59, 58, 1, 1, 105), -- Xanh, M
+(60, 58, 1, 2, 110), -- Xanh, L
+(61, 58, 2, 3, 105), -- Vàng, XL
+
+-- Product ID: 59 - Embroidered Hat Initial cap
+(62, 59, 1, 1, 75),  -- Xanh, M
+(63, 59, 2, 1, 80),  -- Vàng, M
+(64, 59, 3, 1, 75),  -- Trắng, M
+
+-- Product ID: 60 - Thin Cotton Blazer
+(65, 60, 1, 2, 75),  -- Xanh, L
+(66, 60, 1, 3, 80),  -- Xanh, XL
+(67, 60, 3, 2, 75),  -- Trắng, L
+
+-- Product ID: 61 đã có trong dữ liệu ban đầu
+-- thêm một màu và kích thước khác
+(68, 61, 1, 2, 60),  -- Xanh, L
+(69, 61, 3, 1, 59),  -- Trắng, M
+
+-- Product ID: 62 - portrait from photo to shirt
+(70, 62, 1, 1, 100), -- Xanh, M
+(71, 62, 1, 2, 100), -- Xanh, L
+(72, 62, 2, 3, 100), -- Vàng, XL
+
+-- Product ID: 63 đã có trong dữ liệu ban đầu
+-- thêm một màu và kích thước khác
+(73, 63, 2, 2, 40),  -- Vàng, L
+(74, 63, 3, 3, 41),  -- Trắng, XL
+
+-- Product ID: 64 - Knitted Sweater Little Dinosaur
+(75, 64, 1, 1, 100), -- Xanh, M
+(76, 64, 1, 2, 100), -- Xanh, L
+(77, 64, 2, 3, 100), -- Vàng, XL
+
+-- Product ID: 65 - Japanese Harajuku Style Hoodies
+(78, 65, 1, 2, 75),  -- Xanh, L
+(79, 65, 2, 1, 80),  -- Vàng, M
+(80, 65, 3, 3, 75),  -- Trắng, XL
+
+-- Product ID: 66 đã có trong dữ liệu ban đầu
+-- thêm một màu và kích thước khác
+(81, 66, 2, 3, 100), -- Vàng, XL
+(82, 66, 3, 2, 100); -- Trắng, L
 -- --------------------------------------------------------
 
 --
