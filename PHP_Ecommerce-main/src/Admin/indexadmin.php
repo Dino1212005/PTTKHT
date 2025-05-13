@@ -630,6 +630,78 @@ function hasPermission($action, $permissions)
                         echo "Không tìm thấy mã phiếu nhập!";
                     }
                     break;
+                case 'suapn':
+                    if (isset($_GET['id'])) {
+                        $receipt_id = $_GET['id'];
+                        $receipt_details = get_receipt_details($receipt_id);
+                        include './phieunhap/suapn.php';
+                    } else {
+                        header("Location: indexadmin.php?act=phieunhap");
+                        exit;
+                    }
+                    break;
+                case 'updatepn':
+                    if (isset($_POST['update_status'])) {
+                        $receipt_id = $_POST['receipt_id'];
+                        $status = $_POST['status'];
+                        $note = $_POST['note'];
+                        // Gọi hàm cập nhật trạng thái phiếu nhập
+                        $result = update_receipt_status($receipt_id, $status, $note);
+                        if ($result) {
+                            // Thông báo thành công
+                            echo "<script>alert('Cập nhật trạng thái phiếu nhập thành công!');</script>";
+                        } else {
+                            // Thông báo lỗi
+                            echo "<script>alert('Lỗi cập nhật trạng thái phiếu nhập!');</script>";
+                        }
+                    }
+                    // Chuyển hướng về trang chi tiết phiếu nhập
+                    header("Location: indexadmin.php?act=chitietpn&id=" . $_POST['receipt_id']);
+                    exit;
+                    break;
+                case 'addpnchitiet':
+                    if (isset($_POST['add_detail'])) {
+                        $receipt_id = $_POST['receipt_id'];
+                        $pro_id = $_POST['pro_id'];
+                        $color_id = $_POST['color_id'];
+                        $size_id = $_POST['size_id'];
+                        $quantity = $_POST['quantity'];
+                        $unit_price = $_POST['unit_price'];
+                        $total_price = $quantity * $unit_price;
+
+                        // Gọi hàm thêm chi tiết phiếu nhập
+                        $result = insert_receipt_detail($receipt_id, $pro_id, $color_id, $size_id, $quantity, $unit_price, $total_price);
+                        if ($result) {
+                            // Thông báo thành công
+                            echo "<script>alert('Thêm chi tiết phiếu nhập thành công!');</script>";
+                        } else {
+                            // Thông báo lỗi
+                            echo "<script>alert('Lỗi thêm chi tiết phiếu nhập!');</script>";
+                        }
+                    }
+                    // Chuyển hướng về trang cập nhật phiếu nhập
+                    header("Location: indexadmin.php?act=suapn&id=" . $_POST['receipt_id']);
+                    exit;
+                    break;
+                case 'xoapnchitiet':
+                    if (isset($_GET['id']) && isset($_GET['receipt_id'])) {
+                        $detail_id = $_GET['id'];
+                        $receipt_id = $_GET['receipt_id'];
+
+                        // Gọi hàm xóa chi tiết phiếu nhập
+                        $result = delete_receipt_detail($detail_id);
+                        if ($result) {
+                            // Thông báo thành công
+                            echo "<script>alert('Xóa chi tiết phiếu nhập thành công!');</script>";
+                        } else {
+                            // Thông báo lỗi
+                            echo "<script>alert('Lỗi xóa chi tiết phiếu nhập!');</script>";
+                        }
+                    }
+                    // Chuyển hướng về trang cập nhật phiếu nhập
+                    header("Location: indexadmin.php?act=suapn&id=" . $_GET['receipt_id']);
+                    exit;
+                    break;
                 case 'addcolor1':
 
                     include './qlmau/addcolor.php';

@@ -86,7 +86,79 @@ function insert_receipt_detail($receipt_id, $pro_id, $color_id, $size_id, $quant
     $sql = "INSERT INTO import_receipt_details (receipt_id, pro_id, color_id, size_id, quantity, unit_price, total_price)
             VALUES (?, ?, ?, ?, ?, ?, ?)";
     pdo_execute($sql, $receipt_id, $pro_id, $color_id, $size_id, $quantity, $unit_price, $total_price);
+
+    // Cập nhật số lượng tồn kho của sản phẩm
+    update_product_stock($pro_id, $color_id, $size_id, $quantity);
+
+    return true;
 }
+
+// Hàm cập nhật số lượng tồn kho khi nhập hàng
+function update_product_stock($pro_id, $color_id, $size_id, $quantity)
+{
+    // Kiểm tra xem đã có bản ghi trong product_detail chưa
+    $sql_check = "SELECT * FROM product_detail WHERE pro_id = ? AND color_id = ? AND size_id = ?";
+    $result = pdo_query_one($sql_check, $pro_id, $color_id, $size_id);
+
+    if ($result) {
+        // Nếu đã có, cập nhật số lượng
+        $sql = "UPDATE product_detail SET soluong = soluong + ? WHERE pro_id = ? AND color_id = ? AND size_id = ?";
+        pdo_execute($sql, $quantity, $pro_id, $color_id, $size_id);
+    } else {
+        // Nếu chưa có, thêm mới
+        $sql = "INSERT INTO product_detail (pro_id, color_id, size_id, soluong) VALUES (?, ?, ?, ?)";
+        pdo_execute($sql, $pro_id, $color_id, $size_id, $quantity);
+    }
+
+    return true;
+}
+
+// Hàm cập nhật trạng thái phiếu nhập
+function update_receipt_status($receipt_id, $status, $note)
+{
+    try {
+        $sql = "UPDATE import_receipts SET status = ?, note = ? WHERE id = ?";
+        pdo_execute($sql, $status, $note, $receipt_id);
+        return true;
+    } catch (Exception $e) {
+        return false;
+    }
+}
+
+// Hàm xóa chi tiết phiếu nhập
+function delete_receipt_detail($detail_id)
+{
+    try {
+        // Lấy thông tin chi tiết trước khi xóa để cập nhật lại số lượng tồn kho
+        $sql_get = "SELECT receipt_id, pro_id, color_id, size_id, quantity FROM import_receipt_details WHERE id = ?";
+        $detail = pdo_query_one($sql_get, $detail_id);
+
+        if ($detail) {
+            // Kiểm tra trạng thái phiếu nhập
+            $sql_check = "SELECT status FROM import_receipts WHERE id = ?";
+            $receipt = pdo_query_one($sql_check, $detail['receipt_id']);
+
+            // Nếu phiếu đã nhập kho (status = 1), cần giảm số lượng tồn kho khi xóa chi tiết
+            if ($receipt && $receipt['status'] == 1) {
+                // Cập nhật giảm số lượng tồn kho
+                $sql_update = "UPDATE product_detail 
+                              SET soluong = GREATEST(0, soluong - ?) 
+                              WHERE pro_id = ? AND color_id = ? AND size_id = ?";
+                pdo_execute($sql_update, $detail['quantity'], $detail['pro_id'], $detail['color_id'], $detail['size_id']);
+            }
+
+            // Xóa chi tiết
+            $sql_delete = "DELETE FROM import_receipt_details WHERE id = ?";
+            pdo_execute($sql_delete, $detail_id);
+
+            return true;
+        }
+        return false;
+    } catch (Exception $e) {
+        return false;
+    }
+}
+
 function delete_receipt_completely($receipt_id)
 {
     try {
@@ -104,7 +176,9 @@ function delete_receipt_completely($receipt_id)
         $stmt_main->execute([$receipt_id]);
 
         $conn->commit();
+        return true;
     } catch (PDOException $e) {
         $conn->rollBack();
+        return false;
     }
 }
