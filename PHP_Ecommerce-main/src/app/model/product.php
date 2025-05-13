@@ -2,7 +2,7 @@
 
 
 
-function queryallpro($key, $idcate)
+function queryallpro($key, $idcate, $offset = null, $limit = null)
 {
     $sql = "select * from products where trangthai = 0";
     if ($key != '') {
@@ -13,6 +13,12 @@ function queryallpro($key, $idcate)
     }
 
     $sql .= " order by pro_id desc";
+
+    // Add pagination if offset and limit are provided
+    if ($offset !== null && $limit !== null) {
+        $sql .= " limit $offset, $limit";
+    }
+
     $result = pdo_queryall($sql);
     return $result;
 }
@@ -238,4 +244,18 @@ function  getAllChitietSp($id)
     $sql  = "SELECT * FROM `pro_chitiet` WHERE pro_id = $id";
     $result = pdo_queryall($sql);
     return $result;
+}
+
+function count_products($key, $idcate)
+{
+    $sql = "select COUNT(*) as total from products where trangthai = 0";
+    if ($key != '') {
+        $sql .= " and pro_name like '%$key%'";
+    }
+    if ($idcate > 0) {
+        $sql .= " and cate_id = $idcate";
+    }
+
+    $result = pdo_query_one($sql);
+    return $result['total'];
 }

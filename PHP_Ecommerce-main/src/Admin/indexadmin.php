@@ -127,15 +127,20 @@ function hasPermission($action, $permissions)
                 <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
             </div>
 
+            <?php
+            // Get current active page
+            $current_act = isset($_GET['act']) ? $_GET['act'] : 'home';
+            ?>
+
             <ul class="sidebar-list">
-                <li class="sidebar-list-item">
+                <li class="sidebar-list-item <?php echo ($current_act == 'home') ? 'active' : ''; ?>">
                     <a href="indexadmin.php?act=home">
                         <span class="material-icons-outlined"><i class="bi bi-house-door-fill"></i></span> Trang chủ
                     </a>
                 </li>
 
                 <?php if (hasPermission('Quản lý danh mục', $permissions)) { ?>
-                <li class="sidebar-list-item">
+                <li class="sidebar-list-item <?php echo ($current_act == 'cate') ? 'active' : ''; ?>">
                     <a href="indexadmin.php?act=cate">
                         <span class="material-icons-outlined"><i class="bi bi-card-list"></i></span> Danh mục
                     </a>
@@ -143,7 +148,8 @@ function hasPermission($action, $permissions)
                 <?php } ?>
 
                 <?php if (hasPermission('Quản lí sản phẩm', $permissions)) { ?>
-                <li class="sidebar-list-item">
+                <li
+                    class="sidebar-list-item <?php echo (in_array($current_act, ['pro', 'thempro', 'suapro', 'chitietadmin', 'thungrac_product'])) ? 'active' : ''; ?>">
                     <a href="indexadmin.php?act=pro">
                         <span class="material-icons-outlined">fact_check</span> Sản phẩm
                     </a>
@@ -151,7 +157,7 @@ function hasPermission($action, $permissions)
                 <?php } ?>
 
                 <?php if (hasPermission('Quản lí người dùng', $permissions)) { ?>
-                <li class="sidebar-list-item">
+                <li class="sidebar-list-item <?php echo ($current_act == 'listtk') ? 'active' : ''; ?>">
                     <a href="indexadmin.php?act=listtk">
                         <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Người dùng
                     </a>
@@ -159,7 +165,7 @@ function hasPermission($action, $permissions)
                 <?php } ?>
 
                 <?php if (hasPermission('Quản lí bình luận', $permissions)) { ?>
-                <li class="sidebar-list-item">
+                <li class="sidebar-list-item <?php echo ($current_act == 'listbl') ? 'active' : ''; ?>">
                     <a href="indexadmin.php?act=listbl">
                         <span class="material-icons-outlined"><i class="bi bi-chat-text-fill"></i></span> Bình luận
                     </a>
@@ -167,7 +173,8 @@ function hasPermission($action, $permissions)
                 <?php } ?>
 
                 <?php if (hasPermission('Quản lí thống kê', $permissions)) { ?>
-                <li class="sidebar-list-item">
+                <li
+                    class="sidebar-list-item <?php echo (in_array($current_act, ['thongke', 'thongke_sanpham', 'thongke_doanhthu', 'thongke_donhang'])) ? 'active' : ''; ?>">
                     <a href="indexadmin.php?act=thongke_sanpham">
                         <span class="material-icons-outlined">poll</span> Thống kê
                     </a>
@@ -175,7 +182,8 @@ function hasPermission($action, $permissions)
                 <?php } ?>
 
                 <?php if (hasPermission('Quản lí đơn hàng', $permissions)) { ?>
-                <li class="sidebar-list-item">
+                <li
+                    class="sidebar-list-item <?php echo (in_array($current_act, ['donhang', 'chitietdh', 'suadonhang', 'in_hoadon'])) ? 'active' : ''; ?>">
                     <a href="indexadmin.php?act=donhang">
                         <span class="material-icons-outlined"><i class="bi bi-cart-check-fill"></i></span> Danh sách đơn
                         hàng
@@ -184,7 +192,8 @@ function hasPermission($action, $permissions)
                 <?php } ?>
 
                 <?php if (hasPermission('Quản lí nhà cung cấp', $permissions)) { ?>
-                <li class="sidebar-list-item">
+                <li
+                    class="sidebar-list-item <?php echo (in_array($current_act, ['ncc', 'themNCC', 'suaNCC'])) ? 'active' : ''; ?>">
                     <a href="indexadmin.php?act=ncc">
                         <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Nhà cung
                         cấp
@@ -193,7 +202,8 @@ function hasPermission($action, $permissions)
                 <?php } ?>
 
                 <?php if (hasPermission('Quản lí màu', $permissions)) { ?>
-                <li class="sidebar-list-item">
+                <li
+                    class="sidebar-list-item <?php echo (in_array($current_act, ['color', 'addcolor', 'updatecolor'])) ? 'active' : ''; ?>">
                     <a href="indexadmin.php?act=color">
                         <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý màu
                     </a>
@@ -201,7 +211,8 @@ function hasPermission($action, $permissions)
                 <?php } ?>
 
                 <?php if (hasPermission('Quản lý thương hiệu', $permissions)) { ?>
-                <li class="sidebar-list-item">
+                <li
+                    class="sidebar-list-item <?php echo (in_array($current_act, ['thuonghieu', 'addbrand', 'suabrand'])) ? 'active' : ''; ?>">
                     <a href="indexadmin.php?act=thuonghieu">
                         <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý
                         thương hiệu
@@ -210,7 +221,8 @@ function hasPermission($action, $permissions)
                 <?php } ?>
 
                 <?php if (hasPermission('Quản lý phiếu nhập', $permissions)) { ?>
-                <li class="sidebar-list-item">
+                <li
+                    class="sidebar-list-item <?php echo (in_array($current_act, ['phieunhap', 'addphieunhap', 'suaphieunhap'])) ? 'active' : ''; ?>">
                     <a href="indexadmin.php?act=phieunhap">
                         <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý
                         phiếu nhập
@@ -219,7 +231,8 @@ function hasPermission($action, $permissions)
                 <?php } ?>
 
                 <?php if (hasPermission('Quản lý phiếu bảo hành', $permissions)) { ?>
-                <li class="sidebar-list-item">
+                <li
+                    class="sidebar-list-item <?php echo (in_array($current_act, ['bh', 'addbh1', 'addbh'])) ? 'active' : ''; ?>">
                     <a href="indexadmin.php?act=bh">
                         <span class="material-icons-outlined"><i class="bi bi-person-vcard-fill"></i></span> Quản lý
                         phiếu bảo hành
