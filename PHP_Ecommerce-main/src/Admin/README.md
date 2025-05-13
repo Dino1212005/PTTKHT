@@ -2,7 +2,8 @@
 
 ## Thông tin truy cập
 
-- **URL đăng nhập**: `/Admin/admin_login.php`
+- **URL đăng nhập**: `http://localhost/PTTKHT/PHP_Ecommerce-main/src/Admin/admin_login.php`
+- **URL quản trị**: `http://localhost/PTTKHT/PHP_Ecommerce-main/src/Admin/indexadmin.php?act=home`
 - **Chỉ dành cho**: Admin và nhân viên (vaitro_id khác 2)
 
 ## Tài khoản mặc định
@@ -58,6 +59,6 @@ Các quyền chính trong hệ thống:
 
 ## Đường dẫn quan trọng
 
-- `/Admin/indexadmin.php`: Trang chủ quản trị
-- `/Admin/admin_login.php`: Trang đăng nhập quản trị
-- `/index.php`: Quay lại trang người dùng
+- `http://localhost/PTTKHT/PHP_Ecommerce-main/src/Admin/indexadmin.php`: Trang chủ quản trị
+- `http://localhost/PTTKHT/PHP_Ecommerce-main/src/Admin/admin_login.php`: Trang đăng nhập quản trị
+- `http://localhost/PTTKHT/PHP_Ecommerce-main/src/index.php`: Quay lại trang người dùng

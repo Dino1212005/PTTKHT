@@ -20,7 +20,8 @@ if (isset($_POST['login'])) {
             header("Location:index.php?act=home");
             exit();
         } else {
-            $loginMess = "This account is an admin or staff account. Please <a href='Admin/admin_login.php'>login here</a> instead.";
+            // Nếu là admin hoặc nhân viên, báo lỗi đăng nhập sai
+            $loginMess = "Incorrect email address or password!";
         }
     } else {
         $loginMess = "Incorrect email address or password!";
@@ -47,5 +48,4 @@ if (isset($_POST['login'])) {
         <button type="submit" class="btn btn-dark w-100 text-uppercase" name="login">Login</button>
     </form>
     <p class="mt-4">You don't have account? <a href="index.php?act=register">Sign up</a></p>
-    <p class="mt-2"><small>Are you an admin or staff? <a href="Admin/admin_login.php">Login here</a></small></p>
 </div>
