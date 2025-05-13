@@ -1274,3 +1274,46 @@ ALTER TABLE `ton_kho`
   ADD CONSTRAINT `ton_kho_ibfk_2` FOREIGN KEY (`color_id`) REFERENCES `color` (`color_id`),
   ADD CONSTRAINT `ton_kho_ibfk_3` FOREIGN KEY (`size_id`) REFERENCES `size` (`size_id`);
 COMMIT;
+
+-- --------------------------------------------------------
+-- Add auto-assignment of permissions to roles
+-- --------------------------------------------------------
+
+-- Clear existing permissions assignments
+DELETE FROM `chi_tiet_nhom_quyen`;
+
+-- Admin role (vaitro_id = 1) - Gets all permissions
+INSERT INTO `chi_tiet_nhom_quyen` (`role_id`, `permission_id`) VALUES
+(1, 'Q1'),  -- Truy cập quản lý
+(1, 'Q2'),  -- Quản lý danh mục
+(1, 'Q3'),  -- Quản lí sản phẩm
+(1, 'Q4'),  -- Quản lí người dùng
+(1, 'Q5'),  -- Quản lí bình luận
+(1, 'Q6'),  -- Quản lí thống kê
+(1, 'Q7'),  -- Quản lí đơn hàng
+(1, 'Q8'),  -- Quản lí nhà cung cấp
+(1, 'Q9'),  -- Quản lí màu
+(1, 'Q10'), -- Quản lý thương hiệu
+(1, 'Q11'), -- Quản lý phiếu nhập
+(1, 'Q12'), -- Quản lý phiếu bảo hành
+(1, 'Q13'), -- Quản lý phiếu đổi/trả
+(1, 'Q14'), -- Quản lý phân quyền
+(1, 'Q15'); -- Quản lý vai trò
+
+-- Staff role (vaitro_id = 3) - Gets selected permissions
+INSERT INTO `chi_tiet_nhom_quyen` (`role_id`, `permission_id`) VALUES
+(3, 'Q1'),  -- Truy cập quản lý
+(3, 'Q2'),  -- Quản lý danh mục
+(3, 'Q3'),  -- Quản lí sản phẩm
+(3, 'Q5'),  -- Quản lí bình luận
+(3, 'Q7'),  -- Quản lí đơn hàng
+(3, 'Q9'),  -- Quản lí màu
+(3, 'Q12'), -- Quản lý phiếu bảo hành
+(3, 'Q13'); -- Quản lý phiếu đổi/trả
+
+-- Warehouse Staff role (vaitro_id = 4) - Gets inventory-related permissions
+INSERT INTO `chi_tiet_nhom_quyen` (`role_id`, `permission_id`) VALUES
+(4, 'Q1'),  -- Truy cập quản lý
+(4, 'Q3'),  -- Quản lí sản phẩm (read-only)
+(4, 'Q8'),  -- Quản lí nhà cung cấp
+(4, 'Q11'); -- Quản lý phiếu nhập
