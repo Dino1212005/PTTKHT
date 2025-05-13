@@ -272,6 +272,11 @@ function hasPermission($action, $permissions)
                     </a>
                 </li>
                 <?php } ?>
+                <li class="sidebar-list-item">
+                    <a href="logout_admin.php" class="text-danger">
+                        <span class="material-icons-outlined"><i class="bi bi-box-arrow-right"></i></span> Đăng xuất
+                    </a>
+                </li>
             </ul>
         </aside>
 
