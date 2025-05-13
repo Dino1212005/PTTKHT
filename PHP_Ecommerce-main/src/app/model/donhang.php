@@ -87,19 +87,12 @@
         $result =  pdo_query_one($sql);
         return $result;
     }
-    function updatedh($order_trangthai, $order_id)
-    {
-        if ($order_trangthai === 'Đã nhận hàng') {
-            // Nếu đơn đã nhận hàng, cập nhật trạng thái và ngày nhận hàng (date_rev)
-            $ngay_nhan = date('Y-m-d'); // hoặc date('Y-m-d H:i:s') nếu dùng DATETIME
-            $sql = "UPDATE `order` SET order_trangthai = '$order_trangthai', date_rev = '$ngay_nhan' WHERE order_id = $order_id";
-        } else {
-            // Cập nhật chỉ trạng thái
-            $sql = "UPDATE `order` SET order_trangthai = '$order_trangthai' WHERE order_id = $order_id";
-        }
+   function updatedh($order_trangthai, $order_id)
+{
+    $sql = "UPDATE `order` SET order_trangthai = '$order_trangthai' WHERE order_id = $order_id";
+    pdo_execute($sql);
+}
 
-        pdo_execute($sql);
-    }
 
     function loadall_chitietdh($order_id)
     {

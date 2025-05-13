@@ -72,7 +72,7 @@ if (isset($_SESSION['acount']) && $_SESSION['acount']) {
                 ?>
             <div>
                 <div class="mt-3 cart-item d-flex gap-3 border-bottom align-items-center w-100">
-                    <input type="text" name="size[]" id="" value="<?= $cartItem['size_id'] ?>">
+                    <input type="text" name="size[]" id="" value="<?= $cartItem['size_id'] ?>" hidden>
                     <input type="text" name="color[]" id="" value="<?= $cartItem['color_id'] ?>" hidden>
 
                     <input type="text" value="<?= $pro['pro_id'] ?>" name="pro_id[]" hidden>
