@@ -17,20 +17,26 @@ include '../app/model/qlpq.php';
 session_start();
 ob_start();
 
-if (isset($_SESSION['acount']) && isset($_SESSION['acount']['vaitro_id'])) {
-    $vaitro_id = $_SESSION['acount']['vaitro_id'] ?? null;
+// Kiểm tra đăng nhập và quyền truy cập
+if (!isset($_SESSION['acount']) || !isset($_SESSION['acount']['vaitro_id'])) {
+    // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập admin
+    header("Location: admin_login.php");
+    exit;
+} else if ($_SESSION['acount']['vaitro_id'] == 2) {
+    // Nếu là user thường, không cho phép truy cập
+    header("Location: admin_login.php?error=unauthorized");
+    exit;
+}
 
-    // Lấy kết nối
-    $pdo = get_connect();
-    if ($pdo) {
-        // Lấy quyền của người dùng
-        $permissions = getUserPermissions($vaitro_id, $pdo);
-    } else {
-        echo "Kết nối cơ sở dữ liệu không thành công.";
-        exit;
-    }
+$vaitro_id = $_SESSION['acount']['vaitro_id'];
+
+// Lấy kết nối
+$pdo = get_connect();
+if ($pdo) {
+    // Lấy quyền của người dùng
+    $permissions = getUserPermissions($vaitro_id, $pdo);
 } else {
-    echo "Chưa đăng nhập hoặc không có vaitro_id.";
+    echo "Kết nối cơ sở dữ liệu không thành công.";
     exit;
 }
 

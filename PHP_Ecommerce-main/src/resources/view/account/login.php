@@ -1,4 +1,3 @@
-
 <?php
 if (isset($_POST['login'])) {
     $email = $_POST['email'];
@@ -10,41 +9,31 @@ if (isset($_POST['login'])) {
     if (empty($password)) {
         $passlMess = "*Please enter your password";
     }
-    // $password = password_hash($password, PASSWORD_DEFAULT);
+
     //check username and password
-    $checkuser = check_user($email,$password);
-    
-    if(is_array($checkuser)){
-        $_SESSION['acount'] = $checkuser;
-        header("Location:index.php?act=home");
-        
-    }
-    else {
+    $checkuser = check_user($email, $password);
+
+    if (is_array($checkuser)) {
+        // Kiểm tra vai trò người dùng
+        if ($checkuser['vaitro_id'] == 2) { // Chỉ cho phép User đăng nhập
+            $_SESSION['acount'] = $checkuser;
+            header("Location:index.php?act=home");
+            exit();
+        } else {
+            $loginMess = "This account is an admin or staff account. Please <a href='Admin/admin_login.php'>login here</a> instead.";
+        }
+    } else {
         $loginMess = "Incorrect email address or password!";
     }
-    if(is_array($checkuser)){
-        $_SESSION['acount'] = $checkuser;
-    
-        // Sửa đoạn này:
-        $_SESSION['user'] = [
-            'kh_name' => $checkuser['kh_name'],
-            'vaitro_id' => $checkuser['vaitro_id']
-        ];
-    
-        header("Location:index.php?act=home");
-        exit(); // Đừng quên thêm exit sau khi redirect
-    }
-    
 }
-
-
 ?>
 <div class="form-wrapper d-flex align-items-center justify-content-center flex-column">
     <h2 class="fw-bold">Login</h2>
     <form class="form" method="post" action="">
         <div class="mb-3">
             <label for="email" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="email" name="email">
+            <input type="email" class="form-control" id="email" name="email"
+                value="<?php echo isset($_POST['email']) ? $_POST['email'] : ''; ?>">
             <p class="text-danger form-message mt-1"><?php echo !empty($emailMess) ? $emailMess : ""  ?></p>
         </div>
         <div class="mb-3">
@@ -52,8 +41,11 @@ if (isset($_POST['login'])) {
             <input type="password" class="form-control" id="password" name="password">
             <p class="text-danger form-message mt-1"><?php echo !empty($passlMess) ? $passlMess : ""  ?></p>
         </div>
-        <p class="text-danger form-message mt-1"><?php echo !empty($loginMess) ? $loginMess : ""  ?></p>
+        <?php if (!empty($loginMess)): ?>
+            <div class="alert alert-danger"><?php echo $loginMess; ?></div>
+        <?php endif; ?>
         <button type="submit" class="btn btn-dark w-100 text-uppercase" name="login">Login</button>
     </form>
     <p class="mt-4">You don't have account? <a href="index.php?act=register">Sign up</a></p>
+    <p class="mt-2"><small>Are you an admin or staff? <a href="Admin/admin_login.php">Login here</a></small></p>
 </div>
