@@ -1,15 +1,25 @@
 <div class="row justify-content-center g-3">
     <div class="col-3 d-none d-md-block ">
         <div class="list-group">
-            <a href="index.php?act=home" class="list-group-item text-capitalize active bg-black">
+            <?php
+            // Get currently selected category ID if any
+            $current_category_id = isset($_GET['category']) ? (int)$_GET['category'] : 0;
+            ?>
+            <div class="list-group-item text-capitalize bg-dark text-white">
                 Danh mục
+            </div>
+            <a href="index.php?act=home"
+                class="list-group-item text-capitalize <?php echo (!isset($_GET['category'])) ? 'active bg-info' : 'text-dark'; ?>">
+                Tất cả sản phẩm
             </a>
             <?php
             $categories = query_allcate();
             if (count($categories)) {
-                foreach ($categories as  $category) {
+                foreach ($categories as $category) {
+                    $isActive = (isset($_GET['category']) && $_GET['category'] == $category['cate_id']) ? 'active bg-info' : 'text-dark';
             ?>
-                    <a href="index.php?act=home&category=<?php echo $category['cate_id'] ?>" class="list-group-item text-capitalize text-dark"><?php echo $category['cate_name']; ?></a>
+            <a href="index.php?act=home&category=<?php echo $category['cate_id'] ?>"
+                class="list-group-item text-capitalize <?php echo $isActive; ?>"><?php echo $category['cate_name']; ?></a>
             <?php
                 }
             }
@@ -72,61 +82,68 @@
                 foreach ($products as $product) {
                     extract($product)
             ?>
-                    <div class="col-12 col-lg-4 col-md-6 user-select-none animate__animated animate__zoomIn">
-                        <div class="product-image">
-                            <a href="index.php?act=productinformation&pro_id=<?php echo $pro_id ?>">
-                                <img class="card-img-top rounded-4 " src="./Admin/sanpham/img/<?php echo $pro_img ?>" alt="Card image cap">
-                            </a>
+            <div class="col-12 col-lg-4 col-md-6 user-select-none animate__animated animate__zoomIn">
+                <div class="product-image">
+                    <a href="index.php?act=productinformation&pro_id=<?php echo $pro_id ?>">
+                        <img class="card-img-top rounded-4 " src="./Admin/sanpham/img/<?php echo $pro_img ?>"
+                            alt="Card image cap">
+                    </a>
 
-                        </div>
-                        <div class="card-body">
-                            <a class="card-title two-line-clamp my-3 fs-6 text-dark text-decoration-none " href="index.php?act=productinformation&pro_id=<?php echo $pro_id ?>"><?php echo $pro_name ?></a>
-                            <div class="d-flex align-items-center justify-content-between px-2">
-                                <p class="card-text fw-bold fs-2 mb-0">$<?php echo $pro_price ?></p>
-                                <p class="text-secondary ps-2 mt-3">by <?php echo $pro_brand ?></p>
-                            </div>
-                        </div>
+                </div>
+                <div class="card-body">
+                    <a class="card-title two-line-clamp my-3 fs-6 text-dark text-decoration-none "
+                        href="index.php?act=productinformation&pro_id=<?php echo $pro_id ?>"><?php echo $pro_name ?></a>
+                    <div class="d-flex align-items-center justify-content-between px-2">
+                        <p class="card-text fw-bold fs-2 mb-0">$<?php echo $pro_price ?></p>
+                        <p class="text-secondary ps-2 mt-3">by <?php echo $pro_brand ?></p>
                     </div>
+                </div>
+            </div>
 
-                <?php
+            <?php
                 }
 
                 // Display pagination for category
                 $total_pages = ceil($total_products / $products_per_page);
                 if ($total_pages > 1) {
                 ?>
-                    <div class="pagination-container mt-4">
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination justify-content-center">
-                                <?php if ($page > 1): ?>
-                                    <li class="page-item">
-                                        <a class="page-link" href="index.php?act=home&category=<?php echo $cate_id ?>&page=<?php echo $page - 1; ?>" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-                                <?php endif; ?>
+            <div class="pagination-container mt-4">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <?php if ($page > 1): ?>
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="index.php?act=home&category=<?php echo $cate_id ?>&page=<?php echo $page - 1; ?>"
+                                aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <?php endif; ?>
 
-                                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                                    <li class="page-item <?php echo ($i == $page) ? 'active' : ''; ?>">
-                                        <a class="page-link" href="index.php?act=home&category=<?php echo $cate_id ?>&page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                                    </li>
-                                <?php endfor; ?>
+                        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                        <li class="page-item <?php echo ($i == $page) ? 'active' : ''; ?>">
+                            <a class="page-link"
+                                href="index.php?act=home&category=<?php echo $cate_id ?>&page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                        </li>
+                        <?php endfor; ?>
 
-                                <?php if ($page < $total_pages): ?>
-                                    <li class="page-item">
-                                        <a class="page-link" href="index.php?act=home&category=<?php echo $cate_id ?>&page=<?php echo $page + 1; ?>" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                <?php endif; ?>
-                            </ul>
-                        </nav>
-                    </div>
-                <?php }
+                        <?php if ($page < $total_pages): ?>
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="index.php?act=home&category=<?php echo $cate_id ?>&page=<?php echo $page + 1; ?>"
+                                aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <?php endif; ?>
+                    </ul>
+                </nav>
+            </div>
+            <?php }
             } elseif (isset($_GET['filter'])) { ?>
-                <div class="card-body">
-                    <div class="row">
-                        <?php
+            <div class="card-body">
+                <div class="row">
+                    <?php
                         if (isset($_GET['start_price']) && isset($_GET['end_price'])) {
                             $startprice = $_GET['start_price'];
                             $endprice = $_GET['end_price'];
@@ -142,30 +159,32 @@
                             foreach ($query_run as $items) {
                                 // 
                         ?>
-                                <div class="col-12 col-lg-4 col-md-6 user-select-none animate__animated animate__zoomIn">
-                                    <div class="product-image">
-                                        <a href="index.php?act=productinformation&pro_id=<?php echo $items['pro_id'] ?>">
-                                            <img class="card-img-top rounded-4 " src="./Admin/sanpham/img/<?php echo $items['pro_img'] ?> ?>" alt="Card image cap">
-                                        </a>
+                    <div class="col-12 col-lg-4 col-md-6 user-select-none animate__animated animate__zoomIn">
+                        <div class="product-image">
+                            <a href="index.php?act=productinformation&pro_id=<?php echo $items['pro_id'] ?>">
+                                <img class="card-img-top rounded-4 "
+                                    src="./Admin/sanpham/img/<?php echo $items['pro_img'] ?> ?>" alt="Card image cap">
+                            </a>
 
-                                    </div>
-                                    <div class="card-body">
-                                        <a class="card-title two-line-clamp my-3 fs-6 text-dark text-decoration-none " href="index.php?act=productinformation&pro_id=<?php echo $items['pro_id'] ?>"><?php echo $items['pro_name'] ?></a>
-                                        <div class="d-flex align-items-center justify-content-between px-2">
-                                            <p class="card-text fw-bold fs-2 mb-0">$<?php echo $items['pro_price'] ?></p>
-                                            <p class="text-secondary ps-2 mt-3">by <?php echo $items['pro_brand'] ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                        <?php
+                        </div>
+                        <div class="card-body">
+                            <a class="card-title two-line-clamp my-3 fs-6 text-dark text-decoration-none "
+                                href="index.php?act=productinformation&pro_id=<?php echo $items['pro_id'] ?>"><?php echo $items['pro_name'] ?></a>
+                            <div class="d-flex align-items-center justify-content-between px-2">
+                                <p class="card-text fw-bold fs-2 mb-0">$<?php echo $items['pro_price'] ?></p>
+                                <p class="text-secondary ps-2 mt-3">by <?php echo $items['pro_brand'] ?></p>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
                             }
                         } else {
                             echo "No Record Found";
                         }
                         ?>
-                    </div>
                 </div>
-                <?php
+            </div>
+            <?php
             } elseif (isset($_POST['searchSubmit'])) {
                 if (isset($_POST["searchSubmit"])) {
                     $searchProduct = $_POST["searchProduct"];
@@ -173,32 +192,34 @@
                     // var_dump($searchProducts);
                     if (isset($searchProducts) && !is_null($searchProducts)) {
                         foreach ($searchProducts as $searchPro) : ?>
-                            <?php
+            <?php
                             if (isset($_POST['searchProduct']) && ($_POST['searchProduct'] != "")) { ?>
-                                <div class="col-12 col-lg-4 col-md-6 user-select-none animate__animated animate__zoomIn">
-                                    <div class="product-image">
-                                        <a href="index.php?act=productinformation&pro_id=<?php echo $searchPro['pro_id'] ?>">
-                                            <img class="card-img-top rounded-4 " src="./Admin/sanpham/img/<?php echo $searchPro['pro_img'] ?> ?>" alt="Card image cap">
-                                        </a>
+            <div class="col-12 col-lg-4 col-md-6 user-select-none animate__animated animate__zoomIn">
+                <div class="product-image">
+                    <a href="index.php?act=productinformation&pro_id=<?php echo $searchPro['pro_id'] ?>">
+                        <img class="card-img-top rounded-4 "
+                            src="./Admin/sanpham/img/<?php echo $searchPro['pro_img'] ?> ?>" alt="Card image cap">
+                    </a>
 
-                                    </div>
-                                    <div class="card-body">
-                                        <a class="card-title two-line-clamp my-3 fs-6 text-dark text-decoration-none " href="index.php?act=productinformation&pro_id=<?php echo $searchPro['pro_id'] ?>"><?php echo $searchPro['pro_name'] ?></a>
-                                        <div class="d-flex align-items-center justify-content-between px-2">
-                                            <p class="card-text fw-bold fs-2 mb-0">$<?php echo $searchPro['pro_price'] ?></p>
-                                            <p class="text-secondary ps-2 mt-3">by <?php echo $searchPro['pro_brand'] ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php
+                </div>
+                <div class="card-body">
+                    <a class="card-title two-line-clamp my-3 fs-6 text-dark text-decoration-none "
+                        href="index.php?act=productinformation&pro_id=<?php echo $searchPro['pro_id'] ?>"><?php echo $searchPro['pro_name'] ?></a>
+                    <div class="d-flex align-items-center justify-content-between px-2">
+                        <p class="card-text fw-bold fs-2 mb-0">$<?php echo $searchPro['pro_price'] ?></p>
+                        <p class="text-secondary ps-2 mt-3">by <?php echo $searchPro['pro_brand'] ?></p>
+                    </div>
+                </div>
+            </div>
+            <?php
                             } else { ?>
-                                <p class="card-text fw-bold fs-2 mb-0">Sản phẩm không tồn tại</p>
-                            <?php
+            <p class="card-text fw-bold fs-2 mb-0">Sản phẩm không tồn tại</p>
+            <?php
                             }
                             ?>
-                    <?php endforeach;
+            <?php endforeach;
                     } ?>
-                <?php
+            <?php
                 } else {
                     echo 'Product does not exist';
                 }
@@ -210,55 +231,59 @@
                 foreach ($products as $product) {
                     extract($product);
                 ?>
-                    <div class="col-12 col-lg-4 col-md-6 user-select-none animate__animated animate__zoomIn">
-                        <div class="product-image">
-                            <a href="index.php?act=productinformation&pro_id=<?php echo $pro_id ?>">
-                                <img style="width:300px;height:400px" class="card-img-top rounded-4 " src="./Admin/sanpham/img/<?php echo $pro_img ?>" alt="Card image cap">
-                            </a>
+            <div class="col-12 col-lg-4 col-md-6 user-select-none animate__animated animate__zoomIn">
+                <div class="product-image">
+                    <a href="index.php?act=productinformation&pro_id=<?php echo $pro_id ?>">
+                        <img style="width:300px;height:400px" class="card-img-top rounded-4 "
+                            src="./Admin/sanpham/img/<?php echo $pro_img ?>" alt="Card image cap">
+                    </a>
 
-                        </div>
-                        <div class="card-body">
-                            <a class="card-title two-line-clamp my-3 fs-6 text-dark text-decoration-none " href="index.php?act=productinformation&pro_id=<?= $pro_id ?>"><?php echo $product['pro_name']; ?></a>
-                            <div class="d-flex align-items-center justify-content-between px-2">
-                                <p class="card-text fw-bold fs-2 mb-0">$<?php echo $pro_price ?></p>
-                                <p class="text-secondary ps-2 mt-3">by <?php echo $pro_brand ?></p>
-                            </div>
-                        </div>
+                </div>
+                <div class="card-body">
+                    <a class="card-title two-line-clamp my-3 fs-6 text-dark text-decoration-none "
+                        href="index.php?act=productinformation&pro_id=<?= $pro_id ?>"><?php echo $product['pro_name']; ?></a>
+                    <div class="d-flex align-items-center justify-content-between px-2">
+                        <p class="card-text fw-bold fs-2 mb-0">$<?php echo $pro_price ?></p>
+                        <p class="text-secondary ps-2 mt-3">by <?php echo $pro_brand ?></p>
                     </div>
-                <?php
+                </div>
+            </div>
+            <?php
                 }
 
                 // Display pagination for default view
                 $total_pages = ceil($total_products / $products_per_page);
                 if ($total_pages > 1) {
                 ?>
-                    <div class="pagination-container mt-4">
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination justify-content-center">
-                                <?php if ($page > 1): ?>
-                                    <li class="page-item">
-                                        <a class="page-link" href="index.php?act=home&page=<?php echo $page - 1; ?>" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-                                <?php endif; ?>
+            <div class="pagination-container mt-4">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <?php if ($page > 1): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="index.php?act=home&page=<?php echo $page - 1; ?>"
+                                aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <?php endif; ?>
 
-                                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                                    <li class="page-item <?php echo ($i == $page) ? 'active' : ''; ?>">
-                                        <a class="page-link" href="index.php?act=home&page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                                    </li>
-                                <?php endfor; ?>
+                        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                        <li class="page-item <?php echo ($i == $page) ? 'active' : ''; ?>">
+                            <a class="page-link" href="index.php?act=home&page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                        </li>
+                        <?php endfor; ?>
 
-                                <?php if ($page < $total_pages): ?>
-                                    <li class="page-item">
-                                        <a class="page-link" href="index.php?act=home&page=<?php echo $page + 1; ?>" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                <?php endif; ?>
-                            </ul>
-                        </nav>
-                    </div>
+                        <?php if ($page < $total_pages): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="index.php?act=home&page=<?php echo $page + 1; ?>"
+                                aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <?php endif; ?>
+                    </ul>
+                </nav>
+            </div>
             <?php
                 }
             }
