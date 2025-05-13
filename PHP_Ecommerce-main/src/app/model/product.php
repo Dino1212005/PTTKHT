@@ -158,17 +158,40 @@ function updateProductViews($pro_id)
     }
 }
 
-function trending_products()
+function count_products($key = '', $idcate = 0)
 {
-    $sql = "SELECT * FROM products ORDER BY pro_viewer DESC LIMIT 20";
+    $sql = "SELECT COUNT(*) as total FROM products WHERE trangthai = 0";
+    if ($key != '') {
+        $sql .= " AND pro_name LIKE '%$key%'";
+    }
+    if ($idcate > 0) {
+        $sql .= " AND cate_id = $idcate";
+    }
+    $result = pdo_query_one($sql);
+    return $result['total'];
+}
+
+function trending_products($offset = null, $limit = null)
+{
+    $sql = "SELECT * FROM products ORDER BY pro_viewer DESC";
+
+    // Add pagination if offset and limit are provided
+    if ($offset !== null && $limit !== null) {
+        $sql .= " LIMIT $offset, $limit";
+    } else {
+        $sql .= " LIMIT 20"; // Default limit
+    }
+
     $favouriteProducts = pdo_queryall($sql);
     return $favouriteProducts;
 }
 
-
-
-
-
+function count_trending_products()
+{
+    $sql = "SELECT COUNT(*) as total FROM products WHERE 1";
+    $result = pdo_query_one($sql);
+    return $result['total'];
+}
 
 // function addProductToFavourite($kh_id, $pro_id)
 // {
@@ -244,18 +267,4 @@ function  getAllChitietSp($id)
     $sql  = "SELECT * FROM `pro_chitiet` WHERE pro_id = $id";
     $result = pdo_queryall($sql);
     return $result;
-}
-
-function count_products($key, $idcate)
-{
-    $sql = "select COUNT(*) as total from products where trangthai = 0";
-    if ($key != '') {
-        $sql .= " and pro_name like '%$key%'";
-    }
-    if ($idcate > 0) {
-        $sql .= " and cate_id = $idcate";
-    }
-
-    $result = pdo_query_one($sql);
-    return $result['total'];
 }

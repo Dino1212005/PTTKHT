@@ -26,7 +26,7 @@
                 <option value="?gia=desc">Giá giảm dần</option>
             </select>
         </div>
-        
+
         <div class="form-group mt-4 mb-4">
             <form action="index.php?act=filterByPrices" method="GET">
                 <div class="row">
@@ -58,9 +58,16 @@
     <div class="col-12 col-md-9">
         <div class="row gx-3 gy-5 ">
             <?php
+            // Pagination configuration
+            $products_per_page = 9; // Number of products per page
+            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Current page
+            if ($page < 1) $page = 1;
+            $offset = ($page - 1) * $products_per_page;
+
             if (isset($_GET['category'])) {
                 $cate_id = $_GET['category'];
-                $products = queryallpro("", $cate_id);
+                $products = queryallpro("", $cate_id, $offset, $products_per_page);
+                $total_products = count_products("", $cate_id);
 
                 foreach ($products as $product) {
                     extract($product)
@@ -83,6 +90,39 @@
 
                 <?php
                 }
+
+                // Display pagination for category
+                $total_pages = ceil($total_products / $products_per_page);
+                if ($total_pages > 1) {
+                ?>
+                    <div class="pagination-container mt-4">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <?php if ($page > 1): ?>
+                                    <li class="page-item">
+                                        <a class="page-link" href="index.php?act=home&category=<?php echo $cate_id ?>&page=<?php echo $page - 1; ?>" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                <?php endif; ?>
+
+                                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                    <li class="page-item <?php echo ($i == $page) ? 'active' : ''; ?>">
+                                        <a class="page-link" href="index.php?act=home&category=<?php echo $cate_id ?>&page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                    </li>
+                                <?php endfor; ?>
+
+                                <?php if ($page < $total_pages): ?>
+                                    <li class="page-item">
+                                        <a class="page-link" href="index.php?act=home&category=<?php echo $cate_id ?>&page=<?php echo $page + 1; ?>" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                <?php endif; ?>
+                            </ul>
+                        </nav>
+                    </div>
+                <?php }
             } elseif (isset($_GET['filter'])) { ?>
                 <div class="card-body">
                     <div class="row">
@@ -163,9 +203,11 @@
                     echo 'Product does not exist';
                 }
             } else {
-                $products = queryallpro("", 0);
+                // Default product listing with pagination
+                $products = queryallpro("", 0, $offset, $products_per_page);
+                $total_products = count_products("", 0);
 
-                foreach ($products as  $product) {
+                foreach ($products as $product) {
                     extract($product);
                 ?>
                     <div class="col-12 col-lg-4 col-md-6 user-select-none animate__animated animate__zoomIn">
@@ -182,6 +224,40 @@
                                 <p class="text-secondary ps-2 mt-3">by <?php echo $pro_brand ?></p>
                             </div>
                         </div>
+                    </div>
+                <?php
+                }
+
+                // Display pagination for default view
+                $total_pages = ceil($total_products / $products_per_page);
+                if ($total_pages > 1) {
+                ?>
+                    <div class="pagination-container mt-4">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <?php if ($page > 1): ?>
+                                    <li class="page-item">
+                                        <a class="page-link" href="index.php?act=home&page=<?php echo $page - 1; ?>" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                <?php endif; ?>
+
+                                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                    <li class="page-item <?php echo ($i == $page) ? 'active' : ''; ?>">
+                                        <a class="page-link" href="index.php?act=home&page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                    </li>
+                                <?php endfor; ?>
+
+                                <?php if ($page < $total_pages): ?>
+                                    <li class="page-item">
+                                        <a class="page-link" href="index.php?act=home&page=<?php echo $page + 1; ?>" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                <?php endif; ?>
+                            </ul>
+                        </nav>
                     </div>
             <?php
                 }
