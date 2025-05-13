@@ -11,18 +11,18 @@
 ### 2. Đường dẫn đăng nhập
 
 - **Trang đăng nhập người dùng**: `http://localhost/PTTKHT/PHP_Ecommerce-main/src/index.php?act=login`
-- **Trang đăng nhập quản trị**: `http://localhost/PTTKHT/PHP_Ecommerce-main/src/Admin/indexadmin.php?act=home`
+- **Trang đăng nhập quản trị**: `http://localhost/PTTKHT/PHP_Ecommerce-main/src/Admin/admin_login.php`
 
 ### 3. Lưu ý quan trọng
 
-- Người dùng thông thường **KHÔNG THỂ** đăng nhập vào trang quản trị.
-- Admin và nhân viên cần đăng nhập tại trang quản trị riêng.
-- Nếu Admin cố gắng đăng nhập tại trang người dùng, hệ thống sẽ hiển thị thông báo và chuyển hướng tới trang đăng nhập quản trị.
+- Người dùng thông thường **CHỈ** có thể đăng nhập vào hệ thống bán hàng thông qua trang đăng nhập người dùng.
+- Admin và nhân viên **PHẢI** đăng nhập qua trang đăng nhập quản trị riêng.
+- Nếu admin cố gắng đăng nhập tại trang người dùng, hệ thống sẽ báo lỗi sai thông tin đăng nhập.
 - Nếu người dùng thông thường cố gắng truy cập trang quản trị, hệ thống sẽ từ chối và hiển thị thông báo lỗi.
 
 ### 4. Điều hướng
 
-- Từ trang người dùng có thể vào trang đăng nhập admin thông qua đường dẫn ở phía dưới form đăng nhập.
+- Để quản lý hệ thống, admin và nhân viên phải truy cập trực tiếp vào trang quản trị.
 - Từ trang đăng nhập admin có thể quay lại trang chủ người dùng thông qua đường dẫn ở phía dưới form đăng nhập.
 
 ### 5. Mặc định tài khoản
