@@ -308,7 +308,7 @@ INSERT INTO `order` (`order_id`, `kh_id`, `order_date`, `order_trangthai`, `orde
 (26, 41, '24-11-23', 'Đã hủy', '', 310),
 (33, 41, '24-11-23', 'Đang giao hàng', '', 770),
 (100, 41, '01-12-23', 'Đã hủy', '', 455),
-(104, 41, '02-12-23', 'Đã nhận hàng', '', 140),
+(104, 41, '02-12-23', 'Đã giao hàng', '', 140),
 (130, 41, '03-12-23', 'Đã hủy', '', 440),
 (131, 41, '03-12-23', 'Đang giao hàng', '', 310),
 (132, 41, '04-12-23', 'Đã hủy', '', 310),
@@ -1317,3 +1317,246 @@ INSERT INTO `chi_tiet_nhom_quyen` (`role_id`, `permission_id`) VALUES
 (4, 'Q3'),  -- Quản lí sản phẩm (read-only)
 (4, 'Q8'),  -- Quản lí nhà cung cấp
 (4, 'Q11'); -- Quản lý phiếu nhập
+
+-- --------------------------------------------------------
+-- Additional order data for visualization
+-- --------------------------------------------------------
+
+-- For additional order data to enable visualization of sales trends across 
+-- different time periods (months, quarters, years), please run the 
+-- 'order_data_update.sql' script after this main database setup.
+--
+-- The additional data includes orders from 2022-2025 with varied products and quantities
+-- to enable meaningful chart visualization in the admin dashboard.
+-- SQL script to add order data at different time periods for visualization
+
+-- Insert orders for 2022
+INSERT INTO `order` (`kh_id`, `order_date`, `order_trangthai`, `order_adress`, `order_totalprice`) VALUES
+(42, '15-01-22', 'Đã giao hàng', 'Hà Nội', 430),
+(39, '22-02-22', 'Đã giao hàng', 'Hà Nội', 650),
+(43, '10-03-22', 'Đã giao hàng', 'Hồ Chí Minh', 300),
+(42, '05-04-22', 'Đã giao hàng', 'Hà Nội', 490),
+(39, '18-05-22', 'Đã giao hàng', 'Hà Nội', 260),
+(43, '23-06-22', 'Đã giao hàng', 'Hồ Chí Minh', 450),
+(42, '09-07-22', 'Đã giao hàng', 'Hà Nội', 350),
+(39, '14-08-22', 'Đã giao hàng', 'Hà Nội', 500),
+(43, '28-09-22', 'Đã giao hàng', 'Hồ Chí Minh', 430),
+(42, '07-10-22', 'Đã giao hàng', 'Hà Nội', 600),
+(39, '19-11-22', 'Đã giao hàng', 'Hà Nội', 380),
+(43, '24-12-22', 'Đã hủy', 'Hồ Chí Minh', 720);
+
+-- Insert orders for 2023 (first half - lower sales)
+INSERT INTO `order` (`kh_id`, `order_date`, `order_trangthai`, `order_adress`, `order_totalprice`) VALUES
+(42, '08-01-23', 'Đã giao hàng', 'Hà Nội', 280),
+(39, '17-01-23', 'Đã giao hàng', 'Hà Nội', 310),
+(43, '25-01-23', 'Đã hủy', 'Hồ Chí Minh', 250),
+(42, '05-02-23', 'Đã giao hàng', 'Hà Nội', 360),
+(39, '14-02-23', 'Đã giao hàng', 'Hà Nội', 420),
+(43, '23-02-23', 'Đã hủy', 'Hồ Chí Minh', 180),
+(42, '08-03-23', 'Đã giao hàng', 'Hà Nội', 390),
+(39, '17-03-23', 'Đã giao hàng', 'Hà Nội', 280),
+(43, '26-03-23', 'Đã hủy', 'Hồ Chí Minh', 430),
+(42, '05-04-23', 'Đã giao hàng', 'Hà Nội', 350),
+(39, '15-04-23', 'Đã giao hàng', 'Hà Nội', 310),
+(43, '22-04-23', 'Đã hủy', 'Hồ Chí Minh', 270),
+(42, '07-05-23', 'Đã giao hàng', 'Hà Nội', 400),
+(39, '16-05-23', 'Đã giao hàng', 'Hà Nội', 320),
+(43, '25-05-23', 'Đã hủy', 'Hồ Chí Minh', 380),
+(42, '08-06-23', 'Đã giao hàng', 'Hà Nội', 290),
+(39, '19-06-23', 'Đã giao hàng', 'Hà Nội', 350),
+(43, '28-06-23', 'Đã hủy', 'Hồ Chí Minh', 430);
+
+-- Insert orders for 2023 (second half - higher sales, growth period)
+INSERT INTO `order` (`kh_id`, `order_date`, `order_trangthai`, `order_adress`, `order_totalprice`) VALUES
+(42, '10-07-23', 'Đã giao hàng', 'Hà Nội', 520),
+(39, '17-07-23', 'Đã giao hàng', 'Hà Nội', 480),
+(43, '24-07-23', 'Đã hủy', 'Hồ Chí Minh', 610),
+(42, '06-08-23', 'Đã giao hàng', 'Hà Nội', 590),
+(39, '13-08-23', 'Đã giao hàng', 'Hà Nội', 650),
+(43, '21-08-23', 'Đã hủy', 'Hồ Chí Minh', 570),
+(42, '05-09-23', 'Đã giao hàng', 'Hà Nội', 630),
+(39, '14-09-23', 'Đã giao hàng', 'Hà Nội', 590),
+(43, '22-09-23', 'Đã hủy', 'Hồ Chí Minh', 680),
+(42, '07-10-23', 'Đã giao hàng', 'Hà Nội', 750),
+(39, '16-10-23', 'Đã giao hàng', 'Hà Nội', 820),
+(43, '23-10-23', 'Đã hủy', 'Hồ Chí Minh', 790),
+(42, '08-11-23', 'Đã giao hàng', 'Hà Nội', 910),
+(39, '15-11-23', 'Đã giao hàng', 'Hà Nội', 860),
+(43, '22-11-23', 'Đã hủy', 'Hồ Chí Minh', 900),
+(42, '04-12-23', 'Đã giao hàng', 'Hà Nội', 1050),
+(39, '11-12-23', 'Đã giao hàng', 'Hà Nội', 980),
+(43, '18-12-23', 'Đã hủy', 'Hồ Chí Minh', 1120);
+
+-- Insert orders for 2024 (continued growth and seasonal patterns)
+INSERT INTO `order` (`kh_id`, `order_date`, `order_trangthai`, `order_adress`, `order_totalprice`) VALUES
+(42, '07-01-24', 'Đã giao hàng', 'Hà Nội', 780),
+(39, '14-01-24', 'Đã giao hàng', 'Hà Nội', 720),
+(43, '22-01-24', 'Đã hủy', 'Hồ Chí Minh', 800),
+(42, '05-02-24', 'Đã giao hàng', 'Hà Nội', 920),
+(39, '12-02-24', 'Đã giao hàng', 'Hà Nội', 1090),
+(43, '20-02-24', 'Đã hủy', 'Hồ Chí Minh', 1150),
+(42, '04-03-24', 'Đã giao hàng', 'Hà Nội', 890),
+(39, '11-03-24', 'Đã giao hàng', 'Hà Nội', 750),
+(43, '18-03-24', 'Đã hủy', 'Hồ Chí Minh', 810),
+(42, '03-04-24', 'Đã giao hàng', 'Hà Nội', 680),
+(39, '10-04-24', 'Đã giao hàng', 'Hà Nội', 730),
+(43, '17-04-24', 'Đã hủy', 'Hồ Chí Minh', 690),
+(42, '01-05-24', 'Đã giao hàng', 'Hà Nội', 620),
+(39, '08-05-24', 'Đã giao hàng', 'Hà Nội', 580),
+(43, '15-05-24', 'Đã hủy', 'Hồ Chí Minh', 640),
+(42, '03-06-24', 'Đã giao hàng', 'Hà Nội', 540),
+(39, '10-06-24', 'Đã giao hàng', 'Hà Nội', 600),
+(43, '17-06-24', 'Đã hủy', 'Hồ Chí Minh', 560),
+(42, '01-07-24', 'Đang giao hàng', 'Hà Nội', 590),
+(39, '08-07-24', 'Đang giao hàng', 'Hà Nội', 630),
+(43, '15-07-24', 'Đã hủy', 'Hồ Chí Minh', 540),
+(42, '05-08-24', 'Đang giao hàng', 'Hà Nội', 700),
+(39, '12-08-24', 'Đang giao hàng', 'Hà Nội', 750),
+(43, '19-08-24', 'Đã hủy', 'Hồ Chí Minh', 800);
+
+-- Insert orders for 2025 Q1 (current year in the data)
+INSERT INTO `order` (`kh_id`, `order_date`, `order_trangthai`, `order_adress`, `order_totalprice`) VALUES
+(42, '06-01-25', 'Đã giao hàng', 'Hà Nội', 870),
+(39, '13-01-25', 'Đã giao hàng', 'Hà Nội', 920),
+(43, '20-01-25', 'Đã hủy', 'Hồ Chí Minh', 860),
+(42, '03-02-25', 'Đã giao hàng', 'Hà Nội', 950),
+(39, '10-02-25', 'Đã giao hàng', 'Hà Nội', 1020),
+(43, '17-02-25', 'Đã hủy', 'Hồ Chí Minh', 980),
+(42, '05-03-25', 'Đã giao hàng', 'Hà Nội', 910),
+(39, '12-03-25', 'Đã giao hàng', 'Hà Nội', 890),
+(43, '19-03-25', 'Đã hủy', 'Hồ Chí Minh', 940),
+(42, '02-04-25', 'Đang giao hàng', 'Hà Nội', 1100),
+(39, '09-04-25', 'Đang giao hàng', 'Hà Nội', 1050),
+(43, '16-04-25', 'Đang giao hàng', 'Hồ Chí Minh', 1150);
+
+-- Adding extra cancelled orders for better statistics
+INSERT INTO `order` (`kh_id`, `order_date`, `order_trangthai`, `order_adress`, `order_totalprice`) VALUES
+(42, '14-03-22', 'Đã hủy', 'Hà Nội', 480),
+(39, '25-06-22', 'Đã hủy', 'Hà Nội', 550),
+(43, '18-09-22', 'Đã hủy', 'Hồ Chí Minh', 470),
+(42, '21-02-23', 'Đã hủy', 'Hà Nội', 330),
+(39, '05-05-23', 'Đã hủy', 'Hà Nội', 450),
+(43, '14-08-23', 'Đã hủy', 'Hồ Chí Minh', 620),
+(42, '09-10-23', 'Đã hủy', 'Hà Nội', 780),
+(39, '28-11-23', 'Đã hủy', 'Hà Nội', 840),
+(43, '03-01-24', 'Đã hủy', 'Hồ Chí Minh', 750),
+(42, '17-03-24', 'Đã hủy', 'Hà Nội', 870),
+(39, '22-05-24', 'Đã hủy', 'Hà Nội', 600),
+(43, '08-07-24', 'Đã hủy', 'Hồ Chí Minh', 680);
+
+-- Now, create the corresponding order_chitiet records
+-- We'll use a script to generate these after we know the order IDs generated above
+-- For now, we'll prepare a placeholder for the next step
+
+-- The following SET variable will be used to store the starting ID for new orders
+SET @start_order_id = (SELECT MAX(order_id) FROM `order` WHERE order_id < 137);
+
+-- Creating order_chitiet records for the orders we just inserted
+-- Using commonly purchased products from the existing data
+
+-- Function to select random products with appropriate quantities and calculate correct totals
+-- This would typically be done with a stored procedure, but we'll use INSERT statements directly here
+
+-- Order details for 2022 orders (12 orders, start_order_id + 1 to start_order_id + 12)
+INSERT INTO `order_chitiet` (`order_id`, `pro_id`, `color_id`, `size_id`, `pro_price`, `soluong`, `total_price`) VALUES
+(@start_order_id + 1, 66, 2, 1, 300, 1, 300),
+(@start_order_id + 1, 63, 1, 1, 130, 1, 130),
+(@start_order_id + 2, 65, 1, 2, 300, 2, 600),
+(@start_order_id + 2, 54, 1, 1, 50, 1, 50),
+(@start_order_id + 3, 66, 2, 1, 300, 1, 300),
+(@start_order_id + 4, 61, 2, 3, 145, 2, 290),
+(@start_order_id + 4, 49, 1, 1, 100, 2, 200),
+(@start_order_id + 5, 63, 1, 1, 130, 2, 260),
+(@start_order_id + 6, 66, 2, 1, 300, 1, 300),
+(@start_order_id + 6, 58, 1, 1, 120, 1, 120),
+(@start_order_id + 6, 54, 2, 1, 50, 1, 50),
+(@start_order_id + 7, 65, 2, 1, 300, 1, 300),
+(@start_order_id + 7, 55, 3, 3, 300, 1, 300),
+(@start_order_id + 8, 64, 1, 1, 160, 1, 160),
+(@start_order_id + 8, 62, 1, 2, 130, 1, 130),
+(@start_order_id + 8, 53, 3, 3, 300, 1, 300),
+(@start_order_id + 9, 63, 3, 3, 130, 2, 260),
+(@start_order_id + 9, 58, 1, 2, 120, 1, 120),
+(@start_order_id + 9, 54, 1, 1, 50, 1, 50),
+(@start_order_id + 10, 66, 2, 1, 300, 1, 300),
+(@start_order_id + 10, 60, 1, 2, 300, 1, 300),
+(@start_order_id + 11, 63, 1, 1, 130, 2, 260),
+(@start_order_id + 11, 58, 1, 1, 120, 1, 120),
+(@start_order_id + 12, 65, 2, 1, 300, 2, 600),
+(@start_order_id + 12, 58, 1, 1, 120, 1, 120);
+
+-- Adding order details for additional cancelled orders
+INSERT INTO `order_chitiet` (`order_id`, `pro_id`, `color_id`, `size_id`, `pro_price`, `soluong`, `total_price`) VALUES
+(@start_order_id + 85, 66, 2, 1, 300, 1, 300),
+(@start_order_id + 85, 63, 1, 1, 130, 1, 130),
+(@start_order_id + 85, 54, 2, 1, 50, 1, 50),
+(@start_order_id + 86, 65, 1, 2, 300, 1, 300),
+(@start_order_id + 86, 63, 1, 1, 130, 2, 260),
+(@start_order_id + 87, 66, 2, 1, 300, 1, 300),
+(@start_order_id + 87, 58, 1, 1, 120, 1, 120),
+(@start_order_id + 87, 54, 2, 1, 50, 1, 50),
+(@start_order_id + 88, 66, 2, 1, 300, 1, 300),
+(@start_order_id + 88, 54, 2, 1, 50, 1, 50),
+(@start_order_id + 89, 65, 2, 1, 300, 1, 300),
+(@start_order_id + 89, 58, 1, 1, 120, 1, 120),
+(@start_order_id + 89, 54, 2, 1, 50, 1, 50),
+(@start_order_id + 90, 66, 2, 1, 300, 2, 600),
+(@start_order_id + 90, 54, 2, 1, 50, 1, 50),
+(@start_order_id + 91, 65, 2, 1, 300, 2, 600),
+(@start_order_id + 91, 63, 1, 1, 130, 1, 130),
+(@start_order_id + 91, 54, 2, 1, 50, 1, 50),
+(@start_order_id + 92, 66, 2, 1, 300, 2, 600),
+(@start_order_id + 92, 63, 1, 1, 130, 2, 260),
+(@start_order_id + 93, 66, 2, 1, 300, 2, 600),
+(@start_order_id + 93, 58, 1, 1, 120, 1, 120),
+(@start_order_id + 93, 54, 2, 1, 50, 1, 50),
+(@start_order_id + 94, 65, 2, 1, 300, 2, 600),
+(@start_order_id + 94, 63, 1, 1, 130, 2, 260),
+(@start_order_id + 95, 66, 2, 1, 300, 1, 300),
+(@start_order_id + 95, 63, 1, 1, 130, 2, 260),
+(@start_order_id + 95, 49, 1, 1, 100, 1, 100),
+(@start_order_id + 96, 65, 2, 1, 300, 2, 600),
+(@start_order_id + 96, 58, 1, 1, 120, 1, 120);
+
+-- Continue with the remaining original order_chitiet data
+-- Order details for 2023 first half (18 orders, start_order_id + 13 to start_order_id + 30)
+INSERT INTO `order_chitiet` (`order_id`, `pro_id`, `color_id`, `size_id`, `pro_price`, `soluong`, `total_price`) VALUES
+(@start_order_id + 13, 63, 1, 1, 130, 1, 130),
+(@start_order_id + 13, 58, 1, 1, 120, 1, 120),
+(@start_order_id + 13, 54, 2, 1, 50, 1, 50),
+(@start_order_id + 14, 65, 2, 1, 300, 1, 300),
+(@start_order_id + 14, 49, 1, 1, 100, 1, 100),
+(@start_order_id + 15, 63, 1, 1, 130, 1, 130),
+(@start_order_id + 15, 58, 1, 1, 120, 1, 120),
+(@start_order_id + 16, 66, 2, 1, 300, 1, 300),
+(@start_order_id + 16, 61, 2, 3, 145, 1, 145),
+(@start_order_id + 17, 65, 2, 1, 300, 1, 300),
+(@start_order_id + 17, 58, 1, 1, 120, 1, 120),
+(@start_order_id + 18, 63, 1, 1, 130, 1, 130),
+(@start_order_id + 18, 54, 2, 1, 50, 1, 50),
+(@start_order_id + 19, 66, 2, 1, 300, 1, 300),
+(@start_order_id + 19, 58, 1, 1, 120, 1, 120),
+(@start_order_id + 20, 63, 1, 1, 130, 1, 130),
+(@start_order_id + 20, 58, 1, 1, 120, 1, 120),
+(@start_order_id + 20, 54, 2, 1, 50, 1, 50),
+(@start_order_id + 21, 66, 2, 1, 300, 1, 300),
+(@start_order_id + 21, 58, 1, 1, 120, 1, 120),
+(@start_order_id + 22, 65, 2, 1, 300, 1, 300),
+(@start_order_id + 22, 54, 2, 1, 50, 1, 50),
+(@start_order_id + 23, 63, 1, 1, 130, 1, 130),
+(@start_order_id + 23, 58, 1, 1, 120, 1, 120),
+(@start_order_id + 24, 66, 2, 1, 300, 1, 300),
+(@start_order_id + 24, 58, 1, 1, 120, 1, 120),
+(@start_order_id + 25, 63, 1, 1, 130, 1, 130),
+(@start_order_id + 25, 61, 1, 2, 145, 1, 145),
+(@start_order_id + 25, 54, 2, 1, 50, 1, 50),
+(@start_order_id + 26, 66, 2, 1, 300, 1, 300),
+(@start_order_id + 26, 58, 1, 1, 120, 1, 120),
+(@start_order_id + 27, 65, 2, 1, 300, 1, 300),
+(@start_order_id + 27, 54, 2, 1, 50, 1, 50),
+(@start_order_id + 28, 63, 1, 1, 130, 1, 130),
+(@start_order_id + 28, 65, 2, 1, 300, 1, 300),
+(@start_order_id + 29, 66, 2, 1, 300, 1, 300),
+(@start_order_id + 29, 49, 3, 3, 100, 1, 100),
+(@start_order_id + 30, 63, 1, 1, 130, 1, 130),
+(@start_order_id + 30, 65, 2, 1, 300, 1, 300); 

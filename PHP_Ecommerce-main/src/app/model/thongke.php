@@ -28,8 +28,10 @@ function thongke_donhang()
 }
 
 // Hàm thống kê sản phẩm bán chạy nhất
-function thongke_sanpham_banchay($limit = 10)
+function thongke_sanpham_banchay($limit = 10, $bao_gom_da_huy = false)
 {
+    $where_huy = $bao_gom_da_huy ? "" : "WHERE `order`.order_trangthai != 'Đã hủy'";
+
     $sql = "SELECT 
                 products.pro_id,
                 products.pro_name,
@@ -43,8 +45,7 @@ function thongke_sanpham_banchay($limit = 10)
                 products ON products.pro_id = order_chitiet.pro_id
             JOIN 
                 `order` ON `order`.order_id = order_chitiet.order_id
-            WHERE 
-                `order`.order_trangthai != 'Đã hủy'
+            $where_huy
             GROUP BY 
                 products.pro_id, products.pro_name, products.pro_img, products.pro_price
             ORDER BY 
@@ -55,8 +56,10 @@ function thongke_sanpham_banchay($limit = 10)
 }
 
 // Hàm thống kê doanh thu theo tháng/quý/năm
-function thongke_doanhthu($kieu = 'thang')
+function thongke_doanhthu($kieu = 'thang', $bao_gom_da_huy = false)
 {
+    $where_huy = $bao_gom_da_huy ? "" : "AND order_trangthai != 'Đã hủy'";
+
     switch ($kieu) {
         case 'thang':
             // Thống kê theo tháng trong năm hiện tại
@@ -68,7 +71,7 @@ function thongke_doanhthu($kieu = 'thang')
                         `order`
                     WHERE 
                         YEAR(STR_TO_DATE(`order_date`, '%d-%m-%y')) = YEAR(CURDATE())
-                        AND order_trangthai != 'Đã hủy'
+                        $where_huy
                     GROUP BY 
                         MONTH(STR_TO_DATE(`order_date`, '%d-%m-%y'))
                     ORDER BY 
@@ -85,7 +88,7 @@ function thongke_doanhthu($kieu = 'thang')
                         `order`
                     WHERE 
                         YEAR(STR_TO_DATE(`order_date`, '%d-%m-%y')) = YEAR(CURDATE())
-                        AND order_trangthai != 'Đã hủy'
+                        $where_huy
                     GROUP BY 
                         QUARTER(STR_TO_DATE(`order_date`, '%d-%m-%y'))
                     ORDER BY 
@@ -101,7 +104,8 @@ function thongke_doanhthu($kieu = 'thang')
                     FROM 
                         `order`
                     WHERE 
-                        order_trangthai != 'Đã hủy'
+                        1=1
+                        $where_huy
                     GROUP BY 
                         YEAR(STR_TO_DATE(`order_date`, '%d-%m-%y'))
                     ORDER BY 
@@ -112,7 +116,7 @@ function thongke_doanhthu($kieu = 'thang')
     return pdo_queryall($sql);
 }
 
-// Hàm thống kê số lượng đơn hàng theo tháng/quý/năm (không tính đơn đã hủy)
+// Hàm thống kê số lượng đơn hàng theo tháng/quý/năm (bao gồm cả đơn đã hủy)
 function thongke_donhang_theothoigian($kieu = 'thang')
 {
     switch ($kieu) {
@@ -127,7 +131,6 @@ function thongke_donhang_theothoigian($kieu = 'thang')
                         `order`
                     WHERE 
                         YEAR(STR_TO_DATE(`order_date`, '%d-%m-%y')) = YEAR(CURDATE())
-                        AND order_trangthai != 'Đã hủy'
                     GROUP BY 
                         MONTH(STR_TO_DATE(`order_date`, '%d-%m-%y')), order_trangthai
                     ORDER BY 
@@ -145,7 +148,6 @@ function thongke_donhang_theothoigian($kieu = 'thang')
                         `order`
                     WHERE 
                         YEAR(STR_TO_DATE(`order_date`, '%d-%m-%y')) = YEAR(CURDATE())
-                        AND order_trangthai != 'Đã hủy'
                     GROUP BY 
                         QUARTER(STR_TO_DATE(`order_date`, '%d-%m-%y')), order_trangthai
                     ORDER BY 
@@ -161,8 +163,6 @@ function thongke_donhang_theothoigian($kieu = 'thang')
                         SUM(order_totalprice) as tong_gia_tri
                     FROM 
                         `order`
-                    WHERE 
-                        order_trangthai != 'Đã hủy'
                     GROUP BY 
                         YEAR(STR_TO_DATE(`order_date`, '%d-%m-%y')), order_trangthai
                     ORDER BY 

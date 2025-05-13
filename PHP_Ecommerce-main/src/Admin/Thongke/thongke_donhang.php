@@ -1,5 +1,22 @@
 <!-- main -->
 <div class="container">
+    <style>
+    .trang-thai-huy {
+        background-color: #ffeeee;
+        color: #dc3545;
+    }
+
+    .trang-thai-dang-giao {
+        background-color: #fff8e1;
+        color: #ff9800;
+    }
+
+    .trang-thai-da-giao {
+        background-color: #e8f5e9;
+        color: #28a745;
+    }
+    </style>
+
     <!-- Thanh menu thống kê -->
     <div class="row mb-4">
         <div class="col-md-12">
@@ -57,8 +74,16 @@
                 if (!empty($don_hang)) {
                     foreach ($don_hang as $dh) {
                         extract($dh);
+                        $trang_thai_class = '';
+                        if ($order_trangthai == 'Đã hủy') {
+                            $trang_thai_class = 'trang-thai-huy';
+                        } elseif ($order_trangthai == 'Đang giao hàng') {
+                            $trang_thai_class = 'trang-thai-dang-giao';
+                        } elseif ($order_trangthai == 'Đã giao hàng') {
+                            $trang_thai_class = 'trang-thai-da-giao';
+                        }
                 ?>
-                <tr>
+                <tr class="<?= $trang_thai_class ?>">
                     <td><?= $label_prefix . $thoi_gian ?></td>
                     <td><?= $order_trangthai ?></td>
                     <td><?= $so_don_hang ?></td>
