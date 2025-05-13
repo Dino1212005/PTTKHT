@@ -187,7 +187,6 @@ CREATE TABLE `import_receipts` (
   `id` int(11) NOT NULL,
   `ncc_id` int(11) NOT NULL COMMENT 'ID nhà cung cấp',
   `receipt_date` datetime NOT NULL COMMENT 'Ngày nhập hàng',
-  `total_amount` decimal(15,2) NOT NULL COMMENT 'Tổng giá trị đơn nhập',
   `created_by` int(11) DEFAULT NULL COMMENT 'Người tạo phiếu',
   `status` tinyint(4) DEFAULT 0 COMMENT '0: Nháp, 1: Đã nhập kho, 2: Đã hủy',
   `note` text DEFAULT NULL COMMENT 'Ghi chú'
@@ -197,14 +196,14 @@ CREATE TABLE `import_receipts` (
 -- Đang đổ dữ liệu cho bảng `import_receipts`
 --
 
-INSERT INTO `import_receipts` (`id`, `ncc_id`, `receipt_date`, `total_amount`, `created_by`, `status`, `note`) VALUES
-(1, 3, '2025-04-22 08:40:05', 600.00, 41, 1, NULL),
-(3, 1, '2025-04-22 09:46:13', 20000.00, 41, 0, ''),
-(4, 1, '2025-04-22 09:49:23', 20000.00, 41, 0, ''),
-(5, 1, '2025-04-22 09:50:01', 400.00, 41, 0, ''),
-(6, 1, '2025-04-22 09:52:49', 400.00, 41, 0, ''),
-(7, 1, '2025-04-22 09:54:06', 400.00, 41, 0, ''),
-(8, 1, '2025-04-22 09:55:29', 400.00, 41, 0, '');
+INSERT INTO `import_receipts` (`id`, `ncc_id`, `receipt_date`, `created_by`, `status`, `note`) VALUES
+(1, 3, '2025-04-22 08:40:05', 41, 1, NULL),
+(3, 1, '2025-04-22 09:46:13', 41, 0, ''),
+(4, 1, '2025-04-22 09:49:23', 41, 0, ''),
+(5, 1, '2025-04-22 09:50:01', 41, 0, ''),
+(6, 1, '2025-04-22 09:52:49', 41, 0, ''),
+(7, 1, '2025-04-22 09:54:06', 41, 0, ''),
+(8, 1, '2025-04-22 09:55:29', 41, 0, '');
 
 -- --------------------------------------------------------
 
@@ -213,15 +212,17 @@ INSERT INTO `import_receipts` (`id`, `ncc_id`, `receipt_date`, `total_amount`, `
 --
 
 CREATE TABLE `import_receipt_details` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `receipt_id` int(11) NOT NULL COMMENT 'ID phiếu nhập',
   `pro_id` int(11) NOT NULL COMMENT 'ID sản phẩm',
   `color_id` int(11) NOT NULL COMMENT 'ID màu sắc',
   `size_id` int(11) NOT NULL COMMENT 'ID kích cỡ',
   `quantity` int(11) NOT NULL COMMENT 'Số lượng nhập',
   `unit_price` decimal(10,2) NOT NULL COMMENT 'Đơn giá nhập',
-  `total_price` decimal(12,2) NOT NULL COMMENT 'Thành tiền'
+  `total_price` decimal(12,2) NOT NULL COMMENT 'Thành tiền',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 
 -- --------------------------------------------------------
 
@@ -850,12 +851,44 @@ ALTER TABLE `import_receipts`
 -- Chỉ mục cho bảng `import_receipt_details`
 --
 ALTER TABLE `import_receipt_details`
-  ADD PRIMARY KEY (`id`),
+  -- ADD PRIMARY KEY (`id`),
   ADD KEY `receipt_id` (`receipt_id`),
   ADD KEY `pro_id` (`pro_id`),
   ADD KEY `color_id` (`color_id`),
   ADD KEY `size_id` (`size_id`);
 
+
+INSERT INTO `import_receipt_details` (`receipt_id`, `pro_id`, `color_id`, `size_id`, `quantity`, `unit_price`, `total_price`) VALUES
+-- Phiếu nhập 1 (ID: 1 - Công ty Dệt may Đà Nẵng)
+(1, 66, 2, 1, 10, 200.00, 2000.00),
+(1, 66, 3, 2, 5, 200.00, 1000.00),
+(1, 65, 1, 2, 8, 180.00, 1440.00),
+
+-- Phiếu nhập 3 (ID: 3 - Công ty Thời trang Việt Nam)
+(3, 41, 1, 1, 15, 80.00, 1200.00),
+(3, 43, 2, 3, 10, 250.00, 2500.00),
+(3, 53, 3, 3, 12, 220.00, 2640.00),
+
+-- Phiếu nhập 4 (ID: 4 - Công ty Thời trang Việt Nam)
+(4, 52, 1, 2, 20, 90.00, 1800.00),
+(4, 49, 2, 1, 15, 70.00, 1050.00),
+(4, 61, 1, 2, 10, 100.00, 1000.00),
+
+-- Phiếu nhập 5 (ID: 5 - Công ty Thời trang Việt Nam)
+(5, 63, 1, 1, 8, 90.00, 720.00),
+(5, 64, 2, 3, 10, 120.00, 1200.00),
+
+-- Phiếu nhập 6 (ID: 6 - Công ty Thời trang Việt Nam)
+(6, 56, 1, 2, 6, 180.00, 1080.00),
+(6, 47, 3, 2, 5, 250.00, 1250.00),
+
+-- Phiếu nhập 7 (ID: 7 - Công ty Thời trang Việt Nam)
+(7, 58, 2, 3, 12, 85.00, 1020.00),
+(7, 54, 1, 1, 15, 35.00, 525.00),
+
+-- Phiếu nhập 8 (ID: 8 - Công ty Thời trang Việt Nam)
+(8, 44, 3, 1, 10, 150.00, 1500.00),
+(8, 45, 2, 2, 8, 40.00, 320.00);
 --
 -- Chỉ mục cho bảng `khachhang`
 --
@@ -1027,7 +1060,7 @@ ALTER TABLE `import_receipts`
 -- AUTO_INCREMENT cho bảng `import_receipt_details`
 --
 ALTER TABLE `import_receipt_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `khachhang`
@@ -1241,7 +1274,3 @@ ALTER TABLE `ton_kho`
   ADD CONSTRAINT `ton_kho_ibfk_2` FOREIGN KEY (`color_id`) REFERENCES `color` (`color_id`),
   ADD CONSTRAINT `ton_kho_ibfk_3` FOREIGN KEY (`size_id`) REFERENCES `size` (`size_id`);
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
