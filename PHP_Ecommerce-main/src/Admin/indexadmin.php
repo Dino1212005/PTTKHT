@@ -110,7 +110,7 @@ function hasPermission($action, $permissions)
           <span class="material-icons-outlined">search</span>
         </div>
         <div class="header-right">
-          <a href="../index.php?act=home"><span class="material-icons-outlined">account_circle</span></a>
+          <a href=""><span class="material-icons-outlined">account_circle</span></a>
         </div>
       </header>
       <!-- End Header -->';
