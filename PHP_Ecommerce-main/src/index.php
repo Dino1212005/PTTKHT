@@ -10,6 +10,154 @@ include './app/model/binhluan.php';
 include './app/model/color.php';
 include './app/model/size.php';
 include './app/model/donhang.php';
+
+// Handle AJAX requests for combined filtering (sort + price range)
+if (isset($_GET['act']) && $_GET['act'] == 'combinedFilter') {
+    header('Content-Type: application/json');
+
+    // Get all filter parameters
+    $sort = $_GET['sort'] ?? '';
+    $startPrice = isset($_GET['start_price']) && $_GET['start_price'] !== '' ? (float)$_GET['start_price'] : null;
+    $endPrice = isset($_GET['end_price']) && $_GET['end_price'] !== '' ? (float)$_GET['end_price'] : null;
+    $category = isset($_GET['category']) ? (int)$_GET['category'] : 0;
+
+    try {
+        $sql = "SELECT * FROM products WHERE trangthai = 0";
+
+        // Add category filter
+        if ($category > 0) {
+            $sql .= " AND cate_id = $category";
+        }
+
+        // Add price range filter if either or both prices are provided
+        if ($startPrice !== null && $endPrice !== null) {
+            $sql .= " AND pro_price BETWEEN $startPrice AND $endPrice";
+        } elseif ($startPrice !== null) {
+            $sql .= " AND pro_price >= $startPrice";
+        } elseif ($endPrice !== null) {
+            $sql .= " AND pro_price <= $endPrice";
+        }
+
+        // Add sorting
+        if ($sort == 'asc') {
+            $sql .= " ORDER BY pro_name ASC";
+        } elseif ($sort == 'desc') {
+            $sql .= " ORDER BY pro_name DESC";
+        } elseif ($sort == 'price_asc') {
+            $sql .= " ORDER BY pro_price ASC";
+        } elseif ($sort == 'price_desc') {
+            $sql .= " ORDER BY pro_price DESC";
+        } else {
+            $sql .= " ORDER BY pro_id DESC";
+        }
+
+        $products = pdo_queryall($sql);
+
+        if ($products && count($products) > 0) {
+            echo json_encode([
+                'success' => true,
+                'products' => $products
+            ]);
+        } else {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Không tìm thấy sản phẩm nào phù hợp với các tiêu chí lọc.'
+            ]);
+        }
+    } catch (Exception $e) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Lỗi khi truy vấn dữ liệu: ' . $e->getMessage()
+        ]);
+    }
+    exit;
+}
+
+// Handle AJAX requests for filtering products
+if (isset($_GET['act']) && $_GET['act'] == 'filterProducts') {
+    header('Content-Type: application/json');
+    $sort = $_GET['sort'] ?? '';
+    $category = isset($_GET['category']) ? (int)$_GET['category'] : 0;
+
+    try {
+        $sql = "SELECT * FROM products WHERE trangthai = 0";
+
+        if ($category > 0) {
+            $sql .= " AND cate_id = $category";
+        }
+
+        // Add sorting
+        if ($sort == 'asc') {
+            $sql .= " ORDER BY pro_name ASC";
+        } elseif ($sort == 'desc') {
+            $sql .= " ORDER BY pro_name DESC";
+        } elseif ($sort == 'price_asc') {
+            $sql .= " ORDER BY pro_price ASC";
+        } elseif ($sort == 'price_desc') {
+            $sql .= " ORDER BY pro_price DESC";
+        } else {
+            $sql .= " ORDER BY pro_id DESC";
+        }
+
+        $products = pdo_queryall($sql);
+
+        if ($products && count($products) > 0) {
+            echo json_encode([
+                'success' => true,
+                'products' => $products
+            ]);
+        } else {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Không tìm thấy sản phẩm nào.'
+            ]);
+        }
+    } catch (Exception $e) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Lỗi khi truy vấn dữ liệu: ' . $e->getMessage()
+        ]);
+    }
+    exit;
+}
+
+// Handle AJAX requests for filtering products by price range
+if (isset($_GET['act']) && $_GET['act'] == 'filterByPrice') {
+    header('Content-Type: application/json');
+    $startPrice = isset($_GET['start_price']) && $_GET['start_price'] !== '' ? (float)$_GET['start_price'] : 0;
+    $endPrice = isset($_GET['end_price']) && $_GET['end_price'] !== '' ? (float)$_GET['end_price'] : PHP_INT_MAX;
+    $category = isset($_GET['category']) ? (int)$_GET['category'] : 0;
+
+    try {
+        $sql = "SELECT * FROM products WHERE trangthai = 0 AND pro_price BETWEEN $startPrice AND $endPrice";
+
+        if ($category > 0) {
+            $sql .= " AND cate_id = $category";
+        }
+
+        $sql .= " ORDER BY pro_price ASC";
+
+        $products = pdo_queryall($sql);
+
+        if ($products && count($products) > 0) {
+            echo json_encode([
+                'success' => true,
+                'products' => $products
+            ]);
+        } else {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Không tìm thấy sản phẩm nào trong khoảng giá này.'
+            ]);
+        }
+    } catch (Exception $e) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Lỗi khi truy vấn dữ liệu: ' . $e->getMessage()
+        ]);
+    }
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -114,6 +262,9 @@ include './app/model/donhang.php';
                                 addProductToFavourite($khid, $proid);
                                 header("Location:index.php?act=productinformation&pro_id=" . $proid);
                             }
+                            break;
+                        case 'deleteFavourite':
+                            include './resources/view/account/DeleteFavourite.php';
                             break;
                     }
                 } else {

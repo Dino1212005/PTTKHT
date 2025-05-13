@@ -5,7 +5,7 @@
 -- Máy chủ: 127.0.0.1
 -- Thời gian đã tạo: Th4 22, 2025 lúc 04:56 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
--- Phiên bản PHP: 8.1.25  
+-- Phiên bản PHP: 8.1.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
