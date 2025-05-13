@@ -569,25 +569,23 @@ function hasPermission($action, $permissions)
                     break;
                 case 'addpn':
                     if (isset($_POST['addpn'])) {
+                        // Thông tin phiếu nhập
                         $ncc_id = $_POST['ncc_id'];
+                        $receipt_date = date('Y-m-d H:i:s');
+                        $created_by = $_SESSION['acount']['kh_id'] ?? 0;
+                        $status = 0; // Trạng thái mặc định là nháp
+                        $note = $_POST['note'] ?? '';
+
+                        // Thông tin chi tiết phiếu nhập
                         $pro_id = $_POST['pro_id'];
                         $color_id = $_POST['color_id'];
                         $size_id = $_POST['size_id'];
-                        $quantity = (int)$_POST['soluong'];
-                        $unit_price = (float)$_POST['dongia'];
-                        $created_by = $_SESSION['acount']['kh_id'] ?? 0;
-                        $receipt_date = date('Y-m-d H:i:s');
-                        $status = 0;
-                        $note = '';
+                        $quantity = $_POST['soluong'];
+                        $unit_price = $_POST['dongia'];
+                        $total_price = $_POST['tongtien'] ?? ($quantity * $unit_price);
 
-                        // Tính tổng tiền nếu chưa có
-                        if (!isset($_POST['tongtien']) || $_POST['tongtien'] == '') {
-                            $total_price = $quantity * $unit_price;
-                        } else {
-                            $total_price = (float)$_POST['tongtien'];
-                        }
-
-                        $last_receipt_id = insert_receipt_return_id($ncc_id, $receipt_date, $total_price, $created_by, $status, $note);
+                        // Thêm phiếu nhập và lấy ID mới nhất
+                        $last_receipt_id = insert_receipt_return_id($ncc_id, $receipt_date, $created_by, $status, $note);
 
                         if ($last_receipt_id > 0) {
                             insert_receipt_detail($last_receipt_id, $pro_id, $color_id, $size_id, $quantity, $unit_price, $total_price);
@@ -606,6 +604,16 @@ function hasPermission($action, $permissions)
                     }
                     $listreceipts = query_allreceipts();
                     include './phieunhap/phieunhap.php';
+                    break;
+                case 'chitietpn':
+                    if (isset($_GET['id'])) {
+                        $receipt_id = $_GET['id'];
+                        $receipt_details = get_receipt_details($receipt_id);
+                        include './phieunhap/chitietpn.php';
+                    } else {
+                        header("Location: indexadmin.php?act=phieunhap");
+                        exit;
+                    }
                     break;
                 case 'addcolor1':
 
