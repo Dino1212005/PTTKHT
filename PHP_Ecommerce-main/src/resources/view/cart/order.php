@@ -27,6 +27,9 @@ if (isset($_POST['placeordered'])) {
         "size" => $size
     );
 
+    // Mảng lưu trữ thông tin cập nhật số lượng sản phẩm
+    $product_updates = array();
+
     // Process the order items
     for ($i = 0; $i < count($size); $i++) {
         $products = queryonepro($add_order_chitiet['pro_id'][$i]);
@@ -43,9 +46,21 @@ if (isset($_POST['placeordered'])) {
         // Remove from cart
         del_cart_order($add_order_chitiet['pro_id'][$i], $cart_kh['cart_id']);
 
-        // Update product quantity
-        $sql = "update pro_chitiet set soluong = $sl - $sl_order where pro_id = $pro_order and size_id = $size_order and color_id = $color_order";
-        pdo_execute($sql);
+        // Lưu thông tin để cập nhật sau khi thanh toán thành công
+        $product_updates[] = array(
+            'pro_id' => $pro_order,
+            'size_id' => $size_order,
+            'color_id' => $color_order,
+            'quantity' => $sl_order,
+            'current_stock' => $sl,
+            'price' => $products['pro_price']
+        );
+
+        // Chỉ cập nhật số lượng sản phẩm nếu là thanh toán khi nhận hàng
+        if ($_POST['thanhtoan'] == 1) {
+            $sql = "update pro_chitiet set soluong = $sl - $sl_order where pro_id = $pro_order and size_id = $size_order and color_id = $color_order";
+            pdo_execute($sql);
+        }
     }
 
     // Handle payment methods
@@ -53,6 +68,14 @@ if (isset($_POST['placeordered'])) {
         // Chuyển đến trang thanh toán đơn giản thay vì VNPay
         $_SESSION['order_id'] = $order_chitiet['order_id'];
         $_SESSION['order_total'] = $tongtien;
+        $_SESSION['product_updates'] = $product_updates;
+
+        // Ghi log để debug
+        $log_file = __DIR__ . '/debug_order.log';
+        $timestamp = date('Y-m-d H:i:s');
+        $log_message = "[$timestamp] Đặt hàng nhiều sản phẩm: Đơn hàng #{$order_chitiet['order_id']}, Số lượng sản phẩm: " . count($product_updates) . "\n";
+        file_put_contents($log_file, $log_message, FILE_APPEND);
+
         header('Location: index.php?act=simple_payment');
         die();
     } else {
@@ -76,10 +99,10 @@ if (isset($_POST['placeordered'])) {
         } else {
             // Regular form submission (fallback)
 ?>
-<script>
-alert('Đặt hàng thành công! Cảm ơn bạn đã mua sắm.');
-window.location.href = 'index.php?act=home';
-</script>
+            <script>
+                alert('Đặt hàng thành công! Cảm ơn bạn đã mua sắm.');
+                window.location.href = 'index.php?act=home';
+            </script>
 <?php
             exit();
         }

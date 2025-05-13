@@ -26,15 +26,36 @@ if (isset($_POST['placeordered'])) {
     // Add order details
     add_chitietdonhang($order_chitiet['order_id'], $pro_id, $color, $size, $products['pro_price'], $soluong);
 
-    // Update product quantity
-    $sql = "update pro_chitiet set soluong = $sl - $soluong where pro_id = $pro_id and size_id = $size and color_id = $color";
-    pdo_execute($sql);
+    // Lưu thông tin để cập nhật sau khi thanh toán thành công
+    $product_updates = array();
+    $product_updates[] = array(
+        'pro_id' => $pro_id,
+        'size_id' => $size,
+        'color_id' => $color,
+        'quantity' => $soluong,
+        'current_stock' => $sl,
+        'price' => $products['pro_price'] // Thêm thông tin về giá sản phẩm
+    );
+
+    // Chỉ cập nhật số lượng sản phẩm nếu là thanh toán khi nhận hàng
+    if ($_POST['thanhtoan'] == 1) {
+        $sql = "update pro_chitiet set soluong = $sl - $soluong where pro_id = $pro_id and size_id = $size and color_id = $color";
+        pdo_execute($sql);
+    }
 
     // Handle payment methods
     if ($_POST['thanhtoan'] == 2) {
         // Chuyển đến trang thanh toán đơn giản thay vì VNPay
         $_SESSION['order_id'] = $order_chitiet['order_id'];
         $_SESSION['order_total'] = $tongtien;
+        $_SESSION['product_updates'] = $product_updates;
+
+        // Ghi log để debug
+        $log_file = __DIR__ . '/debug_order.log';
+        $timestamp = date('Y-m-d H:i:s');
+        $log_message = "[$timestamp] Đặt hàng một sản phẩm: Đơn hàng #{$order_chitiet['order_id']}, Số lượng sản phẩm: " . count($product_updates) . "\n";
+        file_put_contents($log_file, $log_message, FILE_APPEND);
+
         header('Location: index.php?act=simple_payment');
         die();
     } else {

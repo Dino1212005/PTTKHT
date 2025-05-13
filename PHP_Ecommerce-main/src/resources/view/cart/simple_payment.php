@@ -6,16 +6,32 @@ if (!isset($_SESSION['acount']) || !$_SESSION['acount']) {
 }
 
 // Kiểm tra thông tin đơn hàng
-if (!isset($_SESSION['order_id']) || !isset($_SESSION['order_total'])) {
+if (!isset($_SESSION['order_id']) || !isset($_SESSION['order_total']) || !isset($_SESSION['product_updates'])) {
     header("Location: index.php?act=home");
     exit;
 }
 
 $order_id = $_SESSION['order_id'];
 $order_total = $_SESSION['order_total'];
+$product_updates = $_SESSION['product_updates'];
 
 // Xử lý khi người dùng xác nhận thanh toán
 if (isset($_POST['confirm_payment'])) {
+    // Cập nhật số lượng sản phẩm dựa trên thông tin đã lưu
+    foreach ($product_updates as $update) {
+        $pro_id = $update['pro_id'];
+        $size_id = $update['size_id'];
+        $color_id = $update['color_id'];
+        $quantity = $update['quantity'];
+        $current_stock = $update['current_stock'];
+
+        // Cập nhật số lượng sản phẩm
+        $new_stock = $current_stock - $quantity;
+        $sql = "UPDATE pro_chitiet SET soluong = $new_stock 
+                WHERE pro_id = $pro_id AND size_id = $size_id AND color_id = $color_id";
+        pdo_execute($sql);
+    }
+
     // Cập nhật trạng thái đơn hàng thành "Đã thanh toán"
     $sql = "UPDATE `order` SET trangthai = 'Đã thanh toán' WHERE order_id = $order_id";
     pdo_execute($sql);
@@ -23,6 +39,7 @@ if (isset($_POST['confirm_payment'])) {
     // Xóa thông tin đơn hàng khỏi session
     unset($_SESSION['order_id']);
     unset($_SESSION['order_total']);
+    unset($_SESSION['product_updates']);
 
     // Hiển thị thông báo và chuyển hướng
     echo "<script>
@@ -117,6 +134,10 @@ if (isset($_POST['confirm_payment'])) {
                 <p><strong>Mã đơn hàng:</strong> #<?php echo $order_id; ?></p>
                 <p><strong>Tổng tiền:</strong> $<?php echo $order_total; ?></p>
             </div>
+
+            <div class="alert alert-info">
+                <p><strong>Lưu ý:</strong> Số lượng sản phẩm sẽ chỉ được cập nhật sau khi bạn xác nhận thanh toán.</p>
+            </div>
         </div>
 
         <form action="" method="post" class="payment-form">
@@ -145,6 +166,10 @@ if (isset($_POST['confirm_payment'])) {
 
             <button type="submit" name="confirm_payment" class="btn-payment">Xác nhận thanh toán</button>
         </form>
+
+        <div class="mt-3 text-center">
+            <a href="index.php?act=cancel_payment" class="text-danger">Hủy thanh toán</a>
+        </div>
     </div>
 </body>
 

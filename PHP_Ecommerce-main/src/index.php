@@ -98,6 +98,9 @@ include './app/model/donhang.php';
                         case 'simple_payment':
                             include './resources/view/cart/simple_payment.php';
                             break;
+                        case 'cancel_payment':
+                            include './resources/view/cart/cancel_payment.php';
+                            break;
                         case 'cancel_order':
                             include './resources/view/cart/cancel.php';
                             break;
