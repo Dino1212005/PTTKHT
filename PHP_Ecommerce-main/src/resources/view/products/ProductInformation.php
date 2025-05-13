@@ -112,7 +112,7 @@ if (isset($_GET['pro_id'])) {
                         <div class="d-flex">
                             <button
                                 class="btn btn-dark mt-4 btn-md w-25 me-4  <?php echo !isset($_SESSION['acount']) ? 'disabled ' : '' ?>"
-                                type="submit" name="buy">
+                                type="submit" name="buy" hidden>
                                 By Product
                             </button>
                             <button

@@ -334,7 +334,14 @@ function hasPermission($action, $permissions)
                         if ($hanh_dong === '') {
                             $hanh_dong = null;
                         }
-                        insert_permission_to_role($role_id, $permission_id, $hanh_dong);
+                        // Kiểm tra quyền đã tồn tại chưa
+                        if (check_permission_exist($role_id, $permission_id)) {
+                            $thongbao = "❌ Quyền này đã tồn tại trong vai trò được chọn.";
+                        } else {
+                            insert_permission_to_role($role_id, $permission_id, $hanh_dong);
+                            $thongbao = "✅ Thêm quyền thành công.";
+                        }
+                        // insert_permission_to_role($role_id, $permission_id, $hanh_dong);
                     }
                     $listpq = query_allpq();
                     include './qlphanquyen/qlpq.php';
