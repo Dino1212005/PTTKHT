@@ -50,7 +50,7 @@
         <button type="button" class="btn btn-secondary btn-sm">Bỏ chọn tất cả</button>
         <button type="button" class="btn btn-secondary btn-sm">Xoá các mục đã chọn</button>
         <a href="indexadmin.php?act=addpn1">
-            <button type="button" class="btn btn-secondary btn-sm">Thêm phiếu nhập</button>
+            <button type="button" class="btn btn-primary btn-sm">Thêm phiếu nhập</button>
         </a>
     </div>
 </div>

@@ -569,28 +569,38 @@ function hasPermission($action, $permissions)
                     break;
                 case 'addpn':
                     if (isset($_POST['addpn'])) {
+                        // Thông tin nhà cung cấp
+                        $ncc_name = $_POST['ncc_name'];
+                        $ncc_email = $_POST['ncc_email'] ?? '';
+                        $ncc_sdt = $_POST['ncc_sdt'] ?? '';
+                        $ncc_diachi = $_POST['ncc_diachi'] ?? '';
+
+                        // Thêm nhà cung cấp mới
+                        $ncc_id = insert_ncc_return_id($ncc_name, $ncc_email, $ncc_sdt, $ncc_diachi);
+
+                        if (!$ncc_id) {
+                            echo "<script>alert('❌ Không thể thêm nhà cung cấp. Vui lòng thử lại!');</script>";
+                            include './phieunhap/addpn.php';
+                            break;
+                        }
+
                         // Thông tin phiếu nhập
-                        $ncc_id = $_POST['ncc_id'];
                         $receipt_date = date('Y-m-d H:i:s');
                         $created_by = $_SESSION['acount']['kh_id'] ?? 0;
                         $status = 0; // Trạng thái mặc định là nháp
                         $note = $_POST['note'] ?? '';
 
-                        // Thông tin chi tiết phiếu nhập
-                        $pro_id = $_POST['pro_id'];
-                        $color_id = $_POST['color_id'];
-                        $size_id = $_POST['size_id'];
-                        $quantity = $_POST['soluong'];
-                        $unit_price = $_POST['dongia'];
-                        $total_price = $_POST['tongtien'] ?? ($quantity * $unit_price);
-
                         // Thêm phiếu nhập và lấy ID mới nhất
                         $last_receipt_id = insert_receipt_return_id($ncc_id, $receipt_date, $created_by, $status, $note);
 
                         if ($last_receipt_id > 0) {
-                            insert_receipt_detail($last_receipt_id, $pro_id, $color_id, $size_id, $quantity, $unit_price, $total_price);
+                            // Chuyển hướng đến trang cập nhật phiếu nhập để thêm sản phẩm
+                            header("Location: indexadmin.php?act=suapn&id=" . $last_receipt_id);
+                            exit;
                         } else {
-                            echo "❌ Không thể lấy ID phiếu nhập để thêm chi tiết.";
+                            echo "<script>alert('❌ Không thể tạo phiếu nhập. Vui lòng thử lại!');</script>";
+                            include './phieunhap/addpn.php';
+                            break;
                         }
                     }
 
