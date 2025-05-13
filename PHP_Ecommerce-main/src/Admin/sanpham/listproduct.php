@@ -10,13 +10,13 @@
                 <select class="form-select" name="search_cate">
                     <option value="0">Tất Cả</option>
                     <?php
-          $allcate = query_allcate();
-          foreach ($allcate as $cate) {
-          ?>
+                    $allcate = query_allcate();
+                    foreach ($allcate as $cate) {
+                    ?>
                     <option value="<?php echo $cate['cate_id'] ?>"><?= $cate['cate_name'] ?></option>
                     <?php
-          }
-          ?>
+                    }
+                    ?>
                 </select>
             </div>
             <div class="col-sm-4">
@@ -29,54 +29,56 @@
             <thead>
                 <tr>
                     <Th class="text-bg-secondary"></Th>
-                    <th class="text-bg-secondary">Ảnh sản phẩm</th>
                     <th class="text-bg-secondary">Mã sản phẩm</th>
+                    <th class="text-bg-secondary">Ảnh sản phẩm</th>
                     <th class="text-bg-secondary">Tên sản phẩm</th>
                     <Th class="text-bg-secondary">Danh mục</Th>
                     <Th class="text-bg-secondary">Giá</Th>
                     <Th class="text-bg-secondary">Brand</Th>
-                    <Th class="text-bg-secondary">Lượt Xem</Th>
+                    <Th class="text-bg-secondary">Tồn kho</Th>
                     <Th class="text-bg-secondary">Thao tác</Th>
                 </tr>
             </thead>
             <?php
-      // Phân trang
-      $items_per_page = 7; // 7 sản phẩm mỗi trang
-      $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-      $current_page = max(1, $current_page); // Đảm bảo trang hiện tại ít nhất là 1
-      $offset = ($current_page - 1) * $items_per_page;
+            // Phân trang
+            $items_per_page = 7; // 7 sản phẩm mỗi trang
+            $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $current_page = max(1, $current_page); // Đảm bảo trang hiện tại ít nhất là 1
+            $offset = ($current_page - 1) * $items_per_page;
 
-      // Lấy dữ liệu sản phẩm theo phân trang
-      if (isset($_POST['searchprocate'])) {
-        $search_name = $_POST['search_name'];
-        $search_cate = $_POST['search_cate'];
-        $result_pro = queryallpro($search_name, $search_cate, $offset, $items_per_page);
-        $total_products = count_products($search_name, $search_cate);
-        if (empty($result_pro)) {
-          echo "Danh Mục Này Chưa Có Sản Phẩm Xin Mời Bạn Thực Hiện Tùy Chọn Khác";
-        }
-      } else {
-        $result_pro = queryallpro('', 0, $offset, $items_per_page);
-        $total_products = count_products('', 0);
-      }
+            // Lấy dữ liệu sản phẩm theo phân trang
+            if (isset($_POST['searchprocate'])) {
+                $search_name = $_POST['search_name'];
+                $search_cate = $_POST['search_cate'];
+                $result_pro = queryallpro($search_name, $search_cate, $offset, $items_per_page);
+                $total_products = count_products($search_name, $search_cate);
+                if (empty($result_pro)) {
+                    echo "Danh Mục Này Chưa Có Sản Phẩm Xin Mời Bạn Thực Hiện Tùy Chọn Khác";
+                }
+            } else {
+                $result_pro = queryallpro('', 0, $offset, $items_per_page);
+                $total_products = count_products('', 0);
+            }
 
-      $total_pages = ceil($total_products / $items_per_page);
+            $total_pages = ceil($total_products / $items_per_page);
 
-      // Hiển thị sản phẩm
-      foreach ($result_pro as $product) {
-        extract($product);
-        $result_cateone = query_onecate($cate_id);
-      ?>
+            // Hiển thị sản phẩm
+            foreach ($result_pro as $product) {
+                extract($product);
+                $result_cateone = query_onecate($cate_id);
+                // Lấy tổng tồn kho của sản phẩm
+                $inventory = get_total_inventory($pro_id);
+            ?>
             <tbody>
                 <tr>
                     <td><input type="checkbox" name="checkbox" id=""></td>
-                    <td><img src="./sanpham/img/<?php echo $pro_img ?>" class="w-50 mg-thumbnail h-50" alt=""></td>
                     <td><?php echo $pro_id ?></td>
+                    <td><img src="./sanpham/img/<?php echo $pro_img ?>" class="w-50 mg-thumbnail h-50" alt=""></td>
                     <td><?php echo $pro_name ?></td>
                     <td><?php echo $result_cateone['cate_name'] ?></td>
                     <td><?php echo $pro_price ?></td>
                     <td><?php echo $pro_brand ?></td>
-                    <td><?php echo $pro_stock ?></td>
+                    <td><?php echo $inventory ?></td>
 
 
                     <td>
@@ -95,8 +97,8 @@
 
             </tbody>
             <?php
-      }
-      ?>
+            }
+            ?>
         </table>
     </div>
 

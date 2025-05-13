@@ -5,7 +5,7 @@
 -- Máy chủ: 127.0.0.1
 -- Thời gian đã tạo: Th4 22, 2025 lúc 04:56 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
--- Phiên bản PHP: 8.1.25
+-- Phiên bản PHP: 8.1.25  
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -529,11 +529,6 @@ CREATE TABLE `pro_chitiet` (
 -- Đang đổ dữ liệu cho bảng `pro_chitiet`
 --
 
-INSERT INTO `pro_chitiet` (`ctiet_pro_id`, `pro_id`, `color_id`, `size_id`, `soluong`) VALUES
-(4, 61, 2, 3, 11),
-(5, 63, 1, 1, -4),
-(7, 66, 2, 1, 13),
-(13, 66, 1, 3, 15);
 
 INSERT INTO `pro_chitiet` (`ctiet_pro_id`, `pro_id`, `color_id`, `size_id`, `soluong`) VALUES
 -- Product ID: 41 - Fleece Hoodies

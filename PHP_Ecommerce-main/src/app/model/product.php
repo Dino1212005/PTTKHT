@@ -24,9 +24,9 @@ function queryallpro($key, $idcate, $offset = null, $limit = null)
 }
 
 
-function addpro($ten, $img, $price, $ct, $cate, $stock, $brand)
+function addpro($ten, $img, $price, $ct, $cate, $inventory, $brand)
 {
-    $sql = "insert into products(pro_name,pro_img,pro_price,pro_desc,pro_brand,pro_stock,cate_id) values('$ten','$img',$price,'$ct','$brand','$stock',$cate)";
+    $sql = "insert into products(pro_name,pro_img,pro_price,pro_desc,pro_brand,pro_stock,cate_id) values('$ten','$img',$price,'$ct','$brand','$inventory',$cate)";
     pdo_execute($sql);
 }
 function queryonepro($id)
@@ -119,6 +119,19 @@ function khoiphuc_product($id)
 {
     $sql = "UPDATE `products` set trangthai = 0 WHERE `products`.`pro_id` = $id";
     pdo_execute($sql);
+}
+
+// Hàm tính tổng tồn kho của một sản phẩm
+function get_total_inventory($pro_id)
+{
+    $sql = "SELECT SUM(soluong) as total_stock FROM pro_chitiet WHERE pro_id = $pro_id";
+    $result = pdo_query_one($sql);
+
+    if ($result && isset($result['total_stock'])) {
+        return $result['total_stock'];
+    }
+
+    return 0; // Trả về 0 nếu không có dữ liệu
 }
 
 function countProId()
