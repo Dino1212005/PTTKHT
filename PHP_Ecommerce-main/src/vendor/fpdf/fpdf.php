@@ -171,7 +171,6 @@ class FPDF
         <body>
             <div class='invoice-container'>
                 <div class='invoice-header'>
-                    <div class='invoice-title'>HÓA ĐƠN BÁN HÀNG</div>
                 </div>
                 {$this->content}
             </div>
