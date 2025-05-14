@@ -15,7 +15,7 @@ if (isset($_POST['login'])) {
 
     if (is_array($checkuser)) {
         // Kiểm tra vai trò người dùng
-        if ($checkuser['vaitro_id'] == 2) { // Chỉ cho phép User đăng nhập
+        if ($checkuser['vaitro_id'] == 2 && $checkuser['trangthai'] == 0) { // Chỉ cho phép User đăng nhập
             $_SESSION['acount'] = $checkuser;
             header("Location:index.php?act=home");
             exit();

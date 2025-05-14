@@ -909,11 +909,22 @@ function hasPermission($action, $permissions)
                     if (isset($_GET['kh_id']) && $_GET['kh_id'] > 0) {
                         $kh_id  = $_GET['kh_id'];
                         soft_deletekh($kh_id);
+                         $message = "Đã khóa tài khoản thành công.";
                     }
 
                     $listtk = loadall_taikhoan();
                     include "taikhoan/list_kh.php";
                     break;
+                case "mokhoatk":
+                    if (isset($_GET['kh_id']) && $_GET['kh_id'] > 0) {
+                        $kh_id  = $_GET['kh_id'];
+                        openkh($kh_id);
+                         $message = "Đã mở khóa tài khoản thành công.";
+                    }
+
+                    $listtk = loadall_taikhoan();
+                    include "taikhoan/list_kh.php";
+                    break;    
                 case "khoiphuc_kh":
                     if (isset($_GET['kh_id']) && $_GET['kh_id'] > 0) {
                         $kh_id  = $_GET['kh_id'];
