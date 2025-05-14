@@ -76,6 +76,11 @@
 
         return true; // Trả về true để thể hiện rằng việc xoá thành công
     }
+    function loadone_donhang($order_id) {
+    $sql = "SELECT * FROM `order` WHERE order_id = ?";
+    return pdo_query_one($sql, $order_id);
+}
+
     function loadall_one_donhang($order_id)
     {
         $sql = "

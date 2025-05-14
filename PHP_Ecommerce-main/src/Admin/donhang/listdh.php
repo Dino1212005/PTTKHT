@@ -1,4 +1,9 @@
 <!-- main -->
+   <?php if (!empty($message)): ?>
+          <script>
+              alert("<?= $message ?>");
+          </script>
+      <?php endif; ?>
 <div class="container">
     <h2 class="border border-4 mb-4 text-bg-secondary p-3 text-center rounded">Danh sách đơn hàng</h2>
     <form action="" class="mb-4" method="post" enctype="multipart/form-data">

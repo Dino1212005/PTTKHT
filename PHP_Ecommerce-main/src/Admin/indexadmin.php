@@ -1061,13 +1061,31 @@ function hasPermission($action, $permissions)
                 case "updatedonhang":
                     if (isset($_POST['themdh'])) {
                         $order_id = $_POST['order_id'];
-                        $order_trangthai = $_POST['order_trangthai'];
-                        updatedh($order_trangthai, $order_id);
-                    }
+                        $order_trangthai_moi = $_POST['order_trangthai'];
+                                            // Lấy trạng thái hiện tại từ DB
+                            $donhang = loadone_donhang($order_id);
+                            $order_trangthai_cu = $donhang['order_trangthai'];
+
+                            // Định nghĩa thứ tự
+                           $trangthai_chuyendoi = [
+                                "Đang chờ xác nhận" => ["Đang giao hàng", "Đã nhận hàng", "Đã hủy"],
+                                "Đang giao hàng" => ["Đã nhận hàng", "Đã hủy"],
+                                "Đã nhận hàng" => [],
+                                "Đã hủy" => []
+                            ];
+
+                            if (in_array($order_trangthai_moi, $trangthai_chuyendoi[$order_trangthai_cu])) {
+                                updatedh($order_trangthai_moi, $order_id);
+                                $message = "Cập nhật trạng thái đơn hàng thành công!";
+                            } else {
+                                $message = "Không thể cập nhật trạng thái đơn hàng từ '{$order_trangthai_cu}' sang '{$order_trangthai_moi}'!";
+                            }
+                        }
+
                     $listdh = loadall_donhang();
                     include "./donhang/listdh.php";
                     break;
-                case "chitietdh":
+                    case "chitietdh":
                     if (isset($_GET['order_id']) && $_GET['order_id'] != "") {
                         $order_id = $_GET['order_id'];
                     }
